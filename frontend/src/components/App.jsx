@@ -1,42 +1,47 @@
 import './App.css'
+import Recipe from './Recipe.jsx'
 
 function App() {
   const recipes = [
  {
-   "title": "Toast skagen",
-   "description": "Gott till champagne",
-   "imageUrl": "https://assets.icanet.se/e_sharpen:80,q_auto,dpr_1.25,w_718,h_718,c_lfill/imagevaultfiles/id_223427…",
-   "timeInMins": 15,
-   "price": 150,
-   "categories": [
-     "Förrätt",
-     "Skaldjur",
-     "Smaskigt"
-   ],
-   "instructions": [
-     "Stek brödet",
-     "Lägg på röran",
-     "Toppa med Dill"
-   ],
-   "ingredients": [
-     {
-       "name": "Salt",
-       "amount": 1,
-       "unit": "tsk",
-     },
-     {
-       "name": "Peppar",
-       "amount": 1,
-       "unit": "tsk",
-     },
-     {
-       "name": "Smör",
-       "amount": 100,
-       "unit": "gram",
-     }
-   ],
-   "avgRating": null
- },
+    "_id": "68dcfa838a8cd70776c0ef8e",
+    "title": "Toast skagen",
+    "description": "Gott till champagne",
+    "imageUrl": "https://assets.icanet.se/e_sharpen:80,q_auto,dpr_1.25,w_718,h_718,c_lfill/imagevaultfiles/id_223427/cf_259/korvstroganoff_med_ris.jpg",
+    "timeInMins": 15,
+    "price": 150,
+    "categories": [
+      "Förrätt",
+      "Skaldjur",
+      "Smaskigt"
+    ],
+    "instructions": [
+      "Stek brödet",
+      "Lägg på röran",
+      "Toppa med Dill"
+    ],
+    "ingredients": [
+      {
+        "name": "Salt",
+        "amount": 1,
+        "unit": "tsk",
+        "_id": "68dcfa838a8cd70776c0ef8f"
+      },
+      {
+        "name": "Peppar",
+        "amount": 1,
+        "unit": "tsk",
+        "_id": "68dcfa838a8cd70776c0ef90"
+      },
+      {
+        "name": "Smör",
+        "amount": 100,
+        "unit": "gram",
+        "_id": "68dcfa838a8cd70776c0ef91"
+      }
+    ],
+    "avgRating": null
+  },
  {
    "title": "Pina colada",
    "description": "Gott till afterwork",
@@ -75,49 +80,11 @@ function App() {
    "avgRating": null
  }
 ]
-const recipe = recipes[1];
 
   return (
     <>
-    <div className="recipe-card">
-      <h1>{recipe.title}</h1>
-      <p><strong>Beskrivning:</strong> {recipe.description}</p>
-
-      <img src={recipe.imageUrl} alt={recipe.title} width="300" />
-
-      <p><strong>Tillagningstid:</strong> {recipe.timeInMins} minuter</p>
-      <p><strong>Pris:</strong> {recipe.price} kr</p>
-
-      <h3>Kategorier</h3>
-      <ul>
-        {recipe.categories.map((cat, i) => (
-          <li key={i}>{cat}</li>
-        ))}
-      </ul>
-
-      <h3>Instruktioner</h3>
-      <ol>
-        {recipe.instructions.map((instr, i) => (
-          <li key={i}>{instr}</li>
-        ))}
-      </ol>
-
-      <h3>Ingredienser</h3>
-      <ul>
-        {recipe.ingredients.map((ing, i) => (
-          <li key={i}>
-            {ing.amount} {ing.unit} {ing.name}
-          </li>
-        ))}
-      </ul>
-
-      <p>
-        <strong>Genomsnittligt betyg:</strong>{" "}
-        {recipe.avgRating ? recipe.avgRating : "Ingen än"}
-      </p>
-    </div>
-    </>
-  )
+    { recipes.map( (r, i) => (<Recipe key={i} recipe={r}/>))}
+  </>
+  );
 }
-
-export default App
+export default App;
