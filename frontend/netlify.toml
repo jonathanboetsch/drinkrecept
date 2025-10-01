@@ -6,10 +6,6 @@
   NODE_VERSION = "20"
   NPM_FLAGS = "--legacy-peer-deps"
 
-# Optional: define deploy contexts
-[context.production.environment]
-  API_URL = "https://grupp3-jynxa.reky.se/"
-
 [context.deploy-preview]
   command = "npm run build:preview"
   API_URL = "https://grupp3-jynxa.reky.se/"
