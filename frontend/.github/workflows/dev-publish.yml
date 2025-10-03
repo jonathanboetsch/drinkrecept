@@ -7,6 +7,10 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+      working-directory: frontend
+
 
     steps:
       - uses: actions/checkout@v3
@@ -25,11 +29,11 @@ jobs:
           # github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist   # or ./dist depending on your bundler
           destination_dir: pr-${{ github.event.number }}
-# Adds a bot comment in the preview
-- name: Add PR comment
-  uses: marocchino/sticky-pull-request-comment@v2
-  with:
-    header: deploy-preview
-    message: |
-      🚀 Preview available at:
-      https://jonathanboetsch/drinkrecept/pr-${{ github.event.number }}/
+      # Adds a bot comment in the preview
+      - name: Add PR comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: deploy-preview
+          message: |
+            🚀 Preview available at:
+            https://jonathanboetsch/drinkrecept/pr-${{ github.event.number }}/
