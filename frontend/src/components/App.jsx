@@ -7,7 +7,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // this is yet another comment for triggering a push to dev => tests Github Workflow deployment...
+  // another comment to try to trigger Github Actions...
 
   useEffect(() => {
     fetch("https://grupp3-jynxa.reky.se/recipes")
