@@ -36,4 +36,4 @@ jobs:
           header: deploy-preview
           message: |
             🚀 Preview available at:
-            https://jonathanboetsch/drinkrecept/pr-${{ github.event.number }}/
+            https://jonathanboetsch.github.io/drinkrecept/pr-${{ github.event.number }}/
