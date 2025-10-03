@@ -20,8 +20,12 @@ jobs:
         with:
           node-version: 18
 
-      - run: npm ci
-      - run: npm run build
+      - name: Install dependencies
+        run: npm ci
+        working-directory: frontend
+      - name: Build
+        run: npm run build
+        working-directory: frontend
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
@@ -33,6 +37,7 @@ jobs:
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: deploy-preview
+          recreate: true
           message: |
             🚀 Preview available at:
             https://jonathanboetsch.github.io/drinkrecept/pr-${{ github.event.number }}/
