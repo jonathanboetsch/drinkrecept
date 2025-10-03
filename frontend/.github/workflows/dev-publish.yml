@@ -33,3 +33,4 @@ jobs:
     message: |
       🚀 Preview available at:
       https://jonathanboetsch/drinkrecept/pr-${{ github.event.number }}/
+      # comment to trigger PR and bot generated link
