@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import "./App.css";
-import Recipe from "./Recipe.jsx";
+import RecipeList from "./RecipeList";
 
 function App() {
   const [recipes, setRecipes] = useState([]);
@@ -32,9 +31,7 @@ function App() {
       {/* <p>BEGIN</p> */}
       {/* <Recipe /> */}
       {/* <p>END</p> */}
-      {recipes.map((r, i) => (
-        <Recipe key={i} recipe={r} />
-      ))}
+      <RecipeList recipes={recipes} />
     </>
   );
 }
