@@ -22,7 +22,7 @@ function App() {
 
   const filterSearch = (input = "") => {
     const text = input.trim().toLowerCase();
-    if (input) {
+    if (text) {
       const result = recipes.filter((r) =>
         flattenValues(r).toLowerCase().includes(text)
       );
