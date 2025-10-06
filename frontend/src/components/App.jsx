@@ -28,7 +28,7 @@ function App() {
       );
       result.length > 0
         ? setSearchResult(result)
-        : setSearchResult([{ message: "Your search gave nothing" }]);
+        : setSearchResult([{ message: "No results found" }]);
     } else setSearchResult(recipes);
   };
 
