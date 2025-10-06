@@ -22,11 +22,14 @@ function App() {
 
   const filterSearch = (input = "") => {
     const text = input.trim().toLowerCase();
-    if (input)
-      setSearchResult(
-        recipes.filter((r) => flattenValues(r).toLowerCase().includes(text))
+    if (input) {
+      const result = recipes.filter((r) =>
+        flattenValues(r).toLowerCase().includes(text)
       );
-    else setSearchResult(recipes);
+      result.length > 0
+        ? setSearchResult(result)
+        : setSearchResult([{ message: "Your search gave nothing" }]);
+    } else setSearchResult(recipes);
   };
 
   useEffect(() => {
