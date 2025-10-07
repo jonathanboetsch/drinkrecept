@@ -1,4 +1,4 @@
-// frontend/src/components/App.test.jsx
+// frontend/src/components/Recipe.test.jsx
 import { render, screen } from "@testing-library/react";
 import Recipe from "./Recipe";
 
