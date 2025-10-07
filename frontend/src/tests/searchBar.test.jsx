@@ -3,22 +3,23 @@ import { test, expect, vi, beforeEach } from "vitest";
 import SearchBar from "../components/SearchBar";
 import userEvent from "@testing-library/user-event";
 
-let mockOnUserType;
-let input;
-
-beforeEach(() => {
-  mockOnUserType = vi.fn();
+function setup() {
+  const mockOnUserType = vi.fn();
   render(<SearchBar onUserType={mockOnUserType} />);
-  input = screen.getByPlaceholderText("type your search here");
-});
+  const input = screen.getByPlaceholderText("type your search here");
+  return { mockOnUserType, input };
+}
 
 test("Component returns the input typed by the user", () => {
+  const { mockOnUserType, input } = setup();
+
   fireEvent.change(input, { target: { value: "foobar" } });
 
   expect(mockOnUserType).toHaveBeenCalledWith("foobar");
 });
 
 test("Component calls onUserType on every keystroke", async () => {
+  const { mockOnUserType, input } = setup();
   await userEvent.type(input, "foo"); // simulates real typing
 
   // Expect the callback to have been called 3 times (once per keystroke)
