@@ -28,3 +28,13 @@ test("Component calls onUserType on every keystroke", async () => {
   // Expect last call to have received the full string
   expect(mockOnUserType).toHaveBeenCalledWith("foo");
 });
+
+// Ensures the UI isn’t accidentally changed by refactors or CSS tweaks
+test("renders with correct placeholder and type", () => {
+  const { _, input } = setup();
+  render(<SearchBar onUserType={() => {}} />);
+
+  expect(input).toBeInTheDocument();
+  expect(input).toHaveAttribute("type", "search");
+  expect(input).toHaveClass("search-bar");
+});
