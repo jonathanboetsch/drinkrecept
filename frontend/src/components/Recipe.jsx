@@ -1,7 +1,6 @@
 export default function Recipe({ recipe }) {
   return (
     <div className="recipe-card">
-      {/* console.log(recipe); */}
       <h1>{recipe.title}</h1>
       <p>
         <strong>Beskrivning:</strong> {recipe.description}
