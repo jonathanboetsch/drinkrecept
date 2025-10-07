@@ -1,0 +1,42 @@
+name: Deploy Preview
+
+on:
+  pull_request:
+    branches: [ dev ]  
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist   # or ./dist depending on your bundler
+          destination_dir: pr-${{ github.event.number }}
+<<<<<<< HEAD
+      # Adds a bot comment in the preview
+=======
+>>>>>>> 449ba8c (Update dev-publish.yml)
+      - name: Add PR comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: deploy-preview
+          message: |
+            🚀 Preview available at:
+            https://jonathanboetsch.github.io/drinkrecept/pr-${{ github.event.number }}/
