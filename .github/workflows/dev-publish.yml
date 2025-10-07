@@ -29,10 +29,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist   # or ./dist depending on your bundler
           destination_dir: pr-${{ github.event.number }}
-<<<<<<< HEAD
-      # Adds a bot comment in the preview
-=======
->>>>>>> 449ba8c (Update dev-publish.yml)
+
       - name: Add PR comment
         uses: marocchino/sticky-pull-request-comment@v2
         with:
