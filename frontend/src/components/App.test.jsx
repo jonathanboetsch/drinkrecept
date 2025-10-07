@@ -1,34 +1,10 @@
 // frontend/src/components/App.test.jsx
-import { render, screen, waitFor } from "@testing-library/react";
-import App from "./App";
-import React from "react";
-import {
-  vi,
-  describe,
-  beforeEach,
-  afterEach,
-  it,
-  global,
-  expect,
-} from "vitest";
-
-// Mock RecipeList to simplify output
-vi.mock("./RecipeList", () => ({
-  default: ({ recipes }) => (
-    <div>
-      {recipes.map((r) => (
-        <div key={r.id}>{r.name}</div>
-      ))}
-    </div>
-  ),
-}));
+import { render, screen } from "@testing-library/react";
+import Recipe from "./Recipe";
 
 describe("App Component", () => {
-  // Mock fetch before each test
-  beforeEach(() => {
-    global.fetch = vi.fn();
+  test("renders Recipe", () => {
+    render(<Recipe />);
+    expect(screen.getByText("Beskrivning")).toBeInTheDocument();
   });
-
-  // console.log(vi)
-  console.log(vi);
 });
