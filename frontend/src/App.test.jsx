@@ -1,10 +1,10 @@
-import { describe, beforeAll, test, expect } from "vitest";
+import { describe, beforeAll, test, expect, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import App from "./components/App.jsx";
 
 // Mocka fetch för att returnera testdata
 beforeAll(() => {
-  global.fetch = jest.fn(() =>
+  globalThis.fetch = vi.fn(() =>
     Promise.resolve({
       ok: true,
       json: () =>
