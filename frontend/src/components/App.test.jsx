@@ -2,6 +2,15 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import App from "./App";
 import React from "react";
+import {
+  vi,
+  describe,
+  beforeEach,
+  afterEach,
+  it,
+  global,
+  expect,
+} from "vitest";
 
 // Mock RecipeList to simplify output
 vi.mock("./RecipeList", () => ({
