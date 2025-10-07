@@ -1,7 +1,7 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { test, expect, vi, beforeEach } from "vitest";
-import SearchBar from "../components/SearchBar";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { expect, test, vi } from "vitest";
+import SearchBar from "../components/SearchBar";
 
 function setup() {
   const mockOnUserType = vi.fn();
