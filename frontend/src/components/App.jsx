@@ -28,9 +28,6 @@ function App() {
 
   return (
     <>
-      {/* <p>BEGIN</p> */}
-      {/* <Recipe /> */}
-      {/* <p>END</p> */}
       <RecipeList recipes={recipes} />
     </>
   );
