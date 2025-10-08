@@ -14,9 +14,8 @@ export default defineConfig(({ mode }) => {
     // Add this vitest config:
     test: {
       environment: "jsdom",
-      // Optionally, you can add globals: true if you want to use global test functions without importing them
-      // globals: true,
-      // ...configDefaults.test,
+      globals: true,
+      setupFiles: [],
     },
   };
 });
