@@ -1,4 +1,12 @@
 export default function Recipe({ recipe }) {
+
+  const fallbackImage = ".//assets/backupImage.png";
+
+  const handleImageError = (e) => {
+    e.target.src = fallbackImage;
+  }
+
+
   return (
     <div className="recipe-card">
       {/* console.log(recipe); */}
@@ -6,7 +14,7 @@ export default function Recipe({ recipe }) {
       <p>
         <strong>Beskrivning:</strong> {recipe.description}
       </p>
-      <img src={recipe.imageUrl} alt={recipe.title} width="300" />
+      <img src={recipe.imageUrl} alt={recipe.title} width="300" onError={handleImageError} />
       <p>
         <strong>Tillagningstid:</strong> {recipe.timeInMins} minuter
       </p>
@@ -39,4 +47,8 @@ export default function Recipe({ recipe }) {
       </p>
     </div>
   );
+
 }
+
+
+

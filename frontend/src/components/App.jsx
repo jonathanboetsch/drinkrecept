@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import RecipeList from "./RecipeList";
+import "./App.css";
+import Header from "../assets/Header.png";
 
 function App() {
   const [recipes, setRecipes] = useState([]);
@@ -27,12 +29,30 @@ function App() {
   }
 
   return (
-    <>
+
+<div>
+
+  <div className="header-container">
+    <img src={Header} alt="Header" className="header-image" />
+
+
+
+
+
+
+   <>
       {/* <p>BEGIN</p> */}
       {/* <Recipe /> */}
       {/* <p>END</p> */}
       <RecipeList recipes={recipes} />
     </>
-  );
+    </div>
+
+</div>
+);
 }
+
 export default App;
+
+
+
