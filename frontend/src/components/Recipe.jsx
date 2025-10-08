@@ -1,6 +1,6 @@
 export default function Recipe({ recipe }) {
 
-  const fallbackImage = ".//assets/backupImage.png";
+  const fallbackImage = "../assets/backupImage.png";
 
   const handleImageError = (e) => {
     e.target.src = fallbackImage;

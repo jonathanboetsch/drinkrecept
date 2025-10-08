@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import RecipeList from "./RecipeList";
 import "./App.css";
-import Header from "../assets/Header.png";
+import Header from "../assets/Header2.png";
 
 function App() {
   const [recipes, setRecipes] = useState([]);
