@@ -66,3 +66,33 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* --- 🔽 TILLÄGG ENDAST FÖR KATEGORIFILTER --- */
+
+.category-filter {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.category-filter button {
+  border-radius: 15px;               /* Rundare knappar */
+  border: 1px solid #ccc;
+  padding: 0.4rem 1rem;
+  font-size: 0.9rem;
+  background-color: #f0f0f0;         /* Ljus bakgrund så text syns */
+  color: #333;                       /* Mörk text för kontrast */
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.category-filter button:hover {
+  background-color: #e0e0e0;
+}
+
+.category-filter button.active {
+  background-color: #0077ff;         /* Blå markerad knapp */
+  color: #fff;                       /* Vit text på markerad */
+  font-weight: bold;
+  border-color: #005ecc;
+}
