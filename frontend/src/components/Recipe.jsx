@@ -52,7 +52,7 @@ export default function Recipe({ recipe }) {
                 {ing.amount} {ing.unit} {ing.name}
               </li>
             ))
-        ):( <p> Inga ingredienser tillgängliga </p>
+        ) : ( <p> Inga ingredienser tillgängliga </p>
         )}
           </ul>
             
