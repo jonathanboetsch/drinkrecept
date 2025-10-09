@@ -116,7 +116,7 @@ text-align: center;
 
 
 
-/*  detta gömmar katigori och tillagnings sätt, kolla Recipe.jsx  */
+/*  detta gömmar kategori och tillagnings sätt, kolla Recipe.jsx  */
 .recipe-card h3,
 .recipe-card ol {
 display : none;
