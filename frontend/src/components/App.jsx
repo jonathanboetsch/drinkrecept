@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import RecipeList from "./RecipeList";
+import "./App.css";
+import Header from "../assets/Header2.png";
 import SearchBar from "./SearchBar";
 
 function App() {
@@ -58,13 +60,31 @@ function App() {
   }
 
   return (
-    <>
+
+<div>
+
+  <div className="header-container">
+    <img src={Header} alt="Header" className="header-image" />
+
+
+
+
+
+
+   <>
       {/* <p>BEGIN</p> */}
       {/* <Recipe /> */}
       {/* <p>END</p> */}
       <SearchBar onUserType={filterSearch} />
       <RecipeList recipes={searchResult} />
     </>
-  );
+    </div>
+
+</div>
+);
 }
+
 export default App;
+
+
+
