@@ -8,9 +8,10 @@ import process from "process";
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   const isNetlify = !!env.NETLIFY;
+  const prNumber = process.env.PR_NUMBER; // defined by GitHub Actions
   return {
     plugins: [react()],
-    base: isNetlify ? "/" : "/drinkrecept/",
+    base: isNetlify ? "/" : "/drinkrecept/pr-${prNumber}/",
     // Add this vitest config:
     test: {
       environment: "jsdom",
