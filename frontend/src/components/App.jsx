@@ -84,6 +84,10 @@ function App() {
         <SearchBar onUserType={filterSearch} />
 
         <Routes>
+          {/* 
+            Make sure to navigate to /category/alkohol (without colon) 
+            Example: <Link to={`/category/alkohol`}>Alkohol</Link>
+          */}
           <Route path="/" element={<RecipeList recipes={searchResult} />} />
           <Route path="/category/:id" element={<CategoryPage recipes={recipes} />} />
           <Route path="/recipe/:id" element={<RecipePage recipes={recipes} />} />
