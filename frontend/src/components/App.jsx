@@ -67,14 +67,13 @@ function App() {
     <div>
       <div className="header-container">
         <img src={Header} alt="Header" className="header-image" />
+        <SearchBar onUserType={filterSearch} />
 
-        <>
-          {/* <p>BEGIN</p> */}
-          {/* <Recipe /> */}
-          {/* <p>END</p> */}
-          <SearchBar onUserType={filterSearch} />
-          <RecipeList recipes={searchResult} />
-        </>
+        <Routes>
+          <Route path="/" element={<RecipeList recipes={searchResult} />} />
+          <Route path="/category/:id" element={<CategoryPage recipes={recipes} />} />
+          <Route path="/recipe/:id" element={<RecipePage recipes={recipes} />} />
+        </Routes>
       </div>
     </div>
   );
