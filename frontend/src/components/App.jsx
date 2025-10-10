@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { Route, Routes, useParams } from "react-router-dom";
 import RecipeList from "./RecipeList";
 import "./App.css";
 import Header from "../assets/Header2.png";
 import SearchBar from "./SearchBar";
+import Recipe from "./Recipe";
 
 function App() {
   const [recipes, setRecipes] = useState([]);
@@ -25,9 +27,7 @@ function App() {
   const filterSearch = (input = "") => {
     const text = input.trim().toLowerCase();
     if (text) {
-      const result = recipes.filter((r) =>
-        flattenValues(r).toLowerCase().includes(text)
-      );
+      const result = recipes.filter((r) => flattenValues(r).toLowerCase().includes(text));
       result.length > 0
         ? setSearchResult(result)
         : setSearchResult([{ message: "No results found" }]);
@@ -60,31 +60,20 @@ function App() {
   }
 
   return (
+    <div>
+      <div className="header-container">
+        <img src={Header} alt="Header" className="header-image" />
 
-<div>
-
-  <div className="header-container">
-    <img src={Header} alt="Header" className="header-image" />
-
-
-
-
-
-
-   <>
-      {/* <p>BEGIN</p> */}
-      {/* <Recipe /> */}
-      {/* <p>END</p> */}
-      <SearchBar onUserType={filterSearch} />
-      <RecipeList recipes={searchResult} />
-    </>
+        <>
+          {/* <p>BEGIN</p> */}
+          {/* <Recipe /> */}
+          {/* <p>END</p> */}
+          <SearchBar onUserType={filterSearch} />
+          <RecipeList recipes={searchResult} />
+        </>
+      </div>
     </div>
-
-</div>
-);
+  );
 }
 
 export default App;
-
-
-
