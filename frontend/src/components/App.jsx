@@ -6,6 +6,10 @@ import Header from "../assets/Header2.png";
 import SearchBar from "./SearchBar";
 import Recipe from "./Recipe";
 
+function CategoryPage() {}
+
+function RecipePage() {}
+
 function App() {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
