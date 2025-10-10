@@ -6,7 +6,16 @@ import Header from "../assets/Header2.png";
 import SearchBar from "./SearchBar";
 import Recipe from "./Recipe";
 
-function CategoryPage() {}
+function CategoryPage({ recipes }) {
+  const { id } = useParams();
+  const filtered = recipes.filter((r) => (r.categories || []).includes(id));
+  return (
+    <>
+      <h2>Kategori: {id}</h2>
+      <RecipeList recipes={filtered} />
+    </>
+  );
+}
 
 function RecipePage() {}
 
@@ -59,6 +68,7 @@ function App() {
   if (loading) {
     return <p>Laddar recept...</p>;
   }
+
   if (error) {
     return <p>Fel är: {error}</p>;
   }
