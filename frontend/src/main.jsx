@@ -7,6 +7,9 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 const ghPagesFlag = import.meta.env.VITE_GH_PAGES;
 const prNumber = import.meta.env.VITE_PR_NUMBER;
 
+console.log("GH_PAGES:", ghPagesFlag);
+console.log("PR_NUMBER:", prNumber);
+
 const basename = ghPagesFlag ? `/drinkrecept/pr-${prNumber}/` : "/";
 
 createRoot(document.getElementById("root")).render(
