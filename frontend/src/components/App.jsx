@@ -25,9 +25,7 @@ function App() {
   const filterSearch = (input = "") => {
     const text = input.trim().toLowerCase();
     if (text) {
-      const result = recipes.filter((r) =>
-        flattenValues(r).toLowerCase().includes(text)
-      );
+      const result = recipes.filter((r) => flattenValues(r).toLowerCase().includes(text));
       result.length > 0
         ? setSearchResult(result)
         : setSearchResult([{ message: "No results found" }]);
@@ -60,31 +58,23 @@ function App() {
   }
 
   return (
+    <div>
+      <div className="header-container">
+        <img src={Header} alt="Header" className="header-image" />
 
-<div>
+        <div className="searchBar-container">
+          <SearchBar onUserType={filterSearch} />
+        </div>
+      </div>
 
-  <div className="header-container">
-    <img src={Header} alt="Header" className="header-image" />
-
-
-
-
-
-
-   <>
-      {/* <p>BEGIN</p> */}
-      {/* <Recipe /> */}
-      {/* <p>END</p> */}
-      <SearchBar onUserType={filterSearch} />
-      <RecipeList recipes={searchResult} />
-    </>
+      <>
+        {/* <p>BEGIN</p> */}
+        {/* <Recipe /> */}
+        {/* <p>END</p> */}
+        <RecipeList recipes={searchResult} />
+      </>
     </div>
-
-</div>
-);
+  );
 }
 
 export default App;
-
-
-
