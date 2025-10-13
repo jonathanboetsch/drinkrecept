@@ -9,6 +9,9 @@ const prNumber = import.meta.env.VITE_PR_NUMBER;
 
 console.log("GH_PAGES:", ghPagesFlag);
 console.log("PR_NUMBER:", prNumber);
+// ...existing code...
+console.log("import.meta.env:", import.meta.env);
+// ...existing code...
 
 const basename = ghPagesFlag ? `/drinkrecept/pr-${prNumber}/` : "/";
 
