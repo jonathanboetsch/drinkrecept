@@ -9,7 +9,9 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <Routes>
+        <Route path="/" element={<App />} />
+      </Routes>
     </BrowserRouter>
   </StrictMode>
 );
