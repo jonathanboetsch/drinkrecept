@@ -73,9 +73,20 @@
   align-items: center;
   min-height: 400px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.recipe-card:hover {
+  border-color: grey;
+  background-color: grey;
 }
 
 .recipe-card h1 {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  text-align: center;
   font-size: 1.2em;
   margin-bottom: 10px;
   text-align: center;
@@ -114,6 +125,7 @@
 .recipe-card h3,
 .recipe-card ol {
   display: none;
+  display: none;
 }
 
 /* header nere (kan ändras senare)  */
@@ -124,4 +136,16 @@
   margin: 0 auto 2rem auto;
   display: block;
   border-radius: 10px;
+}
+
+.header-container {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.searchBar-container {
+  position: absolute;
+
+  top: 40%;
+  right: 14%;
 }
