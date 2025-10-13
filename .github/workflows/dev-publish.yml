@@ -2,8 +2,8 @@ name: Deploy Preview
 
 on:
   pull_request:
-    branches: [ dev ]
-  workflow_dispatch:   # 👈 allows manual runs
+    branches: [dev]
+  workflow_dispatch: # 👈 allows manual runs
 
 jobs:
   build-and-deploy:
@@ -36,7 +36,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./frontend/dist   # or ./dist depending on your bundler
+          publish_dir: ./frontend/dist # or ./dist depending on your bundler
           destination_dir: pr-${{ github.event.number }}
       - name: Add PR comment
         uses: marocchino/sticky-pull-request-comment@v2
