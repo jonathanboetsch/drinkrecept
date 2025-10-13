@@ -25,6 +25,9 @@ jobs:
         if: github.event_name == 'pull_request'
         run: echo "PR_NUMBER=${{ github.event.number }}" >> $GITHUB_ENV
 
+      - name: Set GH_PAGES env variable
+        run: echo "VITE_GH_PAGES='GH-PAGES'" >> .build.env
+
       - name: Build
         run: npm run build
         working-directory: frontend
