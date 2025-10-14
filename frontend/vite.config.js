@@ -7,10 +7,12 @@ import process from "process";
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
-  const isNetlify = !!env.NETLIFY;
+  const prNumber = env.VITE_PR_NUMBER; // defined by GitHub Actions
+  const ghPagesFlag = env.VITE_GH_PAGES;
+
   return {
     plugins: [react()],
-    base: isNetlify ? "/" : "/drinkrecept/",
+    base: ghPagesFlag ? `/drinkrecept/pr-${prNumber}/` : "/",
     // Add this vitest config:
     test: {
       environment: "jsdom",
