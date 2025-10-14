@@ -19,7 +19,7 @@ function CategoryPage({ recipes }) {
 
 function RecipePage({ recipes }) {
   const { id } = useParams();
-  const recipe = recipes.find((r) => String(r.id) === id || String(r._id) === id);
+  const recipe = recipes.find((r) => String(r._id) === id);
   return recipe ? <Recipe recipe={recipe} /> : <p>Receptet hittades inte</p>;
 }
 
