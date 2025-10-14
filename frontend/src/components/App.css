@@ -149,3 +149,20 @@
   top: 40%;
   right: 14%;
 }
+
+/* responsive layout design till mobiler och ipads nere  */
+@media (max-width: 768px) {
+  .recipes-container {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 15px;
+  }
+
+  .searchBar-container {
+    position: static;
+    margin-bottom: 1rem;
+  }
+
+  .root {
+    padding: 1rem;
+  }
+}
