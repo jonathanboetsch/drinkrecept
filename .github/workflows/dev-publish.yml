@@ -23,10 +23,12 @@ jobs:
 
       - name: Set PR number for preview base path
         if: github.event_name == 'pull_request'
-        run: echo "PR_NUMBER=${{ github.event.number }}" >> $GITHUB_ENV
+        run: |
+          echo "PR_NUMBER=${{ github.event.number }}" >> $GITHUB_ENV
+          echo "VITE_PR_NUMBER=${{ github.event.number }}" >> frontend/.env
 
       - name: Set GH_PAGES env variable
-        run: echo "VITE_GH_PAGES='GH-PAGES'" >> .build.env
+        run: echo "VITE_GH_PAGES='GH-PAGES'" >> frontend/.env
 
       - name: Build
         run: npm run build
