@@ -9,7 +9,7 @@ export default function RecipeList({ recipes = [] }) {
   // Skapa kategorilistan från de recept som kommer in via props
   const categories = useMemo(() => {
     const set = new Set();
-    recipes.forEach(r => (r.categories || []).forEach(c => set.add(c)));
+    recipes.forEach((r) => (r.categories || []).forEach((c) => set.add(c)));
     return ["Alla", ...Array.from(set).sort()];
   }, [recipes]);
 
@@ -24,7 +24,7 @@ export default function RecipeList({ recipes = [] }) {
   const filteredRecipes = useMemo(() => {
     return activeCategory === "Alla"
       ? recipes
-      : recipes.filter(r => (r.categories || []).includes(activeCategory));
+      : recipes.filter((r) => (r.categories || []).includes(activeCategory));
   }, [recipes, activeCategory]);
 
 
