@@ -89,8 +89,8 @@ function App() {
             Example: <Link to={`/category/alkohol`}>Alkohol</Link>
           */}
           <Route path="/" element={<RecipeList recipes={searchResult} />} />
-          <Route path="/category/:id" element={<CategoryPage recipes={recipes} />} />
-          <Route path="/recipe/:id" element={<RecipePage recipes={recipes} />} />
+          <Route path="/category/:id" element={<CategoryPage recipes={searchResult} />} />
+          <Route path="/recipe/:id" element={<RecipePage recipes={searchResult} />} />
         </Routes>
       </div>
     </div>
