@@ -133,7 +133,29 @@
   right: 14%;
 }
 
-/* responsive layout design till mobiler och ipads nere  */
+/* responsive design till tablets eller ipads  */
+@media (max-width: 1024px) {
+  .recipes-container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+  }
+
+  .recipe-card {
+    padding: 20px;
+    min-height: 350px;
+  }
+
+  .searchBar-container {
+    position: static;
+    margin-bottom: 1rem;
+  }
+
+  .root {
+    padding: 1rem;
+  }
+}
+
+/* responsive layout design till mobiler */
 @media (max-width: 768px) {
   .recipes-container {
     grid-template-columns: repeat(1, 1fr);
