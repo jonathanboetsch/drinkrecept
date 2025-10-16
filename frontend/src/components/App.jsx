@@ -5,52 +5,61 @@ import "./App.css";
 import Header from "../assets/Header2.png";
 import SearchBar from "./SearchBar";
 import Recipe from "./Recipe";
+import CategoryPage from "./CategoryPage";
 
-function CategoryPage({ recipes }) {
-  const { id } = useParams();
-  const filtered = recipes.filter((r) => (r.categories || []).includes(id));
-  return (
-    <>
-      <h2>Kategori: {id}</h2>
-      <RecipeList recipes={filtered} />
-    </>
-  );
-}
 
+
+/* =======================
+   🔹 RECEPTSIDA (RecipePage)
+   ======================= */
 function RecipePage({ recipes }) {
   const { id } = useParams();
   const recipe = recipes.find((r) => String(r._id) === id);
-  return recipe ? <Recipe recipe={recipe} /> : <p>Receptet hittades inte</p>;
+  return recipe ? (
+    <Recipe recipe={recipe} />
+  ) : (
+    <p>Receptet hittades inte</p>
+  );
 }
 
+/* =======================
+   🚀 HUVUDKOMPONENT (App)
+   ======================= */
 function App() {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // searchResult needed to implement search bar functionnality
-  // this becomes the element passed to the RecipeList instead of sending directly "recipes" array
+
+  // searchResult används av sökfältet
   const [searchResult, setSearchResult] = useState(recipes);
 
+  // Hjälpfunktion för att fläta ut receptobjekt för sökning
   const flattenValues = (obj) => {
     return Object.values(obj)
       .map((v) =>
         v && typeof v === "object"
-          ? flattenValues(v) // recursively flatten if finds nested object
+          ? flattenValues(v)
           : String(v)
       )
       .join(" ");
   };
 
+  // Filtrera recept vid sökning
   const filterSearch = (input = "") => {
     const text = input.trim().toLowerCase();
     if (text) {
-      const result = recipes.filter((r) => flattenValues(r).toLowerCase().includes(text));
+      const result = recipes.filter((r) =>
+        flattenValues(r).toLowerCase().includes(text)
+      );
       result.length > 0
         ? setSearchResult(result)
         : setSearchResult([{ message: "No results found" }]);
-    } else setSearchResult(recipes);
+    } else {
+      setSearchResult(recipes);
+    }
   };
 
+  // Hämta recept från API
   useEffect(() => {
     fetch("https://grupp3-jynxa.reky.se/recipes")
       .then((response) => {
@@ -64,7 +73,7 @@ function App() {
       .finally(() => setLoading(false));
   }, []);
 
-  // needed to load recipes onto searchResult as soon as they are fetched
+  // Uppdatera sökresultat när recepten laddas
   useEffect(() => {
     setSearchResult(recipes);
   }, [recipes]);
@@ -77,6 +86,9 @@ function App() {
     return <p>Fel är: {error}</p>;
   }
 
+  /* =======================
+     🎨 APP-UI MED ROUTER
+     ======================= */
   return (
     <div>
       <div className="header-container">
@@ -84,13 +96,23 @@ function App() {
         <SearchBar onUserType={filterSearch} />
 
         <Routes>
-          {/* 
-            Make sure to navigate to /category/alkohol (without colon) 
-            Example: <Link to={`/category/alkohol`}>Alkohol</Link>
-          */}
-          <Route path="/" element={<RecipeList recipes={searchResult} />} />
-          <Route path="/category/:id" element={<CategoryPage recipes={searchResult} />} />
-          <Route path="/recipe/:id" element={<RecipePage recipes={searchResult} />} />
+          {/* 🏠 Startsida */}
+          <Route
+            path="/"
+            element={<RecipeList recipes={searchResult} />}
+          />
+
+          {/* 🧭 Kategorisida */}
+          <Route
+            path="/category/:id"
+            element={<CategoryPage recipes={searchResult} />}
+          />
+
+          {/* 🍸 Enskild receptsida */}
+          <Route
+            path="/recipe/:id"
+            element={<RecipePage recipes={searchResult} />}
+          />
         </Routes>
       </div>
     </div>

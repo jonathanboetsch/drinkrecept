@@ -1,0 +1,72 @@
+.category-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #1b1b1b;
+  color: #fff;
+  padding-bottom: 3rem;
+}
+
+/* 🧭 Breadcrumb */
+.breadcrumb {
+  width: 90%;
+  max-width: 1000px;
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: #ccc;
+}
+.breadcrumb a {
+  color: #80dfff;
+  text-decoration: none;
+}
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+.breadcrumb-separator {
+  margin: 0 0.5rem;
+  color: #999;
+}
+.breadcrumb-current {
+  color: #fff;
+  font-weight: bold;
+}
+
+/* 🏷 Rubrik */
+.category-heading {
+  text-align: center;
+  margin: 2rem 0 1rem;
+  font-size: 2rem;
+  text-transform: capitalize;
+  color: #ffe680;
+  text-shadow: 0 0 8px rgba(255, 255, 200, 0.4);
+}
+
+/* 🍸 Receptlista */
+.recipe-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  width: 90%;
+  max-width: 1200px;
+  margin-top: 1rem;
+}
+
+/* 📱 Responsiv design */
+@media (max-width: 768px) {
+  .category-heading {
+    font-size: 1.6rem;
+    margin-top: 1.2rem;
+  }
+
+  .recipe-list {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .breadcrumb {
+    font-size: 0.85rem;
+  }
+}
