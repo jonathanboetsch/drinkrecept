@@ -1,8 +1,27 @@
 import { useEffect, useState } from "react";
+import { Route, Routes, useParams } from "react-router-dom";
 import RecipeList from "./RecipeList";
 import "./App.css";
 import Header from "../assets/Header2.png";
 import SearchBar from "./SearchBar";
+import Recipe from "./Recipe";
+
+function CategoryPage({ recipes }) {
+  const { id } = useParams();
+  const filtered = recipes.filter((r) => (r.categories || []).includes(id));
+  return (
+    <>
+      <h2>Kategori: {id}</h2>
+      <RecipeList recipes={filtered} />
+    </>
+  );
+}
+
+function RecipePage({ recipes }) {
+  const { id } = useParams();
+  const recipe = recipes.find((r) => String(r._id) === id);
+  return recipe ? <Recipe recipe={recipe} /> : <p>Receptet hittades inte</p>;
+}
 
 function App() {
   const [recipes, setRecipes] = useState([]);
@@ -53,6 +72,7 @@ function App() {
   if (loading) {
     return <p>Laddar recept...</p>;
   }
+
   if (error) {
     return <p>Fel är: {error}</p>;
   }
@@ -61,18 +81,18 @@ function App() {
     <div>
       <div className="header-container">
         <img src={Header} alt="Header" className="header-image" />
+        <SearchBar onUserType={filterSearch} />
 
-        <div className="searchBar-container">
-          <SearchBar onUserType={filterSearch} />
-        </div>
+        <Routes>
+          {/* 
+            Make sure to navigate to /category/alkohol (without colon) 
+            Example: <Link to={`/category/alkohol`}>Alkohol</Link>
+          */}
+          <Route path="/" element={<RecipeList recipes={searchResult} />} />
+          <Route path="/category/:id" element={<CategoryPage recipes={searchResult} />} />
+          <Route path="/recipe/:id" element={<RecipePage recipes={searchResult} />} />
+        </Routes>
       </div>
-
-      <>
-        {/* <p>BEGIN</p> */}
-        {/* <Recipe /> */}
-        {/* <p>END</p> */}
-        <RecipeList recipes={searchResult} />
-      </>
     </div>
   );
 }

@@ -2,12 +2,15 @@ name: Deploy Preview
 
 on:
   pull_request:
-    branches: [dev]
-  workflow_dispatch: # 👈 allows manual runs
+    branches: [ dev ]  
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+
 
     steps:
       - uses: actions/checkout@v3
@@ -15,36 +18,22 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v3
         with:
-          node-version: 20.19
+          node-version: 18
 
-      - name: Install dependencies
-        run: npm ci
-        working-directory: frontend
-
-      - name: Set PR number for preview base path
-        if: github.event_name == 'pull_request'
-        run: |
-          echo "PR_NUMBER=${{ github.event.number }}" >> $GITHUB_ENV
-          echo "VITE_PR_NUMBER=${{ github.event.number }}" >> frontend/.env
-
-      - name: Set GH_PAGES env variable
-        run: echo "VITE_GH_PAGES='GH-PAGES'" >> frontend/.env
-
-      - name: Build
-        run: npm run build
-        working-directory: frontend
+      - run: npm ci
+      - run: npm run build
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+        uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./frontend/dist # or ./dist depending on your bundler
+          publish_dir: ./dist   # or ./dist depending on your bundler
           destination_dir: pr-${{ github.event.number }}
+
       - name: Add PR comment
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: deploy-preview
-          recreate: true
           message: |
             🚀 Preview available at:
             https://jonathanboetsch.github.io/drinkrecept/pr-${{ github.event.number }}/
