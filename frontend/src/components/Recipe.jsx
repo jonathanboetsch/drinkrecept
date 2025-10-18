@@ -17,7 +17,7 @@ export default function Recipe({ recipe }) {
   return (
     <div className="recipe-card">
       {recipe.message && <p>{recipe.message}</p>}
-      {console.log(recipe)}
+      {console.log(recipe.message)}
       {!recipe.message && (
         <div>
           <h1>{recipe.title}</h1>
