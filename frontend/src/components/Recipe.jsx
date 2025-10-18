@@ -1,4 +1,5 @@
 function calculateDifficulty(timeInMins) {
+  // Enkel logik för att bestämma svårighetsgrad baserat på tid
   if (timeInMins < 10) return "Lätt";
   if (timeInMins <= 30) return "Medel";
   return "Svår";
