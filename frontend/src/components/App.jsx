@@ -92,10 +92,11 @@ function App() {
 
   return (
     <div className="app-container">
-      <div className="header-container">
+      <header className="header-container">
         <img src={Header} alt="Header" className="header-image" />
         <SearchBar className="search-bar" onUserType={filterSearch} />
-
+      </header>
+      <main className="main-content">
         <div className="routes-container">
           <Routes>
             {/* 
@@ -107,7 +108,7 @@ function App() {
             <Route path="/recipe/:id" element={<RecipePage recipes={searchResult} />} />
           </Routes>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
