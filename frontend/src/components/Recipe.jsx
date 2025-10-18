@@ -1,9 +1,18 @@
+function calculateDifficulty(timeInMins) {
+  if (timeInMins < 10) return "Lätt";
+  if (timeInMins <= 30) return "Medel";
+  return "Svår";
+}
+
 export default function Recipe({ recipe }) {
   const fallbackImage = "../assets/backupImage.png";
 
   const handleImageError = (e) => {
     e.target.src = fallbackImage;
   };
+
+  // Beräkna svårighetsgrad för det enskilda receptet
+  const difficulty = calculateDifficulty(recipe.timeInMins);
 
   return (
     <div className="recipe-card">
@@ -12,6 +21,7 @@ export default function Recipe({ recipe }) {
       {!recipe.message && (
         <div>
           <h1>{recipe.title}</h1>
+
           <p>
             <strong>Beskrivning:</strong> {recipe.description || "Ingen beskrivning"}
           </p>
@@ -20,7 +30,11 @@ export default function Recipe({ recipe }) {
             <img src={recipe.imageUrl} alt={recipe.title} width="300" onError={handleImageError} />
           ) : null}
           <p>
-            <strong>Tillagningstid:</strong> {recipe.timeInMins || "Okänt tillagningstid "} minuter
+            <strong>Tid / Tillagningstid:</strong> {recipe.timeInMins || "Okänt tillagningstid "}{" "}
+            minuter
+          </p>
+          <p>
+            <strong>Svårighetsgrad:</strong> {difficulty}
           </p>
           <p>
             <strong>Pris:</strong> {recipe.price || "Hittade ingen prisinformation "} kr
