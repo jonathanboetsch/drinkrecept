@@ -16,62 +16,68 @@ export default function Recipe({ recipe }) {
 
   return (
     <div className="recipe-card">
-      {recipe.message && <p>{recipe.message}</p>}
+      {recipe.message && <p className="recipe-message">{recipe.message}</p>}
       {console.log(recipe.message)}
       {!recipe.message && (
-        <div>
-          <h1>{recipe.title}</h1>
+        <div className="recipe-content">
+          <h1 className="recipe-title">{recipe.title}</h1>
 
-          <p>
+          <p className="recipe-description">
             <strong>Beskrivning:</strong> {recipe.description || "Ingen beskrivning"}
           </p>
           {/* <img src={recipe.imageUrl} alt={recipe.title} width="300" onError={handleImageError} /> */}
           {recipe.imageUrl ? (
-            <img src={recipe.imageUrl} alt={recipe.title} width="300" onError={handleImageError} />
+            <img
+              className="recipe-image"
+              src={recipe.imageUrl}
+              alt={recipe.title}
+              width="300"
+              onError={handleImageError}
+            />
           ) : null}
-          <p>
+          <p className="recipe-time">
             <strong>Tid / Tillagningstid:</strong> {recipe.timeInMins || "Okänt tillagningstid "}{" "}
             minuter
           </p>
-          <p>
+          <p className="recipe-difficulty">
             <strong>Svårighetsgrad:</strong> {difficulty}
           </p>
-          <p>
+          <p className="recipe-price">
             <strong>Pris:</strong> {recipe.price || "Hittade ingen prisinformation "} kr
           </p>
 
-          <h3>Kategorier</h3>
-          <ul>
+          <h3 className="recipe-section-title">Kategorier</h3>
+          <ul className="recipe-categories">
             {recipe.categories && recipe.categories.length > 0 ? (
               recipe.categories.map((cat, i) => <li key={i}>{cat}</li>)
             ) : (
-              <li>Inga kategorier tillgängliga </li>
+              <li className="recipe-category-empty">Inga kategorier tillgängliga </li>
             )}
           </ul>
 
-          <h3>Instruktioner</h3>
-          <ol>
+          <h3 className="recipe-section-title">Instruktioner</h3>
+          <ol className="recipe-instructions">
             {recipe.instructions && recipe.instructions.length > 0 ? (
               recipe.instructions.map((instr, i) => <li key={i}>{instr}</li>)
             ) : (
-              <li>Inga instruktioner tillgängliga</li>
+              <li className="recipe-instruction-empty">Inga instruktioner tillgängliga</li>
             )}
           </ol>
 
-          <h3>Ingredienser</h3>
-          <ul>
+          <h3 className="recipe-section-title">Ingredienser</h3>
+          <ul className="recipe-ingredients">
             {recipe.ingredients && recipe.ingredients.length > 0 ? (
               recipe.ingredients.map((ing, i) => (
-                <li key={i}>
+                <li key={i} className="recipe-ingredient">
                   {ing.amount} {ing.unit} {ing.name}
                 </li>
               ))
             ) : (
-              <p> Inga ingredienser tillgängliga </p>
+              <p className="recipe-ingredient-empty"> Inga ingredienser tillgängliga </p>
             )}
           </ul>
 
-          <p>
+          <p className="recipe-rating">
             <strong>Genomsnittligt betyg:</strong>{" "}
             {recipe.avgRating ? recipe.avgRating : "Ingen än"}
           </p>
