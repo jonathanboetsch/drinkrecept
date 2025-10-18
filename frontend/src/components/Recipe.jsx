@@ -5,6 +5,10 @@ function calculateDifficulty(timeInMins) {
 }
 
 export default function Recipe({ recipe }) {
+  if (!recipe) {
+    return <div className="recipe-not-found">Receptet hittades inte.</div>;
+  }
+
   const fallbackImage = "../assets/backupImage.png";
 
   const handleImageError = (e) => {
