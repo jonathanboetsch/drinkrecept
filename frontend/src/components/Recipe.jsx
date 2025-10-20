@@ -1,3 +1,5 @@
+import RatingForm from "./RatingForm";
+
 export default function Recipe({ recipe }) {
   const fallbackImage = "../assets/backupImage.png";
 
@@ -58,6 +60,7 @@ export default function Recipe({ recipe }) {
             <strong>Genomsnittligt betyg:</strong>{" "}
             {recipe.avgRating ? recipe.avgRating : "Ingen än"}
           </p>
+          {<RatingForm recipe={recipe} />}
         </div>
       )}
     </div>
