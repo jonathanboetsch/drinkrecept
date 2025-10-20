@@ -15,6 +15,8 @@ function calculateDifficulty(timeInMins) {
   return "Svår";
 }
 
+import RatingForm from "./RatingForm";
+
 export default function Recipe({ recipe }) {
   const location = useLocation(); // information about the URL path, notably `pathname`
   if (!recipe) {
