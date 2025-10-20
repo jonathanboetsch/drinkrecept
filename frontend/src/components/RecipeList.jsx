@@ -3,7 +3,6 @@ import Recipe from "./Recipe.jsx";
 import CategoryFilter from "./CategoryFilter.jsx";
 
 export default function RecipeList({ recipes = [] }) {
-  
   const [activeCategory, setActiveCategory] = useState("Alla");
 
   // Skapa kategorilistan från de recept som kommer in via props
@@ -27,15 +26,14 @@ export default function RecipeList({ recipes = [] }) {
       : recipes.filter((r) => (r.categories || []).includes(activeCategory));
   }, [recipes, activeCategory]);
 
-
   return (
-    <div className="recipes-container">
+    <div>
       <CategoryFilter
         categories={categories}
         activeCategory={activeCategory}
         onSelectCategory={setActiveCategory}
       />
-      <div>
+      <div className="recipes-container">
         {filteredRecipes.map((r, i) => (
           <Recipe key={r._id ?? i} recipe={r} />
         ))}
