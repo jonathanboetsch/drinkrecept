@@ -41,8 +41,6 @@
   color: #888;
 }
 
-/* new stuf down here  */
-
 .recipes-container {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -73,9 +71,20 @@
   align-items: center;
   min-height: 400px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.recipe-card:hover {
+  border-color: grey;
+  background-color: grey;
 }
 
 .recipe-card h1 {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  text-align: center;
   font-size: 1.2em;
   margin-bottom: 10px;
   text-align: center;
@@ -110,13 +119,13 @@
   font-size: 0.8em;
 }
 
-/*  detta gömmar kategori och tillagnings sätt, kolla Recipe.jsx  */
+/*  This hides the category and cooking method, check Recipe.jsx.  */
 .recipe-card h3,
 .recipe-card ol {
   display: none;
 }
 
-/* header nere (kan ändras senare)  */
+/* header below (can be changed later)  */
 .header-image {
   width: 100%;
   max-width: 1200px;
@@ -124,4 +133,55 @@
   margin: 0 auto 2rem auto;
   display: block;
   border-radius: 10px;
+}
+
+.header-container {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.searchBar-container {
+  position: absolute;
+
+  top: 40%;
+  right: 14%;
+}
+
+/* responsive design for tablets or ipads  */
+@media (max-width: 1024px) {
+  .recipes-container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+  }
+
+  .recipe-card {
+    padding: 20px;
+    min-height: 350px;
+  }
+
+  .searchBar-container {
+    position: static;
+    margin-bottom: 1rem;
+  }
+
+  .root {
+    padding: 1rem;
+  }
+}
+
+/* responsive layout design for smartphones */
+@media (max-width: 768px) {
+  .recipes-container {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 15px;
+  }
+
+  .searchBar-container {
+    position: static;
+    margin-bottom: 1rem;
+  }
+
+  .root {
+    padding: 1rem;
+  }
 }

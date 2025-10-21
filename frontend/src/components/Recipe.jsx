@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import "./App.css";
 
 export default function Recipe({ recipe }) {
-  const fallbackImage = "../assets/backupImage.png";
+  const fallbackImage = "/backupImage.png";
 
   const handleImageError = (e) => {
     e.target.src = fallbackImage;
