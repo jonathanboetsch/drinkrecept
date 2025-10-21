@@ -1,6 +1,9 @@
+import { Link } from "react-router-dom";
+import "./App.css";
+
 function calculateDifficulty(timeInMins) {
   // Enkel logik för att bestämma svårighetsgrad baserat på tid
-  if (!timeInMins || timeInMins <= 0) return 'Okänd';
+  if (!timeInMins || timeInMins <= 0) return "Okänd";
   if (timeInMins < 10) return "Lätt";
   if (timeInMins <= 30) return "Medel";
   return "Svår";
@@ -10,39 +13,31 @@ export default function Recipe({ recipe }) {
   if (!recipe) {
     return <div className="recipe-not-found">Receptet hittades inte.</div>;
   }
-
   const fallbackImage = "../assets/backupImage.png";
 
   const handleImageError = (e) => {
     e.target.src = fallbackImage;
   };
-
   // Beräkna svårighetsgrad för det enskilda receptet
   const difficulty = calculateDifficulty(recipe.timeInMins);
 
   return (
-    <div className="recipe-card">
+    <div>
       {recipe.message && <p className="recipe-message">{recipe.message}</p>}
       {!recipe.message && (
-        <div className="recipe-content">
-          <h1 className="recipe-title">{recipe.title}</h1>
-
-          <p className="recipe-description">
+        <div className="recipe-card">
+          <Link
+            to={recipe._id && `/recipe/${recipe._id}`}
+            className="recipe-link"
+            aria-label={`Öppna recept: ${recipe.title}`}
+          />
+          <h1>{recipe.title}</h1>
+          <p>
             <strong>Beskrivning:</strong> {recipe.description || "Ingen beskrivning"}
           </p>
-          {/* <img src={recipe.imageUrl} alt={recipe.title} width="300" onError={handleImageError} /> */}
-          {recipe.imageUrl ? (
-            <img
-              className="recipe-image"
-              src={recipe.imageUrl}
-              alt={recipe.title}
-              width="300"
-              onError={handleImageError}
-            />
-          ) : null}
-          <p className="recipe-time">
-            <strong>Tid / Tillagningstid:</strong> {recipe.timeInMins || "Okänd tillagningstid "}{" "}
-            minuter
+          <img src={recipe.imageUrl} alt={recipe.title} width="300" onError={handleImageError} />
+          <p>
+            <strong>Tillagningstid:</strong> {recipe.timeInMins || "Okänt tillagningstid "} minuter
           </p>
           <p className="recipe-difficulty">
             <strong>Svårighetsgrad:</strong> {difficulty}
