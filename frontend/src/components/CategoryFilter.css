@@ -7,6 +7,7 @@
   padding: 0.4rem 1rem;
   border: 1px solid #ccc;
   border-radius: 15px;
+  color: darkgray;
   background-color: #f8f8f8;
   cursor: pointer;
 }
