@@ -1,5 +1,6 @@
 function calculateDifficulty(timeInMins) {
   // Enkel logik för att bestämma svårighetsgrad baserat på tid
+  if (!timeInMins || timeInMins <= 0) return 'Okänd';
   if (timeInMins < 10) return "Lätt";
   if (timeInMins <= 30) return "Medel";
   return "Svår";
