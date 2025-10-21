@@ -1,5 +1,8 @@
 import RatingForm from "./RatingForm";
 
+import { Link } from "react-router-dom";
+import "./App.css";
+
 export default function Recipe({ recipe }) {
   const fallbackImage = "../assets/backupImage.png";
 
@@ -8,11 +11,16 @@ export default function Recipe({ recipe }) {
   };
 
   return (
-    <div className="recipe-card">
+    <div>
       {recipe.message && <p>{recipe.message}</p>}
       {/* console.log(recipe); */}
       {!recipe.message && (
-        <div>
+        <div className="recipe-card">
+          <Link
+            to={recipe._id && `/recipe/${recipe._id}`}
+            className="recipe-link"
+            aria-label={`Öppna recept: ${recipe.title}`}
+          />
           <h1>{recipe.title}</h1>
           <p>
             <strong>Beskrivning:</strong> {recipe.description || "Ingen beskrivning"}
