@@ -1,4 +1,3 @@
-import { useState } from "react";
 import "./Rating.css";
 
 export default function Star({
