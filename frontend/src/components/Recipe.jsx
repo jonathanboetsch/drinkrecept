@@ -40,7 +40,7 @@ export default function Recipe({ recipe }) {
             />
           ) : null}
           <p className="recipe-time">
-            <strong>Tid / Tillagningstid:</strong> {recipe.timeInMins || "Okänt tillagningstid "}{" "}
+            <strong>Tid / Tillagningstid:</strong> {recipe.timeInMins || "Okänd tillagningstid "}{" "}
             minuter
           </p>
           <p className="recipe-difficulty">
