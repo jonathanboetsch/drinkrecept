@@ -41,6 +41,7 @@ function App() {
   // searchResult needed to implement search bar functionnality
   // this becomes the element passed to the RecipeList instead of sending directly "recipes" array
   const [searchResult, setSearchResult] = useState(recipes);
+  const API_URL = "https://grupp3-jynxa.reky.se/recipes";
 
   const flattenValues = (obj) => {
     return Object.values(obj)
@@ -63,7 +64,7 @@ function App() {
   };
 
   useEffect(() => {
-    fetch("https://grupp3-jynxa.reky.se/recipes")
+    fetch({API_URL})
       .then((response) => {
         if (!response.ok) {
           throw new Error("Något gick fel vid hämtning av recept");
