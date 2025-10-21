@@ -32,12 +32,7 @@ export default function RecipeList({ recipes = [] }) {
     <main className="recipes-page">
       {/* 🟢 Kategorifilter högst upp */}
       <section className="categories-section">
-        <CategoryFilter
-         categories={categories}
-        activeCategory={activeCategory}
-         onSelectCategory={setActiveCategory}
-         linkToRoute={true} // 🟢 detta aktiverar länkar
-        />
+        
 
       </section>
 
