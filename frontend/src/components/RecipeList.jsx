@@ -27,7 +27,7 @@ export default function RecipeList({ recipes = [] }) {
   }, [recipes, activeCategory]);
 
   return (
-    <div className="recipes-container">
+    <div>
       <CategoryFilter
         categories={categories}
         activeCategory={activeCategory}
