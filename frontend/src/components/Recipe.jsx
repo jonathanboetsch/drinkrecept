@@ -14,7 +14,11 @@ export default function Recipe({ recipe }) {
       {/* console.log(recipe); */}
       {!recipe.message && (
         <div className="recipe-card">
-          <Link to={`/recipe/${recipe._id}`} className="recipe-link" />
+          <Link
+            to={recipe._id && `/recipe/${recipe._id}`}
+            className="recipe-link"
+            aria-label={`Öppna recept: ${recipe.title}`}
+          />
           <h1>{recipe.title}</h1>
           <p>
             <strong>Beskrivning:</strong> {recipe.description || "Ingen beskrivning"}
