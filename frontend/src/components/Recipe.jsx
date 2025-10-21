@@ -42,7 +42,7 @@ export default function Recipe({ recipe }) {
             <strong>Beskrivning:</strong> {recipe.description || "Ingen beskrivning"}
           </p>
           <img src={recipe.imageUrl} alt={recipe.title} width="300" onError={handleImageError} />
-          <p>
+          <p className="recipe-time">
             <strong>Tillagningstid:</strong> {recipe.timeInMins || "Okänt tillagningstid "} minuter
           </p>
           <p className="recipe-difficulty">
