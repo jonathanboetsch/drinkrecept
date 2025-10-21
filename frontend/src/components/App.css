@@ -1,130 +1,33 @@
+/* ==== Baslayout för appen ==== */
 #root {
-  max-width: 1280px;
+  max-width: 1200px;        /* lite tajtare än 1280 för bättre laptop-fit */
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;            /* var 2rem – gav lätt scroll på mobil */
   text-align: center;
 }
 
+/* (Behåller dina demo-klasser ifall något använder dem) */
 .logo { 
   height: 6em;
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
+.logo:hover { filter: drop-shadow(0 0 2em #646cffaa); }
+.logo.react:hover { filter: drop-shadow(0 0 2em #61dafbaa); }
 
 @keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
-
 @media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+  a:nth-of-type(2) .logo { animation: logo-spin infinite 20s linear; }
 }
+.card { padding: 2em; }
+.read-the-docs { color: #888; }
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
-
-
-
-/* new stuf down here  */
-
-
-
-
-.recipes-container {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 20px;
-  margin-top:20px;
-
-
-}
-
-.recipe-card {
-
-  background-color: black;
-  color: white;
-  padding: 25px;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 400px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-
-}
-
-
-.recipe-card h1 {
-
-font-size: 1.2em;
-margin-bottom: 10px;
-text-align: center;
-}
-
-
-.recipe-card img {
-  width: 100%;
-  max-width: 200px;
-
-  height: auto;
-  object-fit: cover;
-
-  border-radius: 10px;
-  margin-bottom: 15px;
-  border: 2px solid white;
-}
-
-.recipe-card p {
-  margin: 5px;
-  font-size: 0.9em;
-}
-
-
-
-.recipe-card ul {
-  text-align: left;
-  width: 100%;
-  padding-left: 20px;
-  margin: 5px 0;
-}
-
-
-.recipe-card li {
-  margin-bottom: 3px;
-  font-size: 0.8em;
-}
-
-
-
-
-/*  detta gömmar kategori och tillagnings sätt, kolla Recipe.jsx  */
-.recipe-card h3,
-.recipe-card ol {
-display : none;
-}
-
-/* header nere (kan ändras senare)  */
+/* ==== Headerbild ==== */
 .header-image {
-
   width: 100%;
   max-width: 1200px;
   height: auto;
@@ -133,6 +36,103 @@ display : none;
   border-radius: 10px;
 }
 
+/* ==== Grid för receptlistan (både .recipes-container och .recipe-list) ==== */
+.recipes-container,
+.recipe-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr)); /* var 5 – mer realistiskt */
+  gap: 20px;
+  margin-top: 20px;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
 
+/* Större surfplattor/laptops */
+@media (max-width: 1200px) {
+  .recipes-container,
+  .recipe-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
 
+/* Surfplatta */
+@media (max-width: 900px) {
+  .recipes-container,
+  .recipe-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+  .header-image { margin-bottom: 1rem; }
+}
 
+/* Mobil */
+@media (max-width: 600px) {
+  #root { padding: 0.5rem; }                   /* tajtare kantmarginaler */
+  .recipes-container,
+  .recipe-list {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 0;                                /* inga extra sidmarginaler */
+  }
+}
+
+/* ==== Kort (recept) ==== */
+.recipe-card {
+  background-color: #000;                      /* var "black" – samma sak */
+  color: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 400px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Titel på kortet – responsiv textstorlek */
+.recipe-card h1 {
+  font-size: clamp(1rem, 1.8vw, 1.2em);
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Bilden i kortet */
+.recipe-card img {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  border: 2px solid white;
+}
+
+/* Text och listor */
+.recipe-card p {
+  margin: 5px;
+  font-size: 0.95rem;
+}
+
+.recipe-card ul {
+  text-align: left;
+  width: 100%;
+  padding-left: 20px;
+  margin: 5px 0;
+}
+
+.recipe-card li {
+  margin-bottom: 3px;
+  font-size: 0.9rem;
+}
+
+/* Gömda sektioner enligt din kommentar (se Recipe.jsx) */
+.recipe-card h3,
+.recipe-card ol {
+  display: none;
+}
+
+/* Små detaljjusteringar på mobil */
+@media (max-width: 600px) {
+  .recipe-card { padding: 16px; min-height: unset; }
+  .recipe-card img { max-width: 100%; }
+}

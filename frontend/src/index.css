@@ -1,3 +1,6 @@
+/* ==============================
+   🌗 Grundinställningar
+   ============================== */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -13,39 +16,51 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Länkar */
+/* ==============================
+   🔗 Länkar
+   ============================== */
 a {
   font-weight: 500;
   color: #646cff;
-  text-decoration: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 a:hover {
   color: #535bf2;
 }
 
-/* 🟢 FIX: Ta bort vertikal-centrering som orsakade layoutbuggen */
+/* ==============================
+   🧱 Body & Root Layout Fix
+   ============================== */
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  display: block; /* tidigare var flex */
   background-color: #242424;
+  display: block; /* Viktigt: inte flex */
+  overflow-x: hidden; /* Tar bort horisontell scroll */
 }
 
-/* 🟢 Lägg till: centrera appen horisontellt istället */
 #root {
-  display: flex;
-  justify-content: center;
+  display: block; /* Ingen flexcentrering */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
-/* Rubriker */
+/* ==============================
+   🧾 Rubriker
+   ============================== */
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
 
-/* Knappar (globala standardknappar, ej filterbubblorna) */
+/* ==============================
+   🔘 Globala knappar (inte kategori-knapparna)
+   ============================== */
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -54,8 +69,9 @@ button {
   font-weight: 500;
   font-family: inherit;
   background-color: #1a1a1a;
+  color: #fff;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: all 0.25s ease;
 }
 
 button:hover {
@@ -67,7 +83,9 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-/* Ljust läge */
+/* ==============================
+   🌞 Ljust läge
+   ============================== */
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -80,22 +98,25 @@ button:focus-visible {
 
   button {
     background-color: #f9f9f9;
+    color: #222;
+  }
+}
+
+/* ==============================
+   📱 Responsivitet
+   ============================== */
+@media (max-width: 900px) {
+  #root {
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 600px) {
+  #root {
+    padding: 0.5rem;
   }
 
-  /* Återställ felaktig centrering från body och root */
-body, #root {
-  display: block !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  align-items: normal !important;
-  justify-content: normal !important;
-  place-items: normal !important;
-}
-
-/* Centrera horisontellt, inte vertikalt */
-#root {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
+  h1 {
+    font-size: 2em;
+  }
 }

@@ -1,91 +1,37 @@
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import Recipe from "./Recipe.jsx";
-import SearchBar from "./SearchBar.jsx";
-import Header from "../assets/Header2.png";
 import "./CategoryPage.css";
 
-const API_URL = "https://grupp3-jynxa.reky.se/recipes";
-
-export default function CategoryPage() {
+export default function CategoryPage({ recipes = [] }) {
   const { id } = useParams(); // t.ex. "alkoholfri"
-  const [recipes, setRecipes] = useState([]);
-  const [filtered, setFiltered] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); // 🔹 Ny state för sökning
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  // 🔹 Hämta alla recept
-  useEffect(() => {
-    fetch(API_URL)
-      .then((r) => {
-        if (!r.ok) throw new Error("Kunde inte hämta recept");
-        return r.json();
-      })
-      .then((data) => {
-        setRecipes(Array.isArray(data) ? data : []);
-        setLoading(false);
-      })
-      .catch((e) => {
-        setError(e.message);
-        setLoading(false);
-      });
-  }, []);
+  const title = id
+    ? id.charAt(0).toUpperCase() + id.slice(1).toLowerCase()
+    : "Kategori";
 
-  // 🔍 Filtrera på kategori + sökterm
-  useEffect(() => {
-    if (!recipes.length) return;
-
-    const normalized = id?.trim().toLowerCase() || "";
-    const term = searchTerm.trim().toLowerCase();
-
-    const match = recipes.filter((r) => {
-      const inCategory = (r.categories || [])
-        .map((c) => c.trim().toLowerCase())
-        .includes(normalized);
-
-      const inSearch =
-        !term ||
-        Object.values(r)
-          .join(" ")
-          .toLowerCase()
-          .includes(term);
-
-      return inCategory && inSearch;
-    });
-
-    setFiltered(match);
-  }, [recipes, id, searchTerm]);
-
-  const title =
-    id && id.length
-      ? id.charAt(0).toUpperCase() + id.slice(1).toLowerCase()
-      : "Kategori";
-
-  if (loading) return <p>Laddar...</p>;
-  if (error) return <p>Fel: {error}</p>;
+  // Filtrera mot URL-parametern
+  const filtered = useMemo(() => {
+    if (!id || id.toLowerCase() === "alla") return recipes;
+    const needle = id.trim().toLowerCase();
+    return recipes.filter((r) =>
+      (r.categories || []).some(
+        (c) => c && c.toLowerCase() === needle
+      )
+    );
+  }, [recipes, id]);
 
   return (
     <div className="category-page">
-      {/* 🖼 Header och sökfält */}
-      <div className="header-container">
-        <img src={Header} alt="Header" className="header-image" />
-        <SearchBar onUserType={setSearchTerm} /> {/* 🔹 Filtrerar lokalt */}
-      </div>
-
-      {/* 🧭 Breadcrumb */}
       <nav className="breadcrumb">
-        <Link to="/" className="breadcrumb-home">
-          🏠 Start
-        </Link>
+        <Link to="/" className="breadcrumb-home">🏠 Start</Link>
         <span className="breadcrumb-separator">›</span>
         <span className="breadcrumb-current">{title}</span>
       </nav>
 
-      {/* 🏷 Rubrik */}
-      <h2 className="category-heading">{title} – drinkar</h2>
+      {/* Titel – undvik “– Drinkar” dublett */}
+      <h2 className="category-heading">{title} </h2>
 
-      {/* 🍸 Lista med recept */}
       {filtered.length === 0 ? (
         <p>Inga recept i kategorin “{title}”.</p>
       ) : (
