@@ -17,7 +17,7 @@ export default function Recipe({ recipe }) {
           </p>
           <img src={recipe.imageUrl} alt={recipe.title} width="300" onError={handleImageError} />
           <p>
-            <strong>Tillagningstid:</strong> {recipe.timeInMins || "Okänt tillagnigstid "} minuter
+            <strong>Tillagningstid:</strong> {recipe.timeInMins || "Okänt tillagningstid "} minuter
           </p>
           <p>
             <strong>Pris:</strong> {recipe.price || "Hittade ingen prisinformation "} kr
