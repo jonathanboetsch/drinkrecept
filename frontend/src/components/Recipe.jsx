@@ -28,7 +28,7 @@ export default function Recipe({ recipe }) {
   const difficulty = calculateDifficulty(recipe.timeInMins);
 
   return (
-    <div>
+    <div className="recipe-container">
       {recipe.message && <p className="recipe-message">{recipe.message}</p>}
       {!recipe.message && (
         <div className="recipe-card">
