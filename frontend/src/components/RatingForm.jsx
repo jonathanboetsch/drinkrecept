@@ -11,10 +11,10 @@ export default function RatingForm({ ratingLevels = [1, 2, 3, 4, 5], confirmatio
       {ratingLevels.map((val, i) => (
         <Star
           key={i}
-          level={val}
-          confAction={confirmationAction}
-          ratingSetter={setRating}
-          recipe={recipe}
+          level={val} // each Star gets an increasing rating value
+          confAction={confirmationAction} // thought to popup a "thank for your contribution"
+          ratingSetter={setRating} // user click on Star => set its rating value in the RatingForm
+          recipe={recipe} // optional, put here for logging in the console when user clicks
         />
       ))}
     </div>
