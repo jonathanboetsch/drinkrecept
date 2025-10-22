@@ -64,7 +64,7 @@ function App() {
   };
 
   useEffect(() => {
-    fetch({API_URL})
+    fetch(API_URL)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Något gick fel vid hämtning av recept");
