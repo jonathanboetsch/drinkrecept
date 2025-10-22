@@ -38,7 +38,7 @@ function App() {
   const [error, setError] = useState(null);
   const [searchResult, setSearchResult] = useState([]);
 
-  const location = useLocation();
+  
   const match = useMatch("/category/:id"); // 🔹 matchar kategori-URL
   const activeCategory = match?.params?.id || "Alla"; // 🔹 sätt aktiv kategori baserat på URL
 
