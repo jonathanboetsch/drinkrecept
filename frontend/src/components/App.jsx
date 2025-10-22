@@ -42,6 +42,7 @@ function App() {
   const match = useMatch("/category/:id"); // 🔹 matchar kategori-URL
   const activeCategory = match?.params?.id || "Alla"; // 🔹 sätt aktiv kategori baserat på URL
 
+  // 🔹 Hjälper sökfältet fungera som innan
   const flattenValues = (obj) =>
     Object.values(obj)
       .map((v) => (v && typeof v === "object" ? flattenValues(v) : String(v)))
@@ -50,9 +51,7 @@ function App() {
   const filterSearch = (input = "") => {
     const text = input.trim().toLowerCase();
     if (text) {
-      const result = recipes.filter((r) =>
-        flattenValues(r).toLowerCase().includes(text)
-      );
+      const result = recipes.filter((r) => flattenValues(r).toLowerCase().includes(text));
       setSearchResult(result.length > 0 ? result : []);
     } else {
       setSearchResult(recipes);
@@ -62,8 +61,7 @@ function App() {
   useEffect(() => {
     fetch("https://grupp3-jynxa.reky.se/recipes")
       .then((response) => {
-        if (!response.ok)
-          throw new Error("Något gick fel vid hämtning av recept");
+        if (!response.ok) throw new Error("Något gick fel vid hämtning av recept");
         return response.json();
       })
       .then((data) => {

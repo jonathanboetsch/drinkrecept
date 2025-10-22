@@ -2,12 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./CategoryFilter.css";
 
-export default function CategoryFilter({
-  categories,
-  activeCategory,
-  onSelectCategory,
-  linkToRoute = false,
-}) {
+export default function CategoryFilter({ categories, activeCategory, onSelectCategory }) {
   return (
     <div className="category-filter">
       {categories.map((cat) =>
