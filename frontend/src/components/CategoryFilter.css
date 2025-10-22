@@ -3,57 +3,60 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
-  margin: 1rem auto;
-  max-width: 800px;
+  gap: 0.6rem;
+  margin: 1.5rem auto;
+  max-width: 900px;
   text-align: center;
 }
 
-/* Bubblor */
-.category-filter button {
+/* Category "bubbles" */
+.category-filter__button {
   all: unset;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #ccc;
   border-radius: 9999px;
-  padding: 0.35rem 1rem;
-  background-color: #f5f5f5;
-  color: #222;
+  padding: 0.4rem 1rem;
+  background-color: #2d2d2d;
+  color: #f0f0f0;
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease-in-out;
   white-space: nowrap;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  border: 1px solid #444;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-/* Hover */
-.category-filter button:hover {
-  background-color: #e0e0e0;
-  border-color: #999;
+/* Hover effect */
+.category-filter__button:hover {
+  background-color: #3d3d3d;
+  border-color: #646cff;
+  color: #ffe680;
+  transform: scale(1.05);
 }
 
-/* Aktiv kategori */
-.category-filter button.active {
-  background-color: #0077ff;
-  color: #fff;
-  border-color: #005fcc;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+/* Active category */
+.category-filter__button--active {
+  background-color: #646cff;
+  color: white;
+  font-weight: bold;
+  border-color: #646cff;
+  box-shadow: 0 0 10px rgba(100, 108, 255, 0.6);
 }
 
-/* Hindra att knappar trycks ihop */
+/* Prevent shrinking on small screens */
 .category-filter {
   flex-shrink: 0;
 }
 
-/* Responsiv */
+/* Responsive adjustments */
 @media (max-width: 600px) {
   .category-filter {
     gap: 0.4rem;
   }
 
-  .category-filter button {
+  .category-filter__button {
     font-size: 0.85rem;
     padding: 0.3rem 0.8rem;
   }

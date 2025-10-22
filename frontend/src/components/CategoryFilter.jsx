@@ -10,18 +10,29 @@ export default function CategoryFilter({
 }) {
   return (
     <div className="category-filter">
-      {categories.map((cat) => (
-        <button
-          key={cat}
-          // className={cat === activeCategory ? "active" : ""}
-          className={`category-filter__button${
-            cat === activeCategory ? " category-filter__button--active" : ""
-          }`}
-          onClick={() => onSelectCategory(cat)}
-        >
-          {cat}
-        </button>
-      ))}
+      {categories.map((cat) =>
+        linkToRoute ? (
+          <Link
+            key={cat}
+            to={cat === "Alla" ? "/" : `/category/${cat}`}
+            className={`category-filter__button${
+              cat === activeCategory ? " category-filter__button--active" : ""
+            }`}
+          >
+            {cat}
+          </Link>
+        ) : (
+          <button
+            key={cat}
+            className={`category-filter__button${
+              cat === activeCategory ? " category-filter__button--active" : ""
+            }`}
+            onClick={() => onSelectCategory(cat)}
+          >
+            {cat}
+          </button>
+        )
+      )}
     </div>
   );
 }

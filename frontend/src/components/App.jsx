@@ -1,28 +1,26 @@
 import { useEffect, useState } from "react";
-import { Route, Routes, useParams, useLocation } from "react-router-dom";
+import { Route, Routes, useParams, useLocation, useMatch } from "react-router-dom";
 import RecipeList from "./RecipeList";
 import "./App.css";
 import Header from "../assets/Header2.png";
 import SearchBar from "./SearchBar";
 import Recipe from "./Recipe";
+import CategoryFilter from "./CategoryFilter";
 
 function CategoryPage({ recipes }) {
   const { id } = useParams();
   const filtered = recipes.filter((r) => (r.categories || []).includes(id));
   return (
-    <>
-      <div className="category-page">
-        <h2 className="category-title">Kategori: {id}</h2>
-        <RecipeList recipes={filtered} />
-      </div>
-    </>
+    <div className="category-page">
+      <h2 className="category-title">Kategori: {id}</h2>
+      <RecipeList recipes={filtered} />
+    </div>
   );
 }
 
 function RecipePage({ recipes }) {
   const { id } = useParams();
   const recipe = recipes.find((r) => String(r._id) === id);
-  // return recipe ? <Recipe recipe={recipe} /> : <p>Receptet hittades inte</p>;
   return (
     <div className="recipe-page">
       {recipe ? (
@@ -41,8 +39,9 @@ function App() {
   const [searchResult, setSearchResult] = useState([]);
 
   const location = useLocation();
+  const match = useMatch("/category/:id"); // 🔹 matchar kategori-URL
+  const activeCategory = match?.params?.id || "Alla"; // 🔹 sätt aktiv kategori baserat på URL
 
-  // 🔹 Hjälper sökfältet fungera som innan
   const flattenValues = (obj) =>
     Object.values(obj)
       .map((v) => (v && typeof v === "object" ? flattenValues(v) : String(v)))
@@ -75,32 +74,42 @@ function App() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) {
-    // return <p>Laddar recept...</p>;
-    return <p className="loading-message">Laddar recept...</p>;
-  }
+  if (loading) return <p className="loading-message">Laddar recept...</p>;
+  if (error) return <p className="error-message">Fel är: {error}</p>;
 
-  if (error) {
-    // return <p>Fel är: {error}</p>;
-    return <p className="error-message">Fel är: {error}</p>;
-  }
+  const allCategories = [
+    "Alla",
+    ...new Set(recipes.flatMap((r) => r.categories || [])),
+  ].sort();
 
   return (
     <div className="app-container">
       <header className="header-container">
         <img src={Header} alt="Header" className="header-image" />
         <SearchBar className="search-bar" onUserType={filterSearch} />
+        <CategoryFilter
+          categories={allCategories}
+          activeCategory={activeCategory}
+          onSelectCategory={() => {}}
+          linkToRoute={true}
+        />
       </header>
+
       <main className="main-content">
         <div className="routes-container">
           <Routes>
-            {/* 
-            Make sure to navigate to /category/alkohol (without colon) 
-            Example: <Link to={`/category/alkohol`}>Alkohol</Link>
-          */}
-            <Route path="/" element={<RecipeList recipes={searchResult} />} />
-            <Route path="/category/:id" element={<CategoryPage recipes={searchResult} />} />
-            <Route path="/recipe/:id" element={<RecipePage recipes={searchResult} />} />
+            <Route
+              path="/"
+              element={<RecipeList recipes={searchResult} />}
+            />
+            <Route
+              path="/category/:id"
+              element={<CategoryPage recipes={searchResult} />}
+            />
+            <Route
+              path="/recipe/:id"
+              element={<RecipePage recipes={searchResult} />}
+            />
           </Routes>
         </div>
       </main>
