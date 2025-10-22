@@ -5,13 +5,33 @@ import "./App.css";
 import Header from "../assets/Header2.png";
 import SearchBar from "./SearchBar";
 import Recipe from "./Recipe";
-import CategoryPage from "./CategoryPage";
-import CategoryFilter from "./CategoryFilter";
+
+function CategoryPage({ recipes }) {
+  const { id } = useParams();
+  const filtered = recipes.filter((r) => (r.categories || []).includes(id));
+  return (
+    <>
+      <div className="category-page">
+        <h2 className="category-title">Kategori: {id}</h2>
+        <RecipeList recipes={filtered} />
+      </div>
+    </>
+  );
+}
 
 function RecipePage({ recipes }) {
   const { id } = useParams();
   const recipe = recipes.find((r) => String(r._id) === id);
-  return recipe ? <Recipe recipe={recipe} /> : <p>Receptet hittades inte</p>;
+  // return recipe ? <Recipe recipe={recipe} /> : <p>Receptet hittades inte</p>;
+  return (
+    <div className="recipe-page">
+      {recipe ? (
+        <Recipe recipe={recipe} />
+      ) : (
+        <p className="not-found-message">Receptet hittades inte</p>
+      )}
+    </div>
+  );
 }
 
 function App() {
@@ -55,34 +75,35 @@ function App() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <p>Laddar recept...</p>;
-  if (error) return <p>Fel: {error}</p>;
+  if (loading) {
+    // return <p>Laddar recept...</p>;
+    return <p className="loading-message">Laddar recept...</p>;
+  }
 
-  // 🔹 Skapa kategorilista
-  const categories = ["Alla", ...new Set(recipes.flatMap((r) => r.categories || []))];
-
-  // 🔹 Hitta aktiv kategori baserat på URL
-  const currentCategory = location.pathname.startsWith("/category/")
-    ? decodeURIComponent(location.pathname.split("/category/")[1])
-    : "Alla";
+  if (error) {
+    // return <p>Fel är: {error}</p>;
+    return <p className="error-message">Fel är: {error}</p>;
+  }
 
   return (
     <div className="app-container">
-      <img src={Header} alt="Header" className="header-image" />
-      <SearchBar onUserType={filterSearch} />
-
-      {/* ✅ Den enda CategoryFilter i hela appen */}
-      <CategoryFilter
-        categories={categories}
-        activeCategory={currentCategory}
-        linkToRoute={true}
-      />
-
-      <Routes>
-        <Route path="/" element={<RecipeList recipes={searchResult} />} />
-        <Route path="/category/:id" element={<CategoryPage recipes={searchResult} />} />
-        <Route path="/recipe/:id" element={<RecipePage recipes={searchResult} />} />
-      </Routes>
+      <header className="header-container">
+        <img src={Header} alt="Header" className="header-image" />
+        <SearchBar className="search-bar" onUserType={filterSearch} />
+      </header>
+      <main className="main-content">
+        <div className="routes-container">
+          <Routes>
+            {/* 
+            Make sure to navigate to /category/alkohol (without colon) 
+            Example: <Link to={`/category/alkohol`}>Alkohol</Link>
+          */}
+            <Route path="/" element={<RecipeList recipes={searchResult} />} />
+            <Route path="/category/:id" element={<CategoryPage recipes={searchResult} />} />
+            <Route path="/recipe/:id" element={<RecipePage recipes={searchResult} />} />
+          </Routes>
+        </div>
+      </main>
     </div>
   );
 }

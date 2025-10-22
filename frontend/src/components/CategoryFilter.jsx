@@ -10,28 +10,18 @@ export default function CategoryFilter({
 }) {
   return (
     <div className="category-filter">
-      {categories.map((cat) => {
-        const normalized = cat.toLowerCase(); // säker jämförelse
-        const isActive = cat === activeCategory;
-
-        const btn = (
-          <button
-            className={isActive ? "active" : ""}
-            onClick={!linkToRoute ? () => onSelectCategory(cat) : undefined}
-          >
-            {cat}
-          </button>
-        );
-
-        // Om länkar används → wrappa korrekt i Link
-        return linkToRoute ? (
-          <Link key={cat} to={`/category/${cat.toLowerCase()}`}>
-            {btn}
-          </Link>
-        ) : (
-          <React.Fragment key={normalized}>{btn}</React.Fragment>
-        );
-      })}
+      {categories.map((cat) => (
+        <button
+          key={cat}
+          // className={cat === activeCategory ? "active" : ""}
+          className={`category-filter__button${
+            cat === activeCategory ? " category-filter__button--active" : ""
+          }`}
+          onClick={() => onSelectCategory(cat)}
+        >
+          {cat}
+        </button>
+      ))}
     </div>
   );
 }
