@@ -16,6 +16,7 @@ function calculateDifficulty(timeInMins) {
 }
 
 export default function Recipe({ recipe }) {
+  const location = useLocation(); // information about the URL path, notably `pathname`
   if (!recipe) {
     return <div className="recipe-not-found">Receptet hittades inte.</div>;
   }
@@ -27,7 +28,6 @@ export default function Recipe({ recipe }) {
   // Beräkna svårighetsgrad för det enskilda receptet
   const difficulty = calculateDifficulty(recipe.timeInMins);
 
-  const location = useLocation(); // information about the URL path, notably `pathname`
 
   return (
     <div className="recipe-container">
