@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import "./App.css";
+import RatingForm from "./RatingForm";
 
 function calculateDifficulty(timeInMins) {
   // Enkel logik för att bestämma svårighetsgrad baserat på tid
