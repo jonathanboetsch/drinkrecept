@@ -1,6 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
 import "./App.css";
-import { useEffect } from "react";
 
 export default function Recipe({ recipe }) {
   const fallbackImage = "/backupImage.png";
