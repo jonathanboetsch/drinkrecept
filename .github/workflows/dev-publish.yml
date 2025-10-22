@@ -20,8 +20,20 @@ jobs:
         with:
           node-version: 18
 
-      - run: npm ci
-      - run: npm run build
+      - name: Clean install
+        run: npm ci
+        
+      - name: Check with linter
+        run: npm run lint
+
+      - name: Run unit tests
+        run: npm run test
+
+      - name: Audit npm packages for vulnerabilities
+        run: npm audit
+        
+      - name: Build the app
+        run: npm run build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

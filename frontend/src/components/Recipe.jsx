@@ -19,7 +19,7 @@ export default function Recipe({ recipe }) {
   if (!recipe) {
     return <div className="recipe-not-found">Receptet hittades inte.</div>;
   }
-  const fallbackImage = "../assets/backupImage.png";
+  const fallbackImage = "/backupImage.png";
 
   const handleImageError = (e) => {
     e.target.src = fallbackImage;
