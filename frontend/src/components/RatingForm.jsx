@@ -12,6 +12,7 @@ export default function RatingForm({ ratingLevels = [1, 2, 3, 4, 5], confirmatio
     const API_URL = "https://grupp3-jynxa.reky.se";
     const POST_RATING_URI = `/recipes/${recipe._id}/ratings`;
     const GET_URI = `/recipes/${recipe._id}`;
+
     if (recipe._id && rating !== null) {
       fetch(`${API_URL}${POST_RATING_URI}`, {
         method: "POST",
@@ -25,7 +26,7 @@ export default function RatingForm({ ratingLevels = [1, 2, 3, 4, 5], confirmatio
           return fetch(`${API_URL}${GET_URI}`);
         })
         .then((res2) => {
-          if (!res2.ok) throw new Error("failed to fetch the recipe for avgRating update");
+          if (!res2.ok) throw new Error("Failed to fetch the recipe for avgRating update");
           return res2.json();
         })
         .then((updatedRecipe) => {
