@@ -8,11 +8,10 @@ export default function RatingForm({ ratingLevels = [1, 2, 3, 4, 5], confirmatio
   const [isHidden, setHiding] = useState(false);
   const [avgRating, setAvgRating] = useState(Number(recipe.avgRating) || null);
 
-  const API_URL = "https://grupp3-jynxa.reky.se";
-  const POST_RATING_URI = `/recipes/${recipe._id}/ratings`;
-  const GET_URI = `/recipes/${recipe._id}`;
-
   useEffect(() => {
+    const API_URL = "https://grupp3-jynxa.reky.se";
+    const POST_RATING_URI = `/recipes/${recipe._id}/ratings`;
+    const GET_URI = `/recipes/${recipe._id}`;
     if (recipe._id && rating !== null) {
       fetch(`${API_URL}${POST_RATING_URI}`, {
         method: "POST",
@@ -35,7 +34,7 @@ export default function RatingForm({ ratingLevels = [1, 2, 3, 4, 5], confirmatio
         })
         .catch((error) => console.error(error));
     }
-  }, [rating]);
+  }, [rating, recipe._id]);
 
   return (
     <div className="rating-form">
