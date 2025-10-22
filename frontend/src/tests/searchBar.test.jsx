@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, test, vi } from "vitest";
 import SearchBar from "../components/SearchBar";
+import "@testing-library/jest-dom";
 
 function setup() {
   const mockOnUserType = vi.fn();

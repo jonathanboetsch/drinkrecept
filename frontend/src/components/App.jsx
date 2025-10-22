@@ -11,8 +11,10 @@ function CategoryPage({ recipes }) {
   const filtered = recipes.filter((r) => (r.categories || []).includes(id));
   return (
     <>
-      <h2>Kategori: {id}</h2>
-      <RecipeList recipes={filtered} />
+      <div className="category-page">
+        <h2 className="category-title">Kategori: {id}</h2>
+        <RecipeList recipes={filtered} />
+      </div>
     </>
   );
 }
@@ -20,7 +22,16 @@ function CategoryPage({ recipes }) {
 function RecipePage({ recipes }) {
   const { id } = useParams();
   const recipe = recipes.find((r) => String(r._id) === id);
-  return recipe ? <Recipe recipe={recipe} /> : <p>Receptet hittades inte</p>;
+  // return recipe ? <Recipe recipe={recipe} /> : <p>Receptet hittades inte</p>;
+  return (
+    <div className="recipe-page">
+      {recipe ? (
+        <Recipe recipe={recipe} />
+      ) : (
+        <p className="not-found-message">Receptet hittades inte</p>
+      )}
+    </div>
+  );
 }
 
 function App() {
@@ -70,29 +81,34 @@ function App() {
   }, [recipes]);
 
   if (loading) {
-    return <p>Laddar recept...</p>;
+    // return <p>Laddar recept...</p>;
+    return <p className="loading-message">Laddar recept...</p>;
   }
 
   if (error) {
-    return <p>Fel är: {error}</p>;
+    // return <p>Fel är: {error}</p>;
+    return <p className="error-message">Fel är: {error}</p>;
   }
 
   return (
-    <div>
-      <div className="header-container">
+    <div className="app-container">
+      <header className="header-container">
         <img src={Header} alt="Header" className="header-image" />
-        <SearchBar onUserType={filterSearch} />
-
-        <Routes>
-          {/* 
+        <SearchBar className="search-bar" onUserType={filterSearch} />
+      </header>
+      <main className="main-content">
+        <div className="routes-container">
+          <Routes>
+            {/* 
             Make sure to navigate to /category/alkohol (without colon) 
             Example: <Link to={`/category/alkohol`}>Alkohol</Link>
           */}
-          <Route path="/" element={<RecipeList recipes={searchResult} />} />
-          <Route path="/category/:id" element={<CategoryPage recipes={searchResult} />} />
-          <Route path="/recipe/:id" element={<RecipePage recipes={searchResult} />} />
-        </Routes>
-      </div>
+            <Route path="/" element={<RecipeList recipes={searchResult} />} />
+            <Route path="/category/:id" element={<CategoryPage recipes={searchResult} />} />
+            <Route path="/recipe/:id" element={<RecipePage recipes={searchResult} />} />
+          </Routes>
+        </div>
+      </main>
     </div>
   );
 }
