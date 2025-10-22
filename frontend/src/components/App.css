@@ -41,6 +41,22 @@
   color: #888;
 }
 
+/* new stuff down here  */
+
+body,
+html,
+#root {
+  min-height: 100%;
+  height: 100%;
+  margin: 0;
+  background-color: #000000;
+  background-image: url("/background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
 .recipes-container {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -147,7 +163,59 @@
   right: 14%;
 }
 
-/* responsive design for tablets or ipads  */
+/* hamburger menu in header  */
+.hamburger-container {
+  position: absolute;
+  left: 2%;
+  top: 40%;
+  display: flex;
+  align-items: center;
+}
+
+.hamburger-button {
+  background: rgba(255, 255, 255, 0.85);
+  border: none;
+  padding: 0.4rem 0.6rem;
+  font-size: 1.4rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.hamburger-menu {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: calc(100% + 8px);
+  background: rgba(0, 0, 0, 0.85);
+  padding: 0.6rem;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+  z-index: 40;
+  min-width: 160px;
+  text-align: left;
+}
+
+.hamburger-menu.open {
+  display: block;
+}
+
+.hamburger-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+}
+
+.hamburger-menu button.active {
+  background: rgba(255, 255, 255, 0.12);
+  font-weight: 600;
+}
+
+/* responsive design till tablets eller ipads  */
 @media (max-width: 1024px) {
   .recipes-container {
     grid-template-columns: repeat(3, 1fr);
