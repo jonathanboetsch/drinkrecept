@@ -40,8 +40,6 @@ function App() {
   const [error, setError] = useState(null);
   const [searchResult, setSearchResult] = useState([]);
 
-  const location = useLocation();
-
   // 🔹 Hjälper sökfältet fungera som innan
   const flattenValues = (obj) =>
     Object.values(obj)
@@ -51,9 +49,7 @@ function App() {
   const filterSearch = (input = "") => {
     const text = input.trim().toLowerCase();
     if (text) {
-      const result = recipes.filter((r) =>
-        flattenValues(r).toLowerCase().includes(text)
-      );
+      const result = recipes.filter((r) => flattenValues(r).toLowerCase().includes(text));
       setSearchResult(result.length > 0 ? result : []);
     } else {
       setSearchResult(recipes);
@@ -63,8 +59,7 @@ function App() {
   useEffect(() => {
     fetch("https://grupp3-jynxa.reky.se/recipes")
       .then((response) => {
-        if (!response.ok)
-          throw new Error("Något gick fel vid hämtning av recept");
+        if (!response.ok) throw new Error("Något gick fel vid hämtning av recept");
         return response.json();
       })
       .then((data) => {
