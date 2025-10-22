@@ -17,7 +17,7 @@ export default defineConfig(({ mode }) => {
     test: {
       environment: "jsdom",
       globals: true,
-      setupFiles: ["src/tests/setup.js"],
+      setupFiles: [],
       exclude: ["tests", "node_modules", "dist"], // Ignore top-level tests folder
     },
   };

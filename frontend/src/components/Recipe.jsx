@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./App.css";
 
 function calculateDifficulty(timeInMins) {
@@ -27,8 +27,6 @@ export default function Recipe({ recipe }) {
   // Beräkna svårighetsgrad för det enskilda receptet
   const difficulty = calculateDifficulty(recipe.timeInMins);
 
-  const location = useLocation(); // information about the URL path, notably `pathname`
-
   return (
     <div className="recipe-container">
       {recipe.message && <p className="recipe-message">{recipe.message}</p>}
@@ -54,46 +52,36 @@ export default function Recipe({ recipe }) {
             <strong>Pris:</strong> {recipe.price || "Hittade ingen prisinformation "} kr
           </p>
 
-          {!location.pathname.startsWith("/recipe/") && (
-            <section>
-              <h3>Kategorier</h3>
-              <ul>
-                {recipe.categories && recipe.categories.length > 0 ? (
-                  recipe.categories.map((cat, i) => <li key={i}>{cat}</li>)
-                ) : (
-                  <li>Inga kategorier tillgängliga </li>
-                )}
-              </ul>
-            </section>
-          )}
+          <h3 className="recipe-section-title">Kategorier</h3>
+          <ul className="recipe-categories">
+            {recipe.categories && recipe.categories.length > 0 ? (
+              recipe.categories.map((cat, i) => <li key={i}>{cat}</li>)
+            ) : (
+              <li className="recipe-category-empty">Inga kategorier tillgängliga </li>
+            )}
+          </ul>
 
-          <section>
-            <h3>Ingredienser</h3>
-            <ul>
-              {recipe.ingredients && recipe.ingredients.length > 0 ? (
-                recipe.ingredients.map((ing, i) => (
-                  <li key={i}>
-                    {ing.amount} {ing.unit} {ing.name}
-                  </li>
-                ))
-              ) : (
-                <p> Inga ingredienser tillgängliga </p>
-              )}
-            </ul>
-          </section>
+          <h3 className="recipe-section-title">Instruktioner</h3>
+          <ol className="recipe-instructions">
+            {recipe.instructions && recipe.instructions.length > 0 ? (
+              recipe.instructions.map((instr, i) => <li key={i}>{instr}</li>)
+            ) : (
+              <li className="recipe-instruction-empty">Inga instruktioner tillgängliga</li>
+            )}
+          </ol>
 
-          {location.pathname.startsWith("/recipe/") && (
-            <section>
-              <h3>Instruktioner</h3>
-              <ol>
-                {recipe.instructions && recipe.instructions.length > 0 ? (
-                  recipe.instructions.map((instr, i) => <li key={i}>{instr}</li>) // elements ordered inside the original array
-                ) : (
-                  <li>Inga instruktioner tillgängliga</li>
-                )}
-              </ol>
-            </section>
-          )}
+          <h3 className="recipe-section-title">Ingredienser</h3>
+          <ul className="recipe-ingredients">
+            {recipe.ingredients && recipe.ingredients.length > 0 ? (
+              recipe.ingredients.map((ing, i) => (
+                <li key={i} className="recipe-ingredient">
+                  {ing.amount} {ing.unit} {ing.name}
+                </li>
+              ))
+            ) : (
+              <p className="recipe-ingredient-empty"> Inga ingredienser tillgängliga </p>
+            )}
+          </ul>
 
           <p className="recipe-rating">
             <strong>Genomsnittligt betyg:</strong>{" "}

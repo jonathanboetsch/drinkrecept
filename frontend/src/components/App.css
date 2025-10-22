@@ -107,21 +107,22 @@
   font-size: 0.9em;
 }
 
-.recipe-card ul,
-.recipe-card ol {
+.recipe-card ul {
   text-align: left;
-  /* the property below allows centering of the whole list block 
-  while keeping its elements left-aligned */
-  display: inline-block;
-  /* list-style-position: outside; */
-  /* width: 100%; */
+  width: 100%;
   padding-left: 20px;
-  margin: 5px auto;
+  margin: 5px 0;
 }
 
 .recipe-card li {
   margin-bottom: 3px;
   font-size: 0.8em;
+}
+
+/*  This hides the category and cooking method, check Recipe.jsx.  */
+.recipe-card h3,
+.recipe-card ol {
+  display: none;
 }
 
 /* header below (can be changed later)  */
