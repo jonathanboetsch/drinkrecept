@@ -100,6 +100,7 @@ export default function Recipe({ recipe }) {
             {recipe.avgRating ? recipe.avgRating : "Ingen än"}
           </p>
           {<RatingForm recipe={recipe} />}
+          {<RatingForm recipe={recipe} />}
         </div>
       )}
     </div>
