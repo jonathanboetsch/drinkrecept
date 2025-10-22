@@ -107,11 +107,16 @@
   font-size: 0.9em;
 }
 
-.recipe-card ul {
+.recipe-card ul,
+.recipe-card ol {
   text-align: left;
-  width: 100%;
+  /* the property below allows centering of the whole list block 
+  while keeping its elements left-aligned */
+  display: inline-block;
+  /* list-style-position: outside; */
+  /* width: 100%; */
   padding-left: 20px;
-  margin: 5px 0;
+  margin: 5px auto;
 }
 
 .recipe-card li {
