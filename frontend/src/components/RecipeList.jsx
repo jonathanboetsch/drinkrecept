@@ -27,26 +27,18 @@ export default function RecipeList({ recipes = [] }) {
       : recipes.filter((r) => (r.categories || []).includes(activeCategory));
   }, [recipes, activeCategory]);
 
-  // 🎨 UI-layout
   return (
-    <main className="recipes-page">
-      {/* 🟢 Kategorifilter högst upp */}
-      <section className="categories-section">
-        
-
-      </section>
-
-      {/* 🔹 Receptlistan under */}
-      <section className="recipes-section">
-        <h2 className="page-title">Drinkar</h2>
-        {filteredRecipes.length > 0 ? (
-          filteredRecipes.map((r, i) => (
-            <Recipe key={r._id ?? i} recipe={r} />
-          ))
-        ) : (
-          <p>Inga recept hittades.</p>
-        )}
-      </section>
-    </main>
+    <div>
+      <CategoryFilter
+        categories={categories}
+        activeCategory={activeCategory}
+        onSelectCategory={setActiveCategory}
+      />
+      <div className="recipes-container">
+        {filteredRecipes.map((r, i) => (
+          <Recipe key={r._id ?? i} recipe={r} />
+        ))}
+      </div>
+    </div>
   );
 }

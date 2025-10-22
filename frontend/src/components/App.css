@@ -6,8 +6,7 @@
   text-align: center;
 }
 
-/* (Behåller dina demo-klasser ifall något använder dem) */
-.logo { 
+.logo {
   height: 6em;
   padding: 1.5em;
   will-change: filter;
@@ -36,50 +35,29 @@
   border-radius: 10px;
 }
 
-/* ==== Grid för receptlistan (både .recipes-container och .recipe-list) ==== */
-.recipes-container,
-.recipe-list {
+.recipes-container {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr)); /* var 5 – mer realistiskt */
   gap: 20px;
   margin-top: 20px;
-  padding: 0 1rem;
-  box-sizing: border-box;
 }
 
-/* Större surfplattor/laptops */
-@media (max-width: 1200px) {
-  .recipes-container,
-  .recipe-list {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+.recipe-link {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  height: 100%;
+  width: 100%;
+  background-color: transparent;
 }
 
-/* Surfplatta */
-@media (max-width: 900px) {
-  .recipes-container,
-  .recipe-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
-  }
-  .header-image { margin-bottom: 1rem; }
-}
-
-/* Mobil */
-@media (max-width: 600px) {
-  #root { padding: 0.5rem; }                   /* tajtare kantmarginaler */
-  .recipes-container,
-  .recipe-list {
-    grid-template-columns: 1fr;
-    gap: 16px;
-    padding: 0;                                /* inga extra sidmarginaler */
-  }
-}
-
-/* ==== Kort (recept) ==== */
 .recipe-card {
-  background-color: #000;                      /* var "black" – samma sak */
-  color: #fff;
+  background-color: black;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  color: white;
   padding: 25px;
   border-radius: 10px;
   display: flex;
@@ -87,16 +65,25 @@
   align-items: center;
   min-height: 400px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-/* Titel på kortet – responsiv textstorlek */
+.recipe-card:hover {
+  border-color: grey;
+  background-color: grey;
+}
+
 .recipe-card h1 {
-  font-size: clamp(1rem, 1.8vw, 1.2em);
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 1.2em;
   margin-bottom: 10px;
   text-align: center;
 }
 
-/* Bilden i kortet */
 .recipe-card img {
   width: 100%;
   max-width: 200px;
@@ -125,14 +112,69 @@
   font-size: 0.9rem;
 }
 
-/* Gömda sektioner enligt din kommentar (se Recipe.jsx) */
+/*  This hides the category and cooking method, check Recipe.jsx.  */
 .recipe-card h3,
 .recipe-card ol {
   display: none;
 }
 
-/* Små detaljjusteringar på mobil */
-@media (max-width: 600px) {
-  .recipe-card { padding: 16px; min-height: unset; }
-  .recipe-card img { max-width: 100%; }
+/* header below (can be changed later)  */
+.header-image {
+  width: 100%;
+  max-width: 1200px;
+  height: auto;
+  margin: 0 auto 2rem auto;
+  display: block;
+  border-radius: 10px;
+}
+
+.header-container {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.searchBar-container {
+  position: absolute;
+
+  top: 40%;
+  right: 14%;
+}
+
+/* responsive design for tablets or ipads  */
+@media (max-width: 1024px) {
+  .recipes-container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+  }
+
+  .recipe-card {
+    padding: 20px;
+    min-height: 350px;
+  }
+
+  .searchBar-container {
+    position: static;
+    margin-bottom: 1rem;
+  }
+
+  .root {
+    padding: 1rem;
+  }
+}
+
+/* responsive layout design for smartphones */
+@media (max-width: 768px) {
+  .recipes-container {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 15px;
+  }
+
+  .searchBar-container {
+    position: static;
+    margin-bottom: 1rem;
+  }
+
+  .root {
+    padding: 1rem;
+  }
 }
