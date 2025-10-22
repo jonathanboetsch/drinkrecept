@@ -119,12 +119,6 @@
   font-size: 0.8em;
 }
 
-/*  This hides the category and cooking method, check Recipe.jsx.  */
-.recipe-card h3,
-.recipe-card ol {
-  display: none;
-}
-
 /* header below (can be changed later)  */
 .header-image {
   width: 100%;
