@@ -2,7 +2,12 @@ import Star from "./Star.jsx";
 import "./Rating.css";
 import { useState } from "react";
 
-export default function RatingForm({ ratingLevels = [1, 2, 3, 4, 5], confirmationAction, recipe }) {
+export default function RatingForm({
+  ratingLevels = [1, 2, 3, 4, 5],
+  confirmationAction,
+  recipe,
+  updateAvgRatingOnParent,
+}) {
   // TODO: add a mechanism to store and update all the recipes ratings.
   const [isHidden, setHiding] = useState(false);
   const [avgRating, setAvgRating] = useState(Number(recipe.avgRating) || null);
@@ -29,7 +34,9 @@ export default function RatingForm({ ratingLevels = [1, 2, 3, 4, 5], confirmatio
           return res2.json();
         })
         .then((updatedRecipe) => {
-          setAvgRating(Number(updatedRecipe.avgRating));
+          const userRating = Number(updatedRecipe.avgRating);
+          setAvgRating(userRating);
+          updateAvgRatingOnParent(userRating);
           console.log("Rating saved:", updatedRecipe.avgRating);
         })
         .catch((error) => console.error(error));
