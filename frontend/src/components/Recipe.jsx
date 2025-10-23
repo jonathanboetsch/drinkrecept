@@ -108,7 +108,9 @@ export default function Recipe({ recipe }) {
             <strong>Genomsnittligt betyg:</strong>{" "}
             {updatedAvgRating ?? recipe.avgRating ?? "Ingen än"}
           </p>
-          {<RatingForm recipe={recipe} updateAvgRatingOnParent={updateAvgRating} />}
+          {location.pathname.startsWith("/recipe/") && (
+            <RatingForm recipe={recipe} updateAvgRatingOnParent={updateAvgRating} />
+          )}
         </div>
       )}
     </div>
