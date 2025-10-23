@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function calculateDifficulty(timeInMins) {
   // Enkel logik för att bestämma svårighetsgrad baserat på tid
@@ -25,6 +25,23 @@ export default function Recipe({ recipe }) {
   const [comment, setComment] = useState("");
   const [thankYou, setThankYou] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+
+  // Fetch comments from backend when component mounts or recipe._id changes
+  useEffect(() => {
+    async function getComments() {
+      if (!recipe?._id) return;
+      try {
+        const res = await fetch(`https://grupp3-jynxa.reky.se/recipes/${recipe._id}/comments`);
+        if (!res.ok) throw new Error("Kunde inte hämta kommentarer");
+        const data = await res.json();
+        setComments(data);
+      } catch (err) {
+        // Optionally handle error
+        console.error("Något gick fel vid hämtning av kommentarer: ", err);
+      }
+    }
+    getComments();
+  }, [recipe?._id]);
 
   if (!recipe) {
     return <div className="recipe-not-found">Receptet hittades inte.</div>;
