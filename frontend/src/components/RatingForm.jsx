@@ -11,6 +11,7 @@ export default function RatingForm({
   // TODO: add a mechanism to store and update all the recipes ratings.
   const [isHidden, setHiding] = useState(false);
   const [avgRating, setAvgRating] = useState(Number(recipe.avgRating) || null);
+  const [userRating, setUserRating] = useState(null);
 
   const handleRatingClick = (rating) => {
     const API_URL = "https://grupp3-jynxa.reky.se";
@@ -36,8 +37,8 @@ export default function RatingForm({
         .then((updatedRecipe) => {
           const userRating = Number(updatedRecipe.avgRating);
           setAvgRating(userRating);
+          setUserRating(rating);
           updateAvgRatingOnParent(userRating);
-          console.log("Rating saved:", updatedRecipe.avgRating);
         })
         .catch((error) => console.error(error));
     }
@@ -55,7 +56,7 @@ export default function RatingForm({
           isHidden={isHidden} // Star can this way update its css property dynamically
           setHiding={setHiding} // A click on a Star sets hiding for all the Star components (isHidden=true)
           imageUrl={
-            avgRating === null || val <= avgRating
+            userRating === null || val <= userRating
               ? "https://upload.wikimedia.org/wikipedia/commons/6/6e/Super_Mario_Bros._%E2%80%93_Overworld_Star.png"
               : "https://cdn3.iconfinder.com/data/icons/wpzoom-developer-icon-set/500/118-1024.png"
           }
