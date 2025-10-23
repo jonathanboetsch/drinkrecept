@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import "./App.css";
 
 export default function Recipe({ recipe }) {
@@ -9,23 +8,18 @@ export default function Recipe({ recipe }) {
   };
 
   return (
-    <div>
+    <div className="recipe-card">
       {recipe.message && <p>{recipe.message}</p>}
       {/* console.log(recipe); */}
       {!recipe.message && (
-        <div className="recipe-card">
-          <Link
-            to={recipe._id && `/recipe/${recipe._id}`}
-            className="recipe-link"
-            aria-label={`Öppna recept: ${recipe.title}`}
-          />
+        <div>
           <h1>{recipe.title}</h1>
           <p>
             <strong>Beskrivning:</strong> {recipe.description || "Ingen beskrivning"}
           </p>
           <img src={recipe.imageUrl} alt={recipe.title} width="300" onError={handleImageError} />
           <p>
-            <strong>Tillagningstid:</strong> {recipe.timeInMins || "Okänt tillagningstid "} minuter
+            <strong>Tillagningstid:</strong> {recipe.timeInMins || "Okänt tillagnigstid "} minuter
           </p>
           <p>
             <strong>Pris:</strong> {recipe.price || "Hittade ingen prisinformation "} kr

@@ -2,8 +2,14 @@ import React, { useEffect, useMemo, useState } from "react";
 import Recipe from "./Recipe.jsx";
 import CategoryFilter from "./CategoryFilter.jsx";
 
-export default function RecipeList({ recipes = [] }) {
-  const [activeCategory, setActiveCategory] = useState("Alla");
+export default function RecipeList({
+  recipes = [],
+  activeCategory: controlledActiveCategory,
+  onSelectCategory,
+}) {
+  const [internalActiveCategory, setInternalActiveCategory] = useState("Alla");
+  const activeCategory = controlledActiveCategory ?? internalActiveCategory;
+  const setActiveCategory = onSelectCategory ?? setInternalActiveCategory;
 
   // Skapa kategorilistan från de recept som kommer in via props
   const categories = useMemo(() => {

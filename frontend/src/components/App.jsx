@@ -1,27 +1,8 @@
-import { useEffect, useState } from "react";
-import { Route, Routes, useParams } from "react-router-dom";
+import { useEffect, useState, useMemo } from "react";
 import RecipeList from "./RecipeList";
 import "./App.css";
 import Header from "../assets/Header2.png";
 import SearchBar from "./SearchBar";
-import Recipe from "./Recipe";
-
-function CategoryPage({ recipes }) {
-  const { id } = useParams();
-  const filtered = recipes.filter((r) => (r.categories || []).includes(id));
-  return (
-    <>
-      <h2>Kategori: {id}</h2>
-      <RecipeList recipes={filtered} />
-    </>
-  );
-}
-
-function RecipePage({ recipes }) {
-  const { id } = useParams();
-  const recipe = recipes.find((r) => String(r._id) === id);
-  return recipe ? <Recipe recipe={recipe} /> : <p>Receptet hittades inte</p>;
-}
 
 function App() {
   const [recipes, setRecipes] = useState([]);
@@ -30,6 +11,8 @@ function App() {
   // searchResult needed to implement search bar functionnality
   // this becomes the element passed to the RecipeList instead of sending directly "recipes" array
   const [searchResult, setSearchResult] = useState(recipes);
+  const [activeCategory, setActiveCategory] = useState("Alla");
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const flattenValues = (obj) => {
     return Object.values(obj)
@@ -69,30 +52,63 @@ function App() {
     setSearchResult(recipes);
   }, [recipes]);
 
+  const categories = useMemo(() => {
+    const set = new Set();
+    (searchResult || []).forEach((r) => (r.categories || []).forEach((c) => set.add(c)));
+    return ["Alla", ...Array.from(set).sort()];
+  }, [searchResult]);
+
   if (loading) {
     return <p>Laddar recept...</p>;
   }
-
   if (error) {
     return <p>Fel är: {error}</p>;
   }
-
   return (
     <div>
-      <div className="header-container">
-        <img src={Header} alt="Header" className="header-image" />
-        <SearchBar onUserType={filterSearch} />
+      <div className="simple-header">
+        <img src="/Header3.png" className="header-logo" />
+        <h3 className="header-title"></h3>
+        <div className="header-search">
+          <SearchBar onUserType={filterSearch} />
+        </div>
 
-        <Routes>
-          {/* 
-            Make sure to navigate to /category/alkohol (without colon) 
-            Example: <Link to={`/category/alkohol`}>Alkohol</Link>
-          */}
-          <Route path="/" element={<RecipeList recipes={searchResult} />} />
-          <Route path="/category/:id" element={<CategoryPage recipes={searchResult} />} />
-          <Route path="/recipe/:id" element={<RecipePage recipes={searchResult} />} />
-        </Routes>
+        <div className="hamburger-container">
+          <button
+            className="hamburger-button"
+            aria-expanded={menuOpen}
+            aria-label="Open categories menu"
+            onClick={() => setMenuOpen((v) => !v)}
+          >
+            ☰
+          </button>
+          <div className={`hamburger-menu ${menuOpen ? "open" : ""}`}>
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                className={cat === activeCategory ? "active" : ""}
+                onClick={() => {
+                  setActiveCategory(cat);
+                  setMenuOpen(false);
+                }}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
+
+      <>
+        {/* <p>BEGIN</p> */}
+        {/* <Recipe /> */}
+        {/* <p>END</p> */}
+        <RecipeList
+          recipes={searchResult}
+          activeCategory={activeCategory}
+          onSelectCategory={setActiveCategory}
+        />
+      </>
     </div>
   );
 }

@@ -87,7 +87,6 @@ html,
   align-items: center;
   min-height: 400px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -141,39 +140,44 @@ html,
   display: none;
 }
 
-/* header below (can be changed later)  */
-.header-image {
-  width: 100%;
-  max-width: 1200px;
-  height: auto;
-  margin: 0 auto 2rem auto;
-  display: block;
-  border-radius: 10px;
-}
-
-.header-container {
-  position: relative;
+.simple-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: black;
+  color: white;
   margin-bottom: 2rem;
 }
 
-.searchBar-container {
-  position: absolute;
+.header-title {
+  margin: 0;
+  font-size: 2rem;
+  color: white;
+  font-weight: bold;
+}
 
-  top: 40%;
-  right: 14%;
+.header-search {
+  flex: 0 1 400px;
+  margin: 0 2rem;
+}
+
+.header-logo {
+  height: 50px;
+  width: auto;
 }
 
 /* hamburger menu in header  */
 .hamburger-container {
-  position: absolute;
-  left: 2%;
+  position: relative;
+  right: 8%;
   top: 40%;
   display: flex;
   align-items: center;
 }
 
 .hamburger-button {
-  background: rgba(255, 255, 255, 0.85);
+  background: white;
   border: none;
   padding: 0.4rem 0.6rem;
   font-size: 1.4rem;
@@ -184,13 +188,13 @@ html,
 .hamburger-menu {
   display: none;
   position: absolute;
-  left: 0;
+  right: 0;
   top: calc(100% + 8px);
-  background: rgba(0, 0, 0, 0.85);
+  background: black;
   padding: 0.6rem;
   border-radius: 6px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
-  z-index: 40;
+  box-shadow: 0 6px 18px gray;
+  z-index: 1000;
   min-width: 160px;
   text-align: left;
 }
@@ -211,11 +215,20 @@ html,
 }
 
 .hamburger-menu button.active {
-  background: rgba(255, 255, 255, 0.12);
-  font-weight: 600;
+  background: transparent;
+  color: limegreen;
+  font-weight: 700;
 }
 
-/* responsive design till tablets eller ipads  */
+.search-bar {
+  width: 70%;
+  padding: 12px 20px;
+  border: 2px solid darkslateblue;
+  border-radius: 30px;
+  font-size: 1rem;
+}
+
+/* responsive design for tablets or ipads  */
 @media (max-width: 1024px) {
   .recipes-container {
     grid-template-columns: repeat(3, 1fr);
@@ -249,7 +262,33 @@ html,
     margin-bottom: 1rem;
   }
 
-  .root {
-    padding: 1rem;
+  .search-bar {
+    padding: 12px 20px;
+    font-size: 1rem;
   }
+}
+
+.root {
+  padding: 1rem;
+}
+.simple-header {
+  padding: 1rem;
+  flex-wrap: wrap;
+}
+
+.header-logo {
+  order: 0;
+  flex: 0 0 auto;
+}
+
+.header-title {
+  font-size: 1.5rem;
+  order: 1;
+  margin: 0;
+  flex: 0 0 auto;
+}
+
+.hamburger-container {
+  order: 3;
+  flex: 0 0 auto;
 }
