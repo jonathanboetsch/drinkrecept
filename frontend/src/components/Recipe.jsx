@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import "./App.css";
+import { useState, useEffect } from "react";
 
 function calculateDifficulty(timeInMins) {
   // Enkel logik för att bestämma svårighetsgrad baserat på tid
@@ -17,6 +18,31 @@ function calculateDifficulty(timeInMins) {
 
 export default function Recipe({ recipe }) {
   const location = useLocation(); // information about the URL path, notably `pathname`
+
+  // Hooks must be called unconditionally — move them before any early return.
+  const [comments, setComments] = useState(recipe?.comments || []);
+  const [name, setName] = useState("");
+  const [comment, setComment] = useState("");
+  const [thankYou, setThankYou] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+  // Fetch comments from backend when component mounts or recipe._id changes
+  useEffect(() => {
+    async function getComments() {
+      if (!recipe?._id) return;
+      try {
+        const res = await fetch(`https://grupp3-jynxa.reky.se/recipes/${recipe._id}/comments`);
+        if (!res.ok) throw new Error("Kunde inte hämta kommentarer");
+        const data = await res.json();
+        setComments(data);
+      } catch (err) {
+        // Optionally handle error
+        console.error("Något gick fel vid hämtning av kommentarer: ", err);
+      }
+    }
+    getComments();
+  }, [recipe?._id]);
+
   if (!recipe) {
     return <div className="recipe-not-found">Receptet hittades inte.</div>;
   }
@@ -28,6 +54,28 @@ export default function Recipe({ recipe }) {
   // Beräkna svårighetsgrad för det enskilda receptet
   const difficulty = calculateDifficulty(recipe.timeInMins);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setThankYou(false);
+    try {
+      const res = await fetch(`https://grupp3-jynxa.reky.se/recipes/${recipe._id}/comments`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, comment }),
+      });
+      if (!res.ok) throw new Error("Kunde inte skicka kommentar");
+      const newComment = await res.json();
+      setComments((prev) => [...prev, newComment]);
+      setName("");
+      setComment("");
+      setThankYou(true);
+    } catch (err) {
+      alert("Något gick fel: " + err.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className="recipe-container">
@@ -99,6 +147,74 @@ export default function Recipe({ recipe }) {
             <strong>Genomsnittligt betyg:</strong>{" "}
             {recipe.avgRating ? recipe.avgRating : "Ingen än"}
           </p>
+        </div>
+      )}
+      {location.pathname.startsWith("/recipe/") && (
+        <div>
+          <section
+            style={{
+              marginTop: "2rem",
+              width: "100%",
+              maxWidth: 400,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            <h3>Lämna en kommentar</h3>
+            <form
+              onSubmit={handleSubmit}
+              style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
+            >
+              <input
+                type="text"
+                placeholder="Ditt namn"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                style={{ padding: "0.5rem", borderRadius: 4, border: "1px solid #ccc" }}
+              />
+              <textarea
+                placeholder="Din kommentar"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                required
+                rows={3}
+                style={{ padding: "0.5rem", borderRadius: 4, border: "1px solid #ccc" }}
+              />
+              <button type="submit" disabled={submitting}>
+                {submitting ? "Skickar..." : "Skicka kommentar"}
+              </button>
+            </form>
+            {thankYou && (
+              <p style={{ color: "green", marginTop: "0.5rem" }}>Tack för din kommentar!</p>
+            )}
+          </section>
+          <section
+            style={{
+              marginTop: "2rem",
+              width: "100%",
+              maxWidth: 400,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            <h3>Kommentarer</h3>
+            <ul style={{ listStyle: "none", padding: 0 }}>
+              {comments.length === 0 && <li>Inga kommentarer än.</li>}
+              {comments.map((c, i) => (
+                <li
+                  key={i}
+                  style={{
+                    borderBottom: "1px solid #eee",
+                    marginBottom: "0.5rem",
+                    paddingBottom: "0.5rem",
+                  }}
+                >
+                  <strong>{c.name}</strong>: {c.comment}
+                </li>
+              ))}
+            </ul>
+          </section>
         </div>
       )}
     </div>
