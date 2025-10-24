@@ -6,6 +6,7 @@ export default function RecipeList({
   recipes = [],
   activeCategory: controlledActiveCategory,
   onSelectCategory,
+  showFilter = true,
 }) {
   const [internalActiveCategory, setInternalActiveCategory] = useState("Alla");
   const activeCategory = controlledActiveCategory ?? internalActiveCategory;
@@ -34,11 +35,13 @@ export default function RecipeList({
 
   return (
     <div>
-      <CategoryFilter
-        categories={categories}
-        activeCategory={activeCategory}
-        onSelectCategory={setActiveCategory}
-      />
+      {showFilter && (
+        <CategoryFilter
+          categories={categories}
+          activeCategory={activeCategory}
+          onSelectCategory={setActiveCategory}
+        />
+      )}
       <div className="recipes-container">
         {filteredRecipes.map((r, i) => (
           <Recipe key={r._id ?? i} recipe={r} />

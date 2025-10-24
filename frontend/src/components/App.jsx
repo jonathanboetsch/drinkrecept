@@ -107,6 +107,7 @@ function App() {
           recipes={searchResult}
           activeCategory={activeCategory}
           onSelectCategory={setActiveCategory}
+          showFilter={false}
         />
       </>
     </div>
