@@ -2,18 +2,7 @@ import { useEffect, useMemo } from "react";
 import Recipe from "./Recipe.jsx";
 import "./RecipeList.css";
 
-export default function RecipeList({
-  recipes,
-  activeCategory = "Alla",
-}) {
-  // 🧩 Create category list for validation
-  const categories = useMemo(() => {
-    const set = new Set();
-    recipes.forEach((r) => (r.categories || []).forEach((c) => set.add(c)));
-    return ["Alla", ...Array.from(set).sort()];
-  }, [recipes]);
-
-  // 🔍 Filter recipes
+export default function RecipeList({ recipes, activeCategory = "Alla" }) {
   const filteredRecipes = useMemo(() => {
     return activeCategory === "Alla"
       ? recipes
