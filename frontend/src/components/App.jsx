@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Route, Routes, useParams, useMatch } from "react-router-dom";
 import RecipeList from "./RecipeList";
 import "./App.css";
@@ -38,10 +38,9 @@ function App() {
   const [error, setError] = useState(null);
   const [searchResult, setSearchResult] = useState([]);
 
-  const match = useMatch("/category/:id"); // 🔹 matchar kategori-URL
-  const activeCategory = match?.params?.id || "Alla"; // 🔹 sätt aktiv kategori baserat på URL
+  const match = useMatch("/category/:id"); // 🔹 gets the id of the category from the URL path
+  const activeCategory = match?.params?.id || "Alla"; // 🔹 set active category based on the URI
 
-  // 🔹 Hjälper sökfältet fungera som innan
   const flattenValues = (obj) =>
     Object.values(obj)
       .map((v) => (v && typeof v === "object" ? flattenValues(v) : String(v)))
@@ -71,13 +70,13 @@ function App() {
       .finally(() => setLoading(false));
   }, []);
 
+  // allCategories recalculates only when there is an update of recipes (f.ex. recipes re-fetched)
+  const allCategories = useMemo(() => {
+    return ["Alla", ...new Set(recipes.flatMap((r) => r.categories || []))].sort();
+  }, [recipes]);
+
   if (loading) return <p className="loading-message">Laddar recept...</p>;
   if (error) return <p className="error-message">Fel är: {error}</p>;
-
-  const allCategories = [
-    "Alla",
-    ...new Set(recipes.flatMap((r) => r.categories || [])),
-  ].sort();
 
   return (
     <div className="app-container">
@@ -94,18 +93,9 @@ function App() {
       <main className="main-content">
         <div className="routes-container">
           <Routes>
-            <Route
-              path="/"
-              element={<RecipeList recipes={searchResult} />}
-            />
-            <Route
-              path="/category/:id"
-              element={<CategoryPage recipes={searchResult} />}
-            />
-            <Route
-              path="/recipe/:id"
-              element={<RecipePage recipes={searchResult} />}
-            />
+            <Route path="/" element={<RecipeList recipes={searchResult} />} />
+            <Route path="/category/:id" element={<CategoryPage recipes={searchResult} />} />
+            <Route path="/recipe/:id" element={<RecipePage recipes={searchResult} />} />
           </Routes>
         </div>
       </main>
