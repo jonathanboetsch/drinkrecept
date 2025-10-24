@@ -67,7 +67,7 @@ function App() {
   return (
     <div>
       <div className="simple-header">
-        <img src="/Header3.png" className="header-logo" />
+        <img src="/Header4.png" className="header-logo" />
         <h3 className="header-title"></h3>
         <div className="header-search">
           <SearchBar onUserType={filterSearch} />
