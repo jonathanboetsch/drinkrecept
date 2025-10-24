@@ -149,69 +149,74 @@ export default function Recipe({ recipe }) {
           </p>
         </div>
       )}
-
-      <section
-        style={{
-          marginTop: "2rem",
-          width: "100%",
-          maxWidth: 400,
-          marginLeft: "auto",
-          marginRight: "auto",
-        }}
-      >
-        <h3>Lämna en kommentar</h3>
-        <form
-          onSubmit={handleSubmit}
-          style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
-        >
-          <input
-            type="text"
-            placeholder="Ditt namn"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            style={{ padding: "0.5rem", borderRadius: 4, border: "1px solid #ccc" }}
-          />
-          <textarea
-            placeholder="Din kommentar"
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            required
-            rows={3}
-            style={{ padding: "0.5rem", borderRadius: 4, border: "1px solid #ccc" }}
-          />
-          <button type="submit" disabled={submitting}>
-            {submitting ? "Skickar..." : "Skicka kommentar"}
-          </button>
-        </form>
-        {thankYou && <p style={{ color: "green", marginTop: "0.5rem" }}>Tack för din kommentar!</p>}
-      </section>
-      <section
-        style={{
-          marginTop: "2rem",
-          width: "100%",
-          maxWidth: 400,
-          marginLeft: "auto",
-          marginRight: "auto",
-        }}
-      >
-        <h3>Kommentarer</h3>
-        <ul style={{ listStyle: "none", padding: 0 }}>
-          {comments.length === 0 && <li>Inga kommentarer än.</li>}
-          {comments.map((c, i) => (
-            <li
-              key={i}
-              style={{
-                borderBottom: "1px solid #eee",
-                marginBottom: "0.5rem",
-                paddingBottom: "0.5rem",
-              }}
+      {location.pathname.startsWith("/recipe/") && (
+        <div>
+          <section
+            style={{
+              marginTop: "2rem",
+              width: "100%",
+              maxWidth: 400,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            <h3>Lämna en kommentar</h3>
+            <form
+              onSubmit={handleSubmit}
+              style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
             >
-              <strong>{c.name}</strong>: {c.comment}
-            </li>
-          ))}
-        </ul>
-      </section>
+              <input
+                type="text"
+                placeholder="Ditt namn"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                style={{ padding: "0.5rem", borderRadius: 4, border: "1px solid #ccc" }}
+              />
+              <textarea
+                placeholder="Din kommentar"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                required
+                rows={3}
+                style={{ padding: "0.5rem", borderRadius: 4, border: "1px solid #ccc" }}
+              />
+              <button type="submit" disabled={submitting}>
+                {submitting ? "Skickar..." : "Skicka kommentar"}
+              </button>
+            </form>
+            {thankYou && (
+              <p style={{ color: "green", marginTop: "0.5rem" }}>Tack för din kommentar!</p>
+            )}
+          </section>
+          <section
+            style={{
+              marginTop: "2rem",
+              width: "100%",
+              maxWidth: 400,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            <h3>Kommentarer</h3>
+            <ul style={{ listStyle: "none", padding: 0 }}>
+              {comments.length === 0 && <li>Inga kommentarer än.</li>}
+              {comments.map((c, i) => (
+                <li
+                  key={i}
+                  style={{
+                    borderBottom: "1px solid #eee",
+                    marginBottom: "0.5rem",
+                    paddingBottom: "0.5rem",
+                  }}
+                >
+                  <strong>{c.name}</strong>: {c.comment}
+                </li>
+              ))}
+            </ul>
+          </section>
+        </div>
+      )}
     </div>
   );
 }
