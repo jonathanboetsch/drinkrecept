@@ -87,7 +87,6 @@ function App() {
         <CategoryFilter
           categories={allCategories}
           activeCategory={activeCategory}
-          onSelectCategory={() => {}}
           linkToRoute={true}
         />
       </header>

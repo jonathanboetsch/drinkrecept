@@ -5,7 +5,6 @@ import "./RecipeList.css";
 export default function RecipeList({
   recipes,
   activeCategory = "Alla",
-  onSelectCategory = () => {},
 }) {
   // 🧩 Create category list for validation
   const categories = useMemo(() => {
@@ -13,12 +12,6 @@ export default function RecipeList({
     recipes.forEach((r) => (r.categories || []).forEach((c) => set.add(c)));
     return ["Alla", ...Array.from(set).sort()];
   }, [recipes]);
-
-  useEffect(() => {
-    if (!categories.includes(activeCategory)) {
-      onSelectCategory("Alla");
-    }
-  }, [categories, activeCategory, onSelectCategory]);
 
   // 🔍 Filter recipes
   const filteredRecipes = useMemo(() => {
