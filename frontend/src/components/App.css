@@ -179,10 +179,10 @@ html,
 
 .hamburger-button {
   background: darkgray;
-  border: solid 2px black;
+  border: solid 4px black;
   padding: 0.4rem 0.6rem;
   font-size: 2.5rem;
-  border-radius: 30px;
+  border-radius: 26px;
   cursor: pointer;
 }
 
