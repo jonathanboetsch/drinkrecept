@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import "./App.css";
 import RatingForm from "./RatingForm";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function calculateDifficulty(timeInMins) {
   // Enkel logik för att bestämma svårighetsgrad baserat på tid
@@ -17,8 +17,21 @@ function calculateDifficulty(timeInMins) {
   return "Svår";
 }
 
-export default function Recipe({ recipe }) {
+export default function Recipe({ recipe, onAvgUpdate }) {
   const location = useLocation(); // information about the URL path, notably `pathname`
+  const [ratingClickable, setRatingClickable] = useState(true);
+  const [avgRating, setAvgRating] = useState(Number(recipe.avgRating));
+
+  const updateAvgRating = (newRating) => {
+    setAvgRating(Number(newRating));
+    console.log(`New avg rating for recipe ${recipe.title}: ${newRating}`);
+  };
+
+  useEffect(() => {
+    setAvgRating(Number(recipe.avgRating));
+  }, [recipe.avgRating]); // updates avgRating if App (homepage) refetches the recipe
+
+  const toggleRatingOff = () => setRatingClickable(false);
 
   if (!recipe) {
     return <div className="recipe-not-found">Receptet hittades inte.</div>;
@@ -30,13 +43,6 @@ export default function Recipe({ recipe }) {
   };
   // Beräkna svårighetsgrad för det enskilda receptet
   const difficulty = calculateDifficulty(recipe.timeInMins);
-
-  const [updatedAvgRating, setAvgRating] = useState(null);
-
-  const updateAvgRating = (newRating) => {
-    setAvgRating(newRating);
-    console.log(`New avg rating for recipe ${recipe.title}: ${newRating}`);
-  };
 
   return (
     <div className="recipe-container">
@@ -106,10 +112,19 @@ export default function Recipe({ recipe }) {
 
           <p className="recipe-rating">
             <strong>Genomsnittligt betyg:</strong>{" "}
-            {updatedAvgRating ?? recipe.avgRating ?? "Ingen än"}
+            {avgRating
+              ? Number(avgRating).toFixed(2)
+              : Number(recipe.avgRating).toFixed(2) ?? "Ingen än"}
           </p>
           {location.pathname.startsWith("/recipe/") && (
-            <RatingForm recipe={recipe} updateAvgRatingOnParent={updateAvgRating} />
+            <RatingForm
+              recipe={recipe}
+              toggleRatingOff={toggleRatingOff} // do not share setter => preserve parent's ownership
+              isRatingClickable={ratingClickable}
+              avgRating={avgRating}
+              updateAvgRating={updateAvgRating}
+              onAvgUpdate={onAvgUpdate}
+            />
           )}
         </div>
       )}

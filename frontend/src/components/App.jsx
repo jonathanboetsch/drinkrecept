@@ -6,14 +6,14 @@ import Header from "../assets/Header2.png";
 import SearchBar from "./SearchBar";
 import Recipe from "./Recipe";
 
-function CategoryPage({ recipes }) {
+function CategoryPage({ recipes, updateRecipeAvg }) {
   const { id } = useParams();
   const filtered = recipes.filter((r) => (r.categories || []).includes(id));
   return (
     <>
       <div className="category-page">
         <h2 className="category-title">Kategori: {id}</h2>
-        <RecipeList recipes={filtered} />
+        <RecipeList recipes={filtered} onAvgUpdate={onAvgUpdate} />
       </div>
     </>
   );
@@ -26,13 +26,19 @@ function RecipePage({ recipes }) {
   return (
     <div className="recipe-page">
       {recipe ? (
-        <Recipe recipe={recipe} />
+        <Recipe recipe={recipe} onAvgUpdate={updateRecipeAvg} />
       ) : (
         <p className="not-found-message">Receptet hittades inte</p>
       )}
     </div>
   );
 }
+
+const updateRecipeAvg = (recipeId, newAvgRating) => {
+  setRecipes((prev) =>
+    prev.map((r) => (r._id == recipeId ? { ...r, avgRating: newAvgRating } : r))
+  );
+};
 
 function App() {
   const [recipes, setRecipes] = useState([]);
@@ -104,7 +110,10 @@ function App() {
             Make sure to navigate to /category/alkohol (without colon) 
             Example: <Link to={`/category/alkohol`}>Alkohol</Link>
           */}
-            <Route path="/" element={<RecipeList recipes={searchResult} />} />
+            <Route
+              path="/"
+              element={<RecipeList recipes={searchResult} onAvgUpdate={updateRecipeAvg} />}
+            />
             <Route path="/category/:id" element={<CategoryPage recipes={searchResult} />} />
             <Route path="/recipe/:id" element={<RecipePage recipes={searchResult} />} />
           </Routes>

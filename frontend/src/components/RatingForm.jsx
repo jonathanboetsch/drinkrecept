@@ -6,11 +6,13 @@ export default function RatingForm({
   ratingLevels = [1, 2, 3, 4, 5],
   confirmationAction,
   recipe,
-  updateAvgRatingOnParent,
+  updateAvgRating,
+  toggleRatingOff,
+  isRatingClickable,
+  onAvgUpdate,
+  // avgRating, // TODO: remove avgRating state variable from RatingForm
 }) {
   // TODO: add a mechanism to store and update all the recipes ratings.
-  const [isHidden, setHiding] = useState(false);
-  const [avgRating, setAvgRating] = useState(Number(recipe.avgRating) || null);
   const [userRating, setUserRating] = useState(null);
 
   const handleRatingClick = (rating) => {
@@ -35,10 +37,11 @@ export default function RatingForm({
           return res2.json();
         })
         .then((updatedRecipe) => {
-          const userRating = Number(updatedRecipe.avgRating);
-          setAvgRating(userRating);
+          const newAvgRating = Number(updatedRecipe.avgRating);
+          updateAvgRating(newAvgRating);
+          onAvgUpdate(recipe._id, newAvgRating);
           setUserRating(rating);
-          updateAvgRatingOnParent(userRating);
+          toggleRatingOff();
         })
         .catch((error) => console.error(error));
     }
@@ -53,8 +56,7 @@ export default function RatingForm({
           confAction={confirmationAction} // thought to popup a "thank for your contribution"
           setRating={handleRatingClick} // user click on Star => set its rating value in the RatingForm
           recipe={recipe} // optional, put here for logging in the console when user clicks
-          isHidden={isHidden} // Star can this way update its css property dynamically
-          setHiding={setHiding} // A click on a Star sets hiding for all the Star components (isHidden=true)
+          isHidden={!isRatingClickable} // Star can this way update its css property dynamically
           imageUrl={
             userRating === null || val <= userRating
               ? "https://upload.wikimedia.org/wikipedia/commons/6/6e/Super_Mario_Bros._%E2%80%93_Overworld_Star.png"

@@ -7,7 +7,6 @@ export default function Star({
   confAction = () => console.log(`user gave rating ${level} to recipe ${recipe.title}`),
   setRating,
   isHidden,
-  setHiding,
 }) {
   return (
     <div className="rating-unit">
@@ -19,7 +18,6 @@ export default function Star({
         onClick={() => {
           confAction(level);
           setRating(level);
-          setHiding(true);
         }}
       />
     </div>

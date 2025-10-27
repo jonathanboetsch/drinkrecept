@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Recipe from "./Recipe.jsx";
 import CategoryFilter from "./CategoryFilter.jsx";
 
-export default function RecipeList({ recipes = [] }) {
+export default function RecipeList({ recipes = [], onAvgUpdate }) {
   const [activeCategory, setActiveCategory] = useState("Alla");
 
   // Skapa kategorilistan från de recept som kommer in via props
@@ -35,7 +35,7 @@ export default function RecipeList({ recipes = [] }) {
       />
       <div className="recipes-container">
         {filteredRecipes.map((r, i) => (
-          <Recipe key={r._id ?? i} recipe={r} />
+          <Recipe key={r._id ?? i} recipe={r} onAvgUpdate={onAvgUpdate} />
         ))}
       </div>
     </div>
