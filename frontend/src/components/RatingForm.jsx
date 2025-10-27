@@ -1,17 +1,13 @@
 import Star from "./Star.jsx";
 import "./Rating.css";
 import { useState } from "react";
+import { useUpdateAvgRating } from "./AvgRatingContext.jsx";
 
-export default function RatingForm({
-  ratingLevels = [1, 2, 3, 4, 5],
-  confirmationAction,
-  recipe,
-  updateAvgRatingOnParent,
-}) {
+export default function RatingForm({ ratingLevels = [1, 2, 3, 4, 5], confirmationAction, recipe }) {
   // TODO: add a mechanism to store and update all the recipes ratings.
   const [isHidden, setHiding] = useState(false);
-  const [avgRating, setAvgRating] = useState(Number(recipe.avgRating) || null);
   const [userRating, setUserRating] = useState(null);
+  const updateAvgRating = useUpdateAvgRating();
 
   const handleRatingClick = (rating) => {
     const API_URL = "https://grupp3-jynxa.reky.se";
@@ -36,9 +32,9 @@ export default function RatingForm({
         })
         .then((updatedRecipe) => {
           const userRating = Number(updatedRecipe.avgRating);
-          setAvgRating(userRating);
+          setUserRating(userRating);
           setUserRating(rating);
-          updateAvgRatingOnParent(userRating);
+          updateAvgRating(userRating);
         })
         .catch((error) => console.error(error));
     }
@@ -46,9 +42,9 @@ export default function RatingForm({
 
   return (
     <div className="rating-form">
-      {ratingLevels.map((val, i) => (
+      {ratingLevels.map((val) => (
         <Star
-          key={i}
+          key={val}
           level={val} // each Star gets an increasing rating value
           confAction={confirmationAction} // thought to popup a "thank for your contribution"
           setRating={handleRatingClick} // user click on Star => set its rating value in the RatingForm
