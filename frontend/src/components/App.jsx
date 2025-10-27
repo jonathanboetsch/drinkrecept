@@ -5,6 +5,7 @@ import "./App.css";
 import Header from "../assets/Header2.png";
 import SearchBar from "./SearchBar";
 import Recipe from "./Recipe";
+import { UpdateAvgRatingContext } from "./AvgRatingContext";
 
 function CategoryPage({ recipes }) {
   const { id } = useParams();
@@ -81,6 +82,12 @@ function App() {
     setSearchResult(recipes);
   }, [recipes]);
 
+  const updateAvgRating = (recipeId, newAvgRating) => {
+    setRecipes((prev) => {
+      prev.map((r) => (r._id === recipeId ? { ...r, avgRating: newAvgRating } : r));
+    });
+  };
+
   if (loading) {
     // return <p>Laddar recept...</p>;
     return <p className="loading-message">Laddar recept...</p>;
@@ -99,15 +106,17 @@ function App() {
       </header>
       <main className="main-content">
         <div className="routes-container">
-          <Routes>
-            {/* 
+          <UpdateAvgRatingContext.Provider value={updateAvgRating}>
+            <Routes>
+              {/* 
             Make sure to navigate to /category/alkohol (without colon) 
             Example: <Link to={`/category/alkohol`}>Alkohol</Link>
           */}
-            <Route path="/" element={<RecipeList recipes={searchResult} />} />
-            <Route path="/category/:id" element={<CategoryPage recipes={searchResult} />} />
-            <Route path="/recipe/:id" element={<RecipePage recipes={searchResult} />} />
-          </Routes>
+              <Route path="/" element={<RecipeList recipes={searchResult} />} />
+              <Route path="/category/:id" element={<CategoryPage recipes={searchResult} />} />
+              <Route path="/recipe/:id" element={<RecipePage recipes={searchResult} />} />
+            </Routes>
+          </UpdateAvgRatingContext.Provider>
         </div>
       </main>
     </div>
