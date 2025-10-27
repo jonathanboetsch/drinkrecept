@@ -12,7 +12,7 @@ function CategoryPage({ recipes }) {
   const filtered = recipes.filter((r) => (r.categories || []).includes(id));
   return (
     <div className="category-page">
-      <h2 className="category-title">Kategori: {id}</h2>
+      <h2 className="category-title"> {id}</h2>
       <RecipeList recipes={filtered} />
     </div>
   );
