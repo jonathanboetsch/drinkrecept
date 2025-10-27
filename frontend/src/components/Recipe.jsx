@@ -1,7 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import "./App.css";
 import RatingForm from "./RatingForm";
-import { useState } from "react";
 
 function calculateDifficulty(timeInMins) {
   // Enkel logik för att bestämma svårighetsgrad baserat på tid
@@ -30,13 +29,6 @@ export default function Recipe({ recipe }) {
   };
   // Beräkna svårighetsgrad för det enskilda receptet
   const difficulty = calculateDifficulty(recipe.timeInMins);
-
-  const [updatedAvgRating, setAvgRating] = useState(null);
-
-  const updateAvgRating = (newRating) => {
-    setAvgRating(newRating);
-    console.log(`New avg rating for recipe ${recipe.title}: ${newRating}`);
-  };
 
   return (
     <div className="recipe-container">
@@ -105,12 +97,9 @@ export default function Recipe({ recipe }) {
           )}
 
           <p className="recipe-rating">
-            <strong>Genomsnittligt betyg:</strong>{" "}
-            {updatedAvgRating ?? recipe.avgRating ?? "Ingen än"}
+            <strong>Rating:</strong> {recipe.avgRating ?? "Ingen än"}
           </p>
-          {location.pathname.startsWith("/recipe/") && (
-            <RatingForm recipe={recipe} updateAvgRatingOnParent={updateAvgRating} />
-          )}
+          {location.pathname.startsWith("/recipe/") && <RatingForm recipe={recipe} />}
         </div>
       )}
     </div>
