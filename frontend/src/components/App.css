@@ -1,3 +1,4 @@
+/* ==== Baslayout för appen ==== */
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -26,20 +27,27 @@
     transform: rotate(360deg);
   }
 }
-
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
   }
 }
-
 .card {
   padding: 2em;
 }
-
 .read-the-docs {
   color: #888;
 }
+
+/* ==== Headerbild ==== 
+.header-image {
+  width: 100%;
+  max-width: 1200px;
+  height: auto;
+  margin: 0 auto 2rem auto;
+  display: block;
+  border-radius: 10px;
+} */
 
 /* new stuff down here  */
 
@@ -80,7 +88,8 @@ html,
   overflow: hidden;
   z-index: 1;
   color: white;
-  padding: 25px;
+  padding: 30px;
+  border: 1px solid white;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -104,40 +113,33 @@ html,
   margin-bottom: 10px;
   text-align: center;
 }
-
 .recipe-card img {
   width: 100%;
   max-width: 200px;
-
   height: auto;
   object-fit: cover;
-
   border-radius: 10px;
   margin-bottom: 15px;
   border: 2px solid white;
 }
 
+/* Text och listor */
 .recipe-card p {
   margin: 5px;
-  font-size: 0.9em;
+  font-size: 0.9rem;
 }
 
-.recipe-card ul {
+.recipe-card ul,
+.recipe-card ol {
   text-align: left;
   width: 100%;
   padding-left: 20px;
-  margin: 5px 0;
+  margin: 5px auto;
 }
 
 .recipe-card li {
   margin-bottom: 3px;
-  font-size: 0.8em;
-}
-
-/*  This hides the category and cooking method, check Recipe.jsx.  */
-.recipe-card h3,
-.recipe-card ol {
-  display: none;
+  font-size: 0.9rem;
 }
 
 .simple-header {

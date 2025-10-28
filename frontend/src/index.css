@@ -1,9 +1,11 @@
+/* ==============================
+   🌗 Grundinställningar
+   ============================== */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
@@ -14,28 +16,51 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ==============================
+   🔗 Länkar
+   ============================== */
 a {
   font-weight: 500;
   color: #646cff;
-  text-decoration: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
+
 a:hover {
   color: #535bf2;
 }
 
+/* ==============================
+   🧱 Body & Root Layout Fix
+   ============================== */
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: #242424;
+  display: block; /* Viktigt: inte flex */
+  overflow-x: hidden; /* Tar bort horisontell scroll */
 }
 
+#root {
+  display: block; /* Ingen flexcentrering */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* ==============================
+   🧾 Rubriker
+   ============================== */
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
 
+/* ==============================
+   🔘 Globala knappar (inte kategori-knapparna)
+   ============================== */
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -44,26 +69,54 @@ button {
   font-weight: 500;
   font-family: inherit;
   background-color: #1a1a1a;
+  color: #fff;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: all 0.25s ease;
 }
+
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* ==============================
+   🌞 Ljust läge
+   ============================== */
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
+    color: white;
     background-color: #ffffff;
   }
+
   a:hover {
     color: #747bff;
   }
+
   button {
     background-color: #f9f9f9;
+    color: #222;
+  }
+}
+
+/* ==============================
+   📱 Responsivitet
+   ============================== */
+@media (max-width: 900px) {
+  #root {
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 600px) {
+  #root {
+    padding: 0.5rem;
+  }
+
+  h1 {
+    font-size: 2em;
   }
 }
