@@ -1,15 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Route, Routes, useParams } from "react-router-dom";
 import RecipeList from "./RecipeList";
 import "./App.css";
 import Header from "../assets/Header2.png";
 import SearchBar from "./SearchBar";
 import Recipe from "./Recipe";
-import { UpdateAvgRatingContext } from "./AvgRatingContext";
+import { RecipesContext, useRecipesContext } from "./RecipesContext";
 
-function CategoryPage({ recipes }) {
+function CategoryPage() {
+  const { searchResult } = useRecipesContext();
   const { id } = useParams();
-  const filtered = recipes.filter((r) => (r.categories || []).includes(id));
+  const filtered = searchResult.filter((r) => (r.categories || []).includes(id));
   return (
     <>
       <div className="category-page">
@@ -20,9 +21,10 @@ function CategoryPage({ recipes }) {
   );
 }
 
-function RecipePage({ recipes }) {
+function RecipePage() {
+  const { searchResult } = useRecipesContext();
   const { id } = useParams();
-  const recipe = recipes.find((r) => String(r._id) === id);
+  const recipe = searchResult.find((r) => String(r._id) === String(id));
   // return recipe ? <Recipe recipe={recipe} /> : <p>Receptet hittades inte</p>;
   return (
     <div className="recipe-page">
@@ -42,6 +44,7 @@ function App() {
   // searchResult needed to implement search bar functionnality
   // this becomes the element passed to the RecipeList instead of sending directly "recipes" array
   const [searchResult, setSearchResult] = useState(recipes);
+  const [userRatings, setUserRatings] = useState([]);
   const API_URL = "https://grupp3-jynxa.reky.se/recipes";
 
   const flattenValues = (obj) => {
@@ -72,9 +75,17 @@ function App() {
         }
         return response.json();
       })
-      .then((data) => setRecipes(data))
+      .then((data) => {
+        setRecipes(data);
+        setUserRatings((prev) => {
+          if (prev && prev.length > 0) return prev; // keep array if already populated
+          return data.map((r) => ({ recipeId: r._id, rating: null })); // initialize null values otherwise
+        });
+      })
       .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   // needed to load recipes onto searchResult as soon as they are fetched
@@ -83,10 +94,40 @@ function App() {
   }, [recipes]);
 
   const updateAvgRating = (recipeId, newAvgRating) => {
-    setRecipes((prev) => {
-      prev.map((r) => (r._id === recipeId ? { ...r, avgRating: newAvgRating } : r));
-    });
+    setRecipes((prev) =>
+      prev.map((r) => (String(r._id) === String(recipeId) ? { ...r, avgRating: newAvgRating } : r))
+    );
   };
+
+  /* --- USER RATING INTEGRATION --- */
+
+  // store user rating state var on disk => allows state persistence across refreshes and browser sessions
+  useEffect(() => {
+    const storedRatings = localStorage.getItem("userRatings");
+    if (storedRatings) setUserRatings(JSON.parse(storedRatings));
+  }, []);
+
+  // persist on disk whenever userRatings changes
+  useEffect(() => {
+    localStorage.setItem("userRatings", JSON.stringify(userRatings));
+  }, [userRatings]);
+
+  // update userRatings state var when user rates a recipe
+  const updateUserRatings = (recipeId, rating) =>
+    setUserRatings((prev) => {
+      const found = prev.find((r) => String(r.recipeId) === String(recipeId));
+      if (found) {
+        return prev.map((r) => (String(r.recipeId) === String(recipeId) ? { ...r, rating } : r));
+      } else {
+        return [...prev, { recipeId, rating }];
+      }
+    });
+
+  /* update values put in RecipesContext when recipes changes */
+  const contextItems = useMemo(
+    () => ({ searchResult, updateAvgRating, userRatings, updateUserRatings }),
+    [userRatings, searchResult]
+  );
 
   if (loading) {
     // return <p>Laddar recept...</p>;
@@ -106,17 +147,13 @@ function App() {
       </header>
       <main className="main-content">
         <div className="routes-container">
-          <UpdateAvgRatingContext.Provider value={updateAvgRating}>
+          <RecipesContext.Provider value={contextItems}>
             <Routes>
-              {/* 
-            Make sure to navigate to /category/alkohol (without colon) 
-            Example: <Link to={`/category/alkohol`}>Alkohol</Link>
-          */}
-              <Route path="/" element={<RecipeList recipes={searchResult} />} />
-              <Route path="/category/:id" element={<CategoryPage recipes={searchResult} />} />
-              <Route path="/recipe/:id" element={<RecipePage recipes={searchResult} />} />
+              <Route path="/" element={<RecipeList />} />
+              <Route path="/category/:id" element={<CategoryPage />} />
+              <Route path="/recipe/:id" element={<RecipePage />} />
             </Routes>
-          </UpdateAvgRatingContext.Provider>
+          </RecipesContext.Provider>
         </div>
       </main>
     </div>
