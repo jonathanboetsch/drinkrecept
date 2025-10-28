@@ -1,9 +1,11 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Recipe from "./Recipe.jsx";
 import CategoryFilter from "./CategoryFilter.jsx";
+import { useRecipesContext } from "./RecipesContext.jsx";
 
-export default function RecipeList({ recipes = [] }) {
+export default function RecipeList() {
   const [activeCategory, setActiveCategory] = useState("Alla");
+  const { recipes } = useRecipesContext();
 
   // Skapa kategorilistan från de recept som kommer in via props
   const categories = useMemo(() => {

@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Route, Routes, useParams } from "react-router-dom";
 import RecipeList from "./RecipeList";
 import "./App.css";
 import Header from "../assets/Header2.png";
 import SearchBar from "./SearchBar";
 import Recipe from "./Recipe";
-import { UpdateAvgRatingContext } from "./AvgRatingContext";
+import { RecipesContext, useRecipesContext } from "./RecipesContext";
 
-function CategoryPage({ recipes }) {
+function CategoryPage() {
+  const { recipes } = useRecipesContext();
   const { id } = useParams();
   const filtered = recipes.filter((r) => (r.categories || []).includes(id));
   return (
@@ -20,7 +21,8 @@ function CategoryPage({ recipes }) {
   );
 }
 
-function RecipePage({ recipes }) {
+function RecipePage() {
+  const { recipes } = useRecipesContext();
   const { id } = useParams();
   const recipe = recipes.find((r) => String(r._id) === id);
   // return recipe ? <Recipe recipe={recipe} /> : <p>Receptet hittades inte</p>;
@@ -42,6 +44,7 @@ function App() {
   // searchResult needed to implement search bar functionnality
   // this becomes the element passed to the RecipeList instead of sending directly "recipes" array
   const [searchResult, setSearchResult] = useState(recipes);
+  const [userRatings, setUserRatings] = useState([{}]);
   const API_URL = "https://grupp3-jynxa.reky.se/recipes";
 
   const flattenValues = (obj) => {
@@ -83,10 +86,35 @@ function App() {
   }, [recipes]);
 
   const updateAvgRating = (recipeId, newAvgRating) => {
-    setRecipes((prev) => {
-      prev.map((r) => (r._id === recipeId ? { ...r, avgRating: newAvgRating } : r));
-    });
+    setRecipes((prev) =>
+      prev.map((r) => (r._id === recipeId ? { ...r, avgRating: newAvgRating } : r))
+    );
   };
+
+  /* --- USER RATING INTEGRATION --- */
+
+  // store user rating state var on disk => allows state persistence across refreshes and browser sessions
+  useEffect(() => {
+    const storedRatings = localStorage.getItem("userRatings");
+    if (storedRatings) setUserRatings(JSON.parse(storedRatings));
+  }, []);
+
+  // persist on disk whenever userRatings changes
+  useEffect(() => {
+    localStorage.setItem("userRatings", JSON.stringify(userRatings));
+  }, [userRatings]);
+
+  // update userRatings state var when user rates a recipe
+  const updateUserRatings = (recipeId, rating) =>
+    setUserRatings((prev) =>
+      prev.map((r) => (r.recipeId === recipeId ? { recipeId: r.recipeId, rating: { rating } } : r))
+    );
+
+  /* update values put in RecipesContext when recipes changes */
+  const contextItems = useMemo(
+    () => ({ recipes, setRecipes, updateAvgRating, userRatings, updateUserRatings }),
+    [recipes, userRatings]
+  );
 
   if (loading) {
     // return <p>Laddar recept...</p>;
@@ -106,17 +134,13 @@ function App() {
       </header>
       <main className="main-content">
         <div className="routes-container">
-          <UpdateAvgRatingContext.Provider value={updateAvgRating}>
+          <RecipesContext.Provider value={contextItems}>
             <Routes>
-              {/* 
-            Make sure to navigate to /category/alkohol (without colon) 
-            Example: <Link to={`/category/alkohol`}>Alkohol</Link>
-          */}
               <Route path="/" element={<RecipeList recipes={searchResult} />} />
               <Route path="/category/:id" element={<CategoryPage recipes={searchResult} />} />
               <Route path="/recipe/:id" element={<RecipePage recipes={searchResult} />} />
             </Routes>
-          </UpdateAvgRatingContext.Provider>
+          </RecipesContext.Provider>
         </div>
       </main>
     </div>

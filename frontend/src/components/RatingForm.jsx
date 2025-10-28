@@ -1,13 +1,23 @@
 import Star from "./Star.jsx";
 import "./Rating.css";
-import { useState } from "react";
-import { useUpdateAvgRating } from "./AvgRatingContext.jsx";
+import { useEffect, useState } from "react";
+import { useRecipesContext } from "./RecipesContext.jsx";
 
 export default function RatingForm({ ratingLevels = [1, 2, 3, 4, 5], confirmationAction, recipe }) {
-  // TODO: add a mechanism to store and update all the recipes ratings.
-  const [isHidden, setHiding] = useState(false);
   const [userRating, setUserRating] = useState(null);
-  const updateAvgRating = useUpdateAvgRating();
+  const [isRatingDisabled, disableRating] = useState(false);
+
+  const { updateAvgRating, updateUserRatings, userRatings } = useRecipesContext();
+
+  useEffect(() => {
+    console.log(userRatings);
+    const found = userRatings?.find((r) => r.recipeId === recipe._id)?.rating;
+    setUserRating(found ? found : null);
+    console.log(`Updated user rating: ${userRating}`);
+    disableRating(userRating ? true : false);
+    console.log(`Rating button disabled: ${isRatingDisabled}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userRatings]);
 
   const handleRatingClick = (rating) => {
     const API_URL = "https://grupp3-jynxa.reky.se";
@@ -31,10 +41,9 @@ export default function RatingForm({ ratingLevels = [1, 2, 3, 4, 5], confirmatio
           return res2.json();
         })
         .then((updatedRecipe) => {
-          const userRating = Number(updatedRecipe.avgRating);
-          setUserRating(userRating);
-          setUserRating(rating);
-          updateAvgRating(userRating);
+          const newAvgRating = Number(updatedRecipe.avgRating);
+          updateAvgRating(recipe._id, newAvgRating);
+          updateUserRatings(recipe._id, rating);
         })
         .catch((error) => console.error(error));
     }
@@ -47,10 +56,9 @@ export default function RatingForm({ ratingLevels = [1, 2, 3, 4, 5], confirmatio
           key={val}
           level={val} // each Star gets an increasing rating value
           confAction={confirmationAction} // thought to popup a "thank for your contribution"
-          setRating={handleRatingClick} // user click on Star => set its rating value in the RatingForm
+          onRating={handleRatingClick} // user click on Star => set its rating value in the RatingForm
           recipe={recipe} // optional, put here for logging in the console when user clicks
-          isHidden={isHidden} // Star can this way update its css property dynamically
-          setHiding={setHiding} // A click on a Star sets hiding for all the Star components (isHidden=true)
+          isHidden={isRatingDisabled} // Star can this way update its css property dynamically
           imageUrl={
             userRating === null || val <= userRating
               ? "https://upload.wikimedia.org/wikipedia/commons/6/6e/Super_Mario_Bros._%E2%80%93_Overworld_Star.png"

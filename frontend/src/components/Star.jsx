@@ -5,9 +5,8 @@ export default function Star({
   level,
   imageUrl = "https://upload.wikimedia.org/wikipedia/commons/6/6e/Super_Mario_Bros._%E2%80%93_Overworld_Star.png",
   confAction = () => console.log(`user gave rating ${level} to recipe ${recipe.title}`),
-  setRating,
+  onRating,
   isHidden,
-  setHiding,
 }) {
   return (
     <div className="rating-unit">
@@ -18,8 +17,7 @@ export default function Star({
         hidden={isHidden}
         onClick={() => {
           confAction(level);
-          setRating(level);
-          setHiding(true);
+          onRating(level);
         }}
       />
     </div>
