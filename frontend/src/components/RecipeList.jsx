@@ -5,7 +5,7 @@ import { useRecipesContext } from "./RecipesContext.jsx";
 
 export default function RecipeList() {
   const [activeCategory, setActiveCategory] = useState("Alla");
-  const { recipes } = useRecipesContext();
+  const { searchResult: recipes } = useRecipesContext();
 
   // Skapa kategorilistan från de recept som kommer in via props
   const categories = useMemo(() => {

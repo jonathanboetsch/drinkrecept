@@ -9,7 +9,7 @@ export default function RatingForm({ ratingLevels = [1, 2, 3, 4, 5], confirmatio
 
   const { updateAvgRating, updateUserRatings, userRatings } = useRecipesContext();
 
-  useEffect(() => {
+  useEffect(() =>  {
     console.log(userRatings);
     const found = userRatings?.find((r) => r.recipeId === recipe._id)?.rating;
     setUserRating(found ? found : null);

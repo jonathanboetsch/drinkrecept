@@ -8,7 +8,7 @@ import Recipe from "./Recipe";
 import { RecipesContext, useRecipesContext } from "./RecipesContext";
 
 function CategoryPage() {
-  const { recipes } = useRecipesContext();
+  const { searchResult: recipes } = useRecipesContext();
   const { id } = useParams();
   const filtered = recipes.filter((r) => (r.categories || []).includes(id));
   return (
@@ -22,7 +22,7 @@ function CategoryPage() {
 }
 
 function RecipePage() {
-  const { recipes } = useRecipesContext();
+  const { searchResult: recipes } = useRecipesContext();
   const { id } = useParams();
   const recipe = recipes.find((r) => String(r._id) === String(id));
   // return recipe ? <Recipe recipe={recipe} /> : <p>Receptet hittades inte</p>;
@@ -117,8 +117,8 @@ function App() {
 
   /* update values put in RecipesContext when recipes changes */
   const contextItems = useMemo(
-    () => ({ recipes, setRecipes, updateAvgRating, userRatings, updateUserRatings }),
-    [recipes, userRatings]
+    () => ({ recipes, setRecipes, searchResult, updateAvgRating, userRatings, updateUserRatings }),
+    [recipes, userRatings, searchResult]
   );
 
   if (loading) {
@@ -141,9 +141,9 @@ function App() {
         <div className="routes-container">
           <RecipesContext.Provider value={contextItems}>
             <Routes>
-              <Route path="/" element={<RecipeList recipes={searchResult} />} />
-              <Route path="/category/:id" element={<CategoryPage recipes={searchResult} />} />
-              <Route path="/recipe/:id" element={<RecipePage recipes={searchResult} />} />
+              <Route path="/" element={<RecipeList />} />
+              <Route path="/category/:id" element={<CategoryPage />} />
+              <Route path="/recipe/:id" element={<RecipePage />} />
             </Routes>
           </RecipesContext.Provider>
         </div>
