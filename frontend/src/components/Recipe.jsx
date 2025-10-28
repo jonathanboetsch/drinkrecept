@@ -97,7 +97,8 @@ export default function Recipe({ recipe }) {
           )}
 
           <p className="recipe-rating">
-            <strong>Rating:</strong> {recipe.avgRating ?? "Ingen än"}
+            <strong>Rating:</strong>{" "}
+            {recipe.avgRating ? Number(recipe.avgRating).toFixed(1) : "Ingen än"}
           </p>
           {location.pathname.startsWith("/recipe/") && <RatingForm recipe={recipe} />}
         </div>
