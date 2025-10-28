@@ -24,7 +24,7 @@ function CategoryPage() {
 function RecipePage() {
   const { recipes } = useRecipesContext();
   const { id } = useParams();
-  const recipe = recipes.find((r) => String(r._id) === id);
+  const recipe = recipes.find((r) => String(r._id) === String(id));
   // return recipe ? <Recipe recipe={recipe} /> : <p>Receptet hittades inte</p>;
   return (
     <div className="recipe-page">
@@ -87,7 +87,7 @@ function App() {
 
   const updateAvgRating = (recipeId, newAvgRating) => {
     setRecipes((prev) =>
-      prev.map((r) => (r._id === recipeId ? { ...r, avgRating: newAvgRating } : r))
+      prev.map((r) => (String(r._id) === String(recipeId) ? { ...r, avgRating: newAvgRating } : r))
     );
   };
 
@@ -106,9 +106,14 @@ function App() {
 
   // update userRatings state var when user rates a recipe
   const updateUserRatings = (recipeId, rating) =>
-    setUserRatings((prev) =>
-      prev.map((r) => (r.recipeId === recipeId ? { recipeId: r.recipeId, rating: { rating } } : r))
-    );
+    setUserRatings((prev) => {
+      const found = prev.find((r) => String(r.recipeId) === String(recipeId));
+      if (found) {
+        return prev.map((r) => (String(r.recipeId) === String(recipeId) ? { ...r, rating } : r));
+      } else {
+        return [...prev, { recipeId, rating }];
+      }
+    });
 
   /* update values put in RecipesContext when recipes changes */
   const contextItems = useMemo(
