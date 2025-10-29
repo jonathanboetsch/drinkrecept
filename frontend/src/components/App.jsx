@@ -5,11 +5,13 @@ import "./App.css";
 import Header from "../assets/Header2.png";
 import SearchBar from "./SearchBar";
 import Recipe from "./Recipe";
+import { RecipesContext, useRecipesContext } from "./RecipesContext";
 import CategoryFilter from "./CategoryFilter";
 
-function CategoryPage({ recipes }) {
+function CategoryPage() {
+  const { searchResult } = useRecipesContext();
   const { id } = useParams();
-  const filtered = recipes.filter((r) => (r.categories || []).includes(id));
+  const filtered = searchResult.filter((r) => (r.categories || []).includes(id));
   return (
     <div className="category-page">
       <h2 className="category-title"> {id}</h2>
@@ -18,9 +20,11 @@ function CategoryPage({ recipes }) {
   );
 }
 
-function RecipePage({ recipes }) {
+function RecipePage() {
+  const { searchResult } = useRecipesContext();
   const { id } = useParams();
-  const recipe = recipes.find((r) => String(r._id) === id);
+  const recipe = searchResult.find((r) => String(r._id) === String(id));
+  // return recipe ? <Recipe recipe={recipe} /> : <p>Receptet hittades inte</p>;
   return (
     <div className="recipe-page">
       {recipe ? (
@@ -36,7 +40,14 @@ function App() {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  // searchResult needed to implement search bar functionality
+  // this becomes the element passed to the RecipeList instead of sending directly "recipes" array
   const [searchResult, setSearchResult] = useState([]);
+  const [userRatings, setUserRatings] = useState(() => {
+    const storedRatings = localStorage.getItem("userRatings");
+    return storedRatings ? JSON.parse(storedRatings) : [];
+  });
+  const API_URL = "https://grupp3-jynxa.reky.se/recipes";
 
   const match = useMatch("/category/:id"); // 🔹 gets the id of the category from the URL path
   const activeCategory = match?.params?.id || "Alla"; // 🔹 set active category based on the URI
@@ -57,7 +68,7 @@ function App() {
   };
 
   useEffect(() => {
-    fetch("https://grupp3-jynxa.reky.se/recipes")
+    fetch(API_URL)
       .then((response) => {
         if (!response.ok) throw new Error("Något gick fel vid hämtning av recept");
         return response.json();
@@ -65,9 +76,15 @@ function App() {
       .then((data) => {
         setRecipes(data);
         setSearchResult(data);
+        setUserRatings((prev) => {
+          if (prev && prev.length > 0) return prev; // keep array if already populated
+          return data.map((r) => ({ recipeId: r._id, rating: null })); // initialize null values otherwise
+        });
       })
       .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   // allCategories recalculates only when there is an update of recipes (f.ex. recipes re-fetched)
@@ -75,8 +92,48 @@ function App() {
     return ["Alla", ...new Set(recipes.flatMap((r) => r.categories || []))].sort();
   }, [recipes]);
 
-  if (loading) return <p className="loading-message">Laddar recept...</p>;
-  if (error) return <p className="error-message">Fel är: {error}</p>;
+  const updateAvgRating = (recipeId, newAvgRating) => {
+    setRecipes((prev) =>
+      prev.map((r) => (String(r._id) === String(recipeId) ? { ...r, avgRating: newAvgRating } : r))
+    );
+    setSearchResult((prev) =>
+      prev.map((r) => (String(r._id) === String(recipeId) ? { ...r, avgRating: newAvgRating } : r))
+    );
+  };
+
+  /* --- USER RATING INTEGRATION --- */
+
+  // persist on disk whenever userRatings changes
+  useEffect(() => {
+    localStorage.setItem("userRatings", JSON.stringify(userRatings));
+  }, [userRatings]);
+
+  // update userRatings state var when user rates a recipe
+  const updateUserRatings = (recipeId, rating) =>
+    setUserRatings((prev) => {
+      const found = prev.find((r) => String(r.recipeId) === String(recipeId));
+      if (found) {
+        return prev.map((r) => (String(r.recipeId) === String(recipeId) ? { ...r, rating } : r));
+      } else {
+        return [...prev, { recipeId, rating }];
+      }
+    });
+
+  /* update values put in RecipesContext when recipes changes */
+  const contextItems = useMemo(
+    () => ({ searchResult, updateAvgRating, userRatings, updateUserRatings }),
+    [userRatings, searchResult]
+  );
+
+  if (loading) {
+    // return <p>Laddar recept...</p>;
+    return <p className="loading-message">Laddar recept...</p>;
+  }
+
+  if (error) {
+    // return <p>Fel är: {error}</p>;
+    return <p className="error-message">Fel är: {error}</p>;
+  }
 
   return (
     <div className="app-container">
@@ -92,11 +149,13 @@ function App() {
 
       <main className="main-content">
         <div className="routes-container">
-          <Routes>
-            <Route path="/" element={<RecipeList recipes={searchResult} />} />
-            <Route path="/category/:id" element={<CategoryPage recipes={searchResult} />} />
-            <Route path="/recipe/:id" element={<RecipePage recipes={searchResult} />} />
-          </Routes>
+          <RecipesContext.Provider value={contextItems}>
+            <Routes>
+              <Route path="/" element={<RecipeList />} />
+              <Route path="/category/:id" element={<CategoryPage />} />
+              <Route path="/recipe/:id" element={<RecipePage />} />
+            </Routes>
+          </RecipesContext.Provider>
         </div>
       </main>
     </div>

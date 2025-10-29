@@ -17,10 +17,10 @@
   justify-content: center;
   border-radius: 9999px;
   padding: 0.4rem 1rem;
-  background-color: #2d2d2d;
-  color: #f0f0f0;
-  font-size: 0.9rem;
-  font-weight: 500;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  color: darkgray;
+  background-color: #f8f8f8;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   white-space: nowrap;
