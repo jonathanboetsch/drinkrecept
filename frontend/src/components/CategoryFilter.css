@@ -1,4 +1,5 @@
 .hamburger-container {
+  left: 2%;
   right: 8%;
   top: 40%;
   position: relative;
@@ -72,4 +73,19 @@
   font-size: 2.5rem;
   border-radius: 26px;
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .simple-header {
+    position: relative;
+  }
+  .hamburger-container {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 0;
+    left: auto;
+    z-index: 1000;
+  }
 }
