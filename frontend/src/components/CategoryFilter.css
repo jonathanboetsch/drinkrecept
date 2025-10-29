@@ -1,60 +1,75 @@
-.category-filter {
+.hamburger-container {
+  right: 8%;
+  top: 40%;
+  position: relative;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex: 0 0 auto;
   align-items: center;
-  gap: 0.5rem;
-  margin: 1rem auto;
-  max-width: 800px;
-  text-align: center;
+  order: 3;
+  overflow: visible;
+  z-index: 10;
 }
 
-/* Bubblor */
-.category-filter button {
-  all: unset;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #ccc;
-  border-radius: 9999px;
-  padding: 0.35rem 1rem;
-  background-color: #f5f5f5;
-  color: #222;
-  font-size: 0.9rem;
-  font-weight: 500;
+/* Wrapper for each button + its invisible link */
+.category-button-and-link {
+  position: relative;
+  display: block;
+}
+
+/* The visible button */
+.hamburger-menu button {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.6rem;
   cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
-/* Hover */
-.category-filter button:hover {
-  background-color: #e0e0e0;
-  border-color: #999;
+.hamburger-menu button.active {
+  color: limegreen;
+  font-weight: 700;
 }
 
-/* Aktiv kategori */
-.category-filter button.active {
-  background-color: #0077ff;
-  color: #fff;
-  border-color: #005fcc;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+/* Invisible overlay link */
+.invisible-hitbox {
+  position: absolute;
+  inset: 0; /* covers entire parent div */
+  z-index: 2;
+  opacity: 0;
+  pointer-events: auto;
+  text-decoration: none;
+  color: transparent;
 }
 
-/* Hindra att knappar trycks ihop */
-.category-filter {
-  flex-shrink: 0;
+/* Menu container */
+.hamburger-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  background: black;
+  padding: 0.6rem;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px gray;
+  z-index: 1000;
+  min-width: 160px;
+  text-align: left;
 }
 
-/* Responsiv */
-@media (max-width: 600px) {
-  .category-filter {
-    gap: 0.4rem;
-  }
+.hamburger-menu.open {
+  display: block;
+}
 
-  .category-filter button {
-    font-size: 0.85rem;
-    padding: 0.3rem 0.8rem;
-  }
+.hamburger-button {
+  background: darkgray;
+  border: solid 4px black;
+  padding: 0.4rem 0.6rem;
+  font-size: 2.5rem;
+  border-radius: 26px;
+  cursor: pointer;
 }

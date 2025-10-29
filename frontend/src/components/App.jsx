@@ -1,28 +1,25 @@
 import { useEffect, useState, useMemo } from "react";
+import { Route, Routes, useParams, useMatch } from "react-router-dom";
 import RecipeList from "./RecipeList";
 import "./App.css";
-import Header from "/Header4.png";
 import SearchBar from "./SearchBar";
-import { Routes, Route, useParams } from "react-router-dom";
 import Recipe from "./Recipe";
+import CategoryFilter from "./CategoryFilter";
 
 function CategoryPage({ recipes }) {
   const { id } = useParams();
   const filtered = recipes.filter((r) => (r.categories || []).includes(id));
   return (
-    <>
-      <div className="category-page">
-        <h2 className="category-title">Kategori: {id}</h2>
-        <RecipeList recipes={filtered} />
-      </div>
-    </>
+    <div className="category-page">
+      <h2 className="category-title"> {id}</h2>
+      <RecipeList recipes={filtered} />
+    </div>
   );
 }
 
 function RecipePage({ recipes }) {
   const { id } = useParams();
   const recipe = recipes.find((r) => String(r._id) === id);
-  // return recipe ? <Recipe recipe={recipe} /> : <p>Receptet hittades inte</p>;
   return (
     <div className="recipe-page">
       {recipe ? (
@@ -41,8 +38,11 @@ function App() {
   const [searchResult, setSearchResult] = useState([]);
   const [activeCategory, setActiveCategory] = useState("Alla");
 
-  // 🔹 Hjälper sökfältet fungera som innan  const [activeCategory, setActiveCategory] = useState("Alla");
-  const [menuOpen, setMenuOpen] = useState(false);
+  const match = useMatch("/category/:id"); // 🔹 gets the id of the category from the URL path
+
+  useEffect(() => {
+    setActiveCategory(match?.params?.id || "Alla"); // 🔹 set active category based on the URI
+  }, [match]);
 
   const flattenValues = (obj) =>
     Object.values(obj)
@@ -78,11 +78,20 @@ function App() {
     setSearchResult(recipes);
   }, [recipes]);
 
-  const categories = useMemo(() => {
-    const set = new Set();
-    (searchResult || []).forEach((r) => (r.categories || []).forEach((c) => set.add(c)));
-    return ["Alla", ...Array.from(set).sort()];
-  }, [searchResult]);
+  // const categories = useMemo(() => {
+  //   const set = new Set();
+  //   (searchResult || []).forEach((r) => (r.categories || []).forEach((c) => set.add(c)));
+  //   return ["Alla", ...Array.from(set).sort()];
+  // }, [searchResult]);
+
+  // allCategories recalculates only when there is an update of recipes (f.ex. recipes re-fetched)
+  const allCategories = useMemo(() => {
+    return ["Alla", ...new Set(recipes.flatMap((r) => r.categories || []))].sort();
+  }, [recipes]);
+
+  const changeActiveCategory = (category) => {
+    setActiveCategory(category);
+  };
 
   if (loading) {
     // return <p>Laddar recept...</p>;
@@ -92,59 +101,33 @@ function App() {
     // return <p>Fel är: {error}</p>;
     return <p className="error-message">Fel är: {error}</p>;
   }
+
+  if (loading) return <p className="loading-message">Laddar recept...</p>;
+  if (error) return <p className="error-message">Fel är: {error}</p>;
+
   return (
-    <div>
-      <main className="main-content">
-        <div className="simple-header">
-          <img src="/Header4.png" className="header-logo" />
-          <h3 className="header-title"></h3>
-          <div className="header-search">
-            <SearchBar onUserType={filterSearch} />
-          </div>
-          <div className="hamburger-container">
-            <button
-              className="hamburger-button"
-              aria-expanded={menuOpen}
-              aria-label="Open categories menu"
-              onClick={() => setMenuOpen((v) => !v)}
-            >
-              ☰
-            </button>
-            <div className={`hamburger-menu ${menuOpen ? "open" : ""}`}>
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  className={cat === activeCategory ? "active" : ""}
-                  onClick={() => {
-                    setActiveCategory(cat);
-                    setMenuOpen(false);
-                  }}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-          </div>
+    <div className="app-container">
+      <header className="simple-header">
+        <img src="/Header4.png" className="header-logo" />
+        <h3 className="header-title"></h3>
+        <div className="header-search">
+          <SearchBar onUserType={filterSearch} />
         </div>
 
-        <>
-          {/* <p>BEGIN</p> */}
-          {/* <Recipe /> */}
-          {/* <p>END</p> */}
-          <RecipeList
-            recipes={searchResult}
-            activeCategory={activeCategory}
-            onSelectCategory={setActiveCategory}
-            showFilter={false}
-          />
-          <div className="routes-container">
-            <Routes>
-              {/* <Route path="/" element={<RecipeList recipes={searchResult} />} /> */}
-              <Route path="/category/:id" element={<CategoryPage recipes={searchResult} />} />
-              <Route path="/recipe/:id" element={<RecipePage recipes={searchResult} />} />
-            </Routes>
-          </div>
-        </>
+        <CategoryFilter
+          categories={allCategories}
+          activeCategory={activeCategory}
+          linkToRoute={true}
+          changeActiveCategory={changeActiveCategory}
+        />
+      </header>
+
+      <main className="main-content">
+        <Routes>
+          <Route path="/" element={<RecipeList recipes={searchResult} />} />
+          <Route path="/category/:id" element={<CategoryPage recipes={searchResult} />} />
+          <Route path="/recipe/:id" element={<RecipePage recipes={searchResult} />} />
+        </Routes>
       </main>
     </div>
   );

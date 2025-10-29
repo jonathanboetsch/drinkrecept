@@ -170,59 +170,6 @@ html,
   width: auto;
 }
 
-/* hamburger menu in header  */
-.hamburger-container {
-  position: relative;
-  right: 8%;
-  top: 40%;
-  display: flex;
-  align-items: center;
-}
-
-.hamburger-button {
-  background: darkgray;
-  border: solid 4px black;
-  padding: 0.4rem 0.6rem;
-  font-size: 2.5rem;
-  border-radius: 26px;
-  cursor: pointer;
-}
-
-.hamburger-menu {
-  display: none;
-  position: absolute;
-  right: 0;
-  top: calc(100% + 8px);
-  background: black;
-  padding: 0.6rem;
-  border-radius: 6px;
-  box-shadow: 0 6px 18px gray;
-  z-index: 1000;
-  min-width: 160px;
-  text-align: left;
-}
-
-.hamburger-menu.open {
-  display: block;
-}
-
-.hamburger-menu button {
-  display: block;
-  width: 100%;
-  text-align: left;
-  background: transparent;
-  color: white;
-  border: none;
-  padding: 0.4rem 0.6rem;
-  cursor: pointer;
-}
-
-.hamburger-menu button.active {
-  background: transparent;
-  color: limegreen;
-  font-weight: 700;
-}
-
 .search-bar {
   width: 70%;
   padding: 12px 20px;
@@ -288,10 +235,5 @@ html,
   font-size: 1.5rem;
   order: 1;
   margin: 0;
-  flex: 0 0 auto;
-}
-
-.hamburger-container {
-  order: 3;
   flex: 0 0 auto;
 }
