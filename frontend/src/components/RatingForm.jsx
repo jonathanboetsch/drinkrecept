@@ -11,12 +11,9 @@ export default function RatingForm({ ratingLevels = [1, 2, 3, 4, 5], confirmatio
 
   useEffect(() => {
     if (!userRatings?.length) return;
-    console.log(userRatings);
     const found = userRatings?.find((r) => r.recipeId === recipe._id)?.rating ?? null;
     setUserRating(found);
-    console.log(`Updated user rating: ${userRating}`);
     disableRating(found !== null);
-    console.log(`Rating button disabled: ${isRatingDisabled}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userRatings]);
 
