@@ -93,6 +93,9 @@ function App() {
     setRecipes((prev) =>
       prev.map((r) => (String(r._id) === String(recipeId) ? { ...r, avgRating: newAvgRating } : r))
     );
+    setSearchResult((prev) =>
+      prev.map((r) => (String(r._id) === String(recipeId) ? { ...r, avgRating: newAvgRating } : r))
+    );
   };
 
   /* --- USER RATING INTEGRATION --- */
