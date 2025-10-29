@@ -29,17 +29,10 @@ export default function RecipeList() {
   }, [recipes, activeCategory]);
 
   return (
-    <div>
-      <CategoryFilter
-        categories={categories}
-        activeCategory={activeCategory}
-        onSelectCategory={setActiveCategory}
-      />
-      <div className="recipes-container">
-        {filteredRecipes.map((r, i) => (
-          <Recipe key={r._id ?? i} recipe={r} />
-        ))}
-      </div>
+    <div className="recipes-container">
+      {filteredRecipes?.map((r, i) => (
+        <Recipe key={r._id ?? i} recipe={r} />
+      ))}
     </div>
   );
 }

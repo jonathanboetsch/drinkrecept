@@ -1,19 +1,63 @@
 .category-filter {
-  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 1.5rem auto;
+  max-width: 900px;
+  text-align: center;
 }
 
-.category-filter button {
-  margin: 0.3rem;
+/* Category "bubbles" */
+.category-filter__button {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
   padding: 0.4rem 1rem;
   border: 1px solid #ccc;
   border-radius: 15px;
   color: darkgray;
   background-color: #f8f8f8;
   cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  white-space: nowrap;
+  border: 1px solid #444;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-.category-filter button.active {
-  background-color: #0077ff;
+/* Hover effect */
+.category-filter__button:hover {
+  background-color: #3d3d3d;
+  border-color: #646cff;
+  color: #ffe680;
+  transform: scale(1.05);
+}
+
+/* Active category */
+.category-filter__button--active {
+  background-color: #646cff;
   color: white;
   font-weight: bold;
+  border-color: #646cff;
+  box-shadow: 0 0 10px rgba(100, 108, 255, 0.6);
+}
+
+/* Prevent shrinking on small screens */
+.category-filter {
+  flex-shrink: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .category-filter {
+    gap: 0.4rem;
+  }
+
+  .category-filter__button {
+    font-size: 0.85rem;
+    padding: 0.3rem 0.8rem;
+  }
 }
