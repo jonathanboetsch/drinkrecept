@@ -43,7 +43,10 @@ function App() {
   // searchResult needed to implement search bar functionnality
   // this becomes the element passed to the RecipeList instead of sending directly "recipes" array
   const [searchResult, setSearchResult] = useState([]);
-  const [userRatings, setUserRatings] = useState([]);
+  const [userRatings, setUserRatings] = useState(() => {
+    const storedRatings = localStorage.getItem("userRatings");
+    return storedRatings ? JSON.parse(storedRatings) : [];
+  });
   const API_URL = "https://grupp3-jynxa.reky.se/recipes";
 
   const match = useMatch("/category/:id"); // 🔹 gets the id of the category from the URL path
@@ -99,12 +102,6 @@ function App() {
   };
 
   /* --- USER RATING INTEGRATION --- */
-
-  // store user rating state var on disk => allows state persistence across refreshes and browser sessions
-  useEffect(() => {
-    const storedRatings = localStorage.getItem("userRatings");
-    if (storedRatings) setUserRatings(JSON.parse(storedRatings));
-  }, []);
 
   // persist on disk whenever userRatings changes
   useEffect(() => {
