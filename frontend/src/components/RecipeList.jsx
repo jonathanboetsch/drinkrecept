@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import Recipe from "./Recipe.jsx";
-import CategoryFilter from "./CategoryFilter.jsx";
 import { useRecipesContext } from "./RecipesContext.jsx";
 
 export default function RecipeList() {
