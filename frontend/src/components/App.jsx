@@ -40,7 +40,7 @@ function App() {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // searchResult needed to implement search bar functionnality
+  // searchResult needed to implement search bar functionality
   // this becomes the element passed to the RecipeList instead of sending directly "recipes" array
   const [searchResult, setSearchResult] = useState([]);
   const [userRatings, setUserRatings] = useState(() => {
