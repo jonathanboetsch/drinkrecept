@@ -42,7 +42,7 @@ function App() {
   const [error, setError] = useState(null);
   // searchResult needed to implement search bar functionnality
   // this becomes the element passed to the RecipeList instead of sending directly "recipes" array
-  const [searchResult, setSearchResult] = useState(recipes);
+  const [searchResult, setSearchResult] = useState([]);
   const [userRatings, setUserRatings] = useState([]);
   const API_URL = "https://grupp3-jynxa.reky.se/recipes";
 
@@ -72,6 +72,7 @@ function App() {
       })
       .then((data) => {
         setRecipes(data);
+        setSearchResult(data);
         setUserRatings((prev) => {
           if (prev && prev.length > 0) return prev; // keep array if already populated
           return data.map((r) => ({ recipeId: r._id, rating: null })); // initialize null values otherwise
