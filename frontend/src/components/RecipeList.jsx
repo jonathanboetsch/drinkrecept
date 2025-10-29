@@ -6,7 +6,7 @@ export default function RecipeList() {
   const [activeCategory, setActiveCategory] = useState("Alla");
   const { searchResult: recipes } = useRecipesContext();
 
-  // Skapa kategorilistan från de recept som kommer in via props
+  // Skapa kategorilistan från de recept som hämtas från context
   const categories = useMemo(() => {
     const set = new Set();
     recipes.forEach((r) => (r.categories || []).forEach((c) => set.add(c)));
