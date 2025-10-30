@@ -2,7 +2,6 @@ import { useEffect, useState, useMemo } from "react";
 import { Route, Routes, useParams, useMatch } from "react-router-dom";
 import RecipeList from "./RecipeList";
 import "./App.css";
-import Header from "../assets/Header2.png";
 import SearchBar from "./SearchBar";
 import Recipe from "./Recipe";
 import { RecipesContext, useRecipesContext } from "./RecipesContext";
@@ -43,6 +42,7 @@ function App() {
   // searchResult needed to implement search bar functionality
   // this becomes the element passed to the RecipeList instead of sending directly "recipes" array
   const [searchResult, setSearchResult] = useState([]);
+  const [activeCategory, setActiveCategory] = useState("Alla");
   const [userRatings, setUserRatings] = useState(() => {
     const storedRatings = localStorage.getItem("userRatings");
     return storedRatings ? JSON.parse(storedRatings) : [];
@@ -50,7 +50,10 @@ function App() {
   const API_URL = "https://grupp3-jynxa.reky.se/recipes";
 
   const match = useMatch("/category/:id"); // 🔹 gets the id of the category from the URL path
-  const activeCategory = match?.params?.id || "Alla"; // 🔹 set active category based on the URI
+
+  useEffect(() => {
+    setActiveCategory(match?.params?.id || "Alla"); // 🔹 set active category based on the URI
+  }, [match]);
 
   const flattenValues = (obj) =>
     Object.values(obj)
@@ -87,10 +90,25 @@ function App() {
       });
   }, []);
 
+  // needed to load recipes onto searchResult as soon as they are fetched
+  useEffect(() => {
+    setSearchResult(recipes);
+  }, [recipes]);
+
+  // const categories = useMemo(() => {
+  //   const set = new Set();
+  //   (searchResult || []).forEach((r) => (r.categories || []).forEach((c) => set.add(c)));
+  //   return ["Alla", ...Array.from(set).sort()];
+  // }, [searchResult]);
+
   // allCategories recalculates only when there is an update of recipes (f.ex. recipes re-fetched)
   const allCategories = useMemo(() => {
     return ["Alla", ...new Set(recipes.flatMap((r) => r.categories || []))].sort();
   }, [recipes]);
+
+  const changeActiveCategory = (category) => {
+    setActiveCategory(category);
+  };
 
   const updateAvgRating = (recipeId, newAvgRating) => {
     setRecipes((prev) =>
@@ -137,13 +155,18 @@ function App() {
 
   return (
     <div className="app-container">
-      <header className="header-container">
-        <img src={Header} alt="Header" className="header-image" />
-        <SearchBar className="search-bar" onUserType={filterSearch} />
+      <header className="simple-header">
+        <img src="/Header4.png" className="header-logo" />
+        <h3 className="header-title"></h3>
+        <div className="header-search">
+          <SearchBar onUserType={filterSearch} />
+        </div>
+
         <CategoryFilter
           categories={allCategories}
           activeCategory={activeCategory}
           linkToRoute={true}
+          changeActiveCategory={changeActiveCategory}
         />
       </header>
 
