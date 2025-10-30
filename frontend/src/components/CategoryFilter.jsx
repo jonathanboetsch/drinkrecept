@@ -27,7 +27,9 @@ export default function CategoryFilter({
                 className={cat === activeCategory ? "active" : ""}
                 onClick={() => {
                   setMenuOpen(false);
-                  changeActiveCategory(cat);
+                  if (!linkToRoute) {
+                    changeActiveCategory(cat);
+                  }
                 }}
               >
                 {cat}
