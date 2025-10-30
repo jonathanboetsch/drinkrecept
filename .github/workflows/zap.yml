@@ -5,7 +5,7 @@ on:
     branches: [dev]
 
 jobs:
-  build-and-deploy:
+  deploy-and-zap:
     runs-on: ubuntu-latest
     defaults:
       run:
