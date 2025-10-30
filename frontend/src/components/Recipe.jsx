@@ -191,18 +191,10 @@ export default function Recipe({ recipe }) {
               <p style={{ color: "green", marginTop: "0.5rem" }}>Tack för din kommentar!</p>
             )}
           </section>
-          <section
-            style={{
-              marginTop: "2rem",
-              width: "100%",
-              maxWidth: 400,
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-          >
-            <h3 style={{ border: "dotted 2px yellow" }}>Kommentarer</h3>
-            <ul style={{ listStyle: "none", padding: 0 }}>
-              {comments.length === 0 && <li>Inga kommentarer än.</li>}
+          <section className="comments-section">
+            <h3 className="comments-title">Kommentarer</h3>
+            <ul className="comments-list">
+              {comments.length === 0 && <li className="comment-empty">Inga kommentarer än.</li>}
               {comments.map((c, i) => {
                 const hasValidDate = c?.createdAt && !Number.isNaN(Date.parse(c.createdAt));
                 let displayTime = null;
@@ -215,52 +207,25 @@ export default function Recipe({ recipe }) {
                   const timeStr = d.toLocaleTimeString(undefined, {
                     hour: "numeric",
                     minute: "2-digit",
-                    second: "2-digit",
-                    hour12: true,
                   });
                   displayTime = `${yyyy}-${mm}-${dd}, ${timeStr}`;
                   displayNameOfTheDay = d.toLocaleDateString(undefined, { weekday: "long" });
                 }
 
                 return (
-                  <li
-                    key={i}
-                    style={{
-                      borderBottom: "1px solid #eee",
-                      marginBottom: "0.5rem",
-                      paddingBottom: "0.5rem",
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "baseline",
-                      }}
-                    >
-                      <strong style={{ border: "dotted 2px white" }}>{c?.name ?? "Anonym"}</strong>
-
+                  <li key={i} className="comment-item">
+                    <div className="comment-meta">
+                      <strong className="comment-author">{c?.name ?? "Anonym"}</strong>
                       {displayTime ? (
-                        <time
-                          dateTime={c.createdAt}
-                          style={{ color: "#666", fontSize: "0.85rem", border: "dotted 2px white" }}
-                        >
+                        <time dateTime={c.createdAt} className="comment-time">
                           {displayTime}
                         </time>
                       ) : (
-                        <span style={{ color: "#666", fontSize: "0.85rem" }}>Okänd tid</span>
+                        <span className="comment-time">Okänd tid</span>
                       )}
-                      {displayNameOfTheDay ? (
-                        <span style={{ display: "block", border: "dotted 2px white" }}>
-                          {displayNameOfTheDay}
-                        </span>
-                      ) : (
-                        <span style={{ display: "block" }}>Okänd dag</span>
-                      )}
+                      <span className="comment-day">{displayNameOfTheDay ?? "Okänd dag"}</span>
                     </div>
-                    <div style={{ marginTop: "0.25rem", border: "dotted 2px white" }}>
-                      {c?.comment}
-                    </div>
+                    <div className="comment-text">{c?.comment}</div>
                   </li>
                 );
               })}
