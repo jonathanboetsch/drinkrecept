@@ -1,8 +1,8 @@
 /* ==== Baslayout för appen ==== */
 #root {
-  max-width: 1200px;        /* lite tajtare än 1280 för bättre laptop-fit */
+  max-width: 1200px; /* lite tajtare än 1280 för bättre laptop-fit */
   margin: 0 auto;
-  padding: 1rem;            /* var 2rem – gav lätt scroll på mobil */
+  padding: 1rem; /* var 2rem – gav lätt scroll på mobil */
   text-align: center;
 }
 
@@ -12,18 +12,32 @@
   will-change: filter;
   transition: filter 300ms;
 }
-.logo:hover { filter: drop-shadow(0 0 2em #646cffaa); }
-.logo.react:hover { filter: drop-shadow(0 0 2em #61dafbaa); }
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
 
 @keyframes logo-spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 @media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo { animation: logo-spin infinite 20s linear; }
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
 }
-.card { padding: 2em; }
-.read-the-docs { color: #888; }
+.card {
+  padding: 2em;
+}
+.read-the-docs {
+  color: #888;
+}
 
 /* ==== Headerbild ==== */
 .header-image {
@@ -176,4 +190,60 @@
   .root {
     padding: 1rem;
   }
+}
+
+.comments-section {
+  margin-top: 2rem;
+  width: 100%;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.comments-title {
+  background: #000;
+  color: #fff;
+  padding: 0.5rem 0.75rem;
+  margin: 0 0 0.75rem;
+  border-radius: 4px;
+  font-size: 1.1rem;
+}
+
+.comments-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.comment-item {
+  background: #fff;
+  color: #000;
+  border: 1px solid #eee;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.comment-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.comment-author {
+  font-weight: 600;
+  color: #111;
+}
+.comment-time,
+.comment-day {
+  color: #666;
+  font-size: 0.85rem;
+}
+.comment-text {
+  margin-top: 0.5rem;
+  color: #111;
 }
