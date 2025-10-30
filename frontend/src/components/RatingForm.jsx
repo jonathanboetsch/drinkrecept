@@ -21,7 +21,7 @@ export default function RatingForm({ ratingLevels = [1, 2, 3, 4, 5], confirmatio
     if (isRatingDisabled) return; // guard against double-clicks
     disableRating(true); // instant disable
     setUserRating(rating); // optional optimistic UI update
-    // a comment to trigger gh workflow through a PR ---            
+    // a comment to trigger gh workflow through a PR ---             
     const API_URL = "https://grupp3-jynxa.reky.se";
     const POST_RATING_URI = `/recipes/${recipe._id}/ratings`;
     const GET_URI = `/recipes/${recipe._id}`;
