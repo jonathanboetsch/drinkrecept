@@ -39,7 +39,7 @@ jobs:
         id: netlify
         uses: nwtgck/actions-netlify@v2
         with:
-          publish-dir: ./dist
+          publish-dir: ./frontend/dist
           production-deploy: false
           github-token: ${{ secrets.GITHUB_TOKEN }}
           alias: pr-${{ github.event.number }}
