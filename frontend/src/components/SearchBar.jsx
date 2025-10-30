@@ -3,7 +3,7 @@ export default function SearchBar({ onUserType }) {
     <input
       type="search"
       className="search-bar"
-      placeholder="🔍 Search here..."
+      placeholder="type your search here"
       onChange={(e) => onUserType(e.target.value)}
     />
   );

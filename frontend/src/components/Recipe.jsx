@@ -79,7 +79,7 @@ export default function Recipe({ recipe }) {
   };
 
   return (
-    <div>
+    <div className="recipe-container">
       {recipe.message && <p className="recipe-message">{recipe.message}</p>}
       {!recipe.message && (
         <div className="recipe-card">

@@ -1,8 +1,8 @@
 /* ==== Baslayout för appen ==== */
 #root {
-  max-width: 1280px;
+  max-width: 1200px;        /* lite tajtare än 1280 för bättre laptop-fit */
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;            /* var 2rem – gav lätt scroll på mobil */
   text-align: center;
 }
 
@@ -12,34 +12,20 @@
   will-change: filter;
   transition: filter 300ms;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
+.logo:hover { filter: drop-shadow(0 0 2em #646cffaa); }
+.logo.react:hover { filter: drop-shadow(0 0 2em #61dafbaa); }
 
 @keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 @media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+  a:nth-of-type(2) .logo { animation: logo-spin infinite 20s linear; }
 }
-.card {
-  padding: 2em;
-}
-.read-the-docs {
-  color: #888;
-}
+.card { padding: 2em; }
+.read-the-docs { color: #888; }
 
-/* ==== Headerbild ==== 
+/* ==== Headerbild ==== */
 .header-image {
   width: 100%;
   max-width: 1200px;
@@ -47,27 +33,11 @@
   margin: 0 auto 2rem auto;
   display: block;
   border-radius: 10px;
-} */
-
-/* new stuff down here  */
-
-body,
-html,
-#root {
-  min-height: 100%;
-  height: 100%;
-  margin: 0;
-  background-color: #000000;
-  background-image: url("/background.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
 }
 
 .recipes-container {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr)); /* var 5 – mer realistiskt */
   gap: 20px;
   margin-top: 20px;
 }
@@ -88,14 +58,14 @@ html,
   overflow: hidden;
   z-index: 1;
   color: white;
-  padding: 30px;
-  border: 1px solid white;
+  padding: 25px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   min-height: 400px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -113,6 +83,7 @@ html,
   margin-bottom: 10px;
   text-align: center;
 }
+
 .recipe-card img {
   width: 100%;
   max-width: 200px;
@@ -126,13 +97,17 @@ html,
 /* Text och listor */
 .recipe-card p {
   margin: 5px;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 
 .recipe-card ul,
 .recipe-card ol {
   text-align: left;
-  width: 100%;
+  /* the property below allows centering of the whole list block 
+  while keeping its elements left-aligned */
+  display: inline-block;
+  /* list-style-position: outside; */
+  /* width: 100%; */
   padding-left: 20px;
   margin: 5px auto;
 }
@@ -142,97 +117,26 @@ html,
   font-size: 0.9rem;
 }
 
-.simple-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: darkgray;
-  color: white;
-  margin-bottom: 2rem;
-  border-radius: 55px;
-  padding: 1rem 2rem;
-}
-
-.header-title {
-  margin: 0;
-  font-size: 2rem;
-  color: white;
-  font-weight: bold;
-}
-
-.header-search {
-  flex: 0 1 400px;
-  margin: 0 2rem;
-}
-
-.header-logo {
-  height: 50px;
-  width: auto;
-}
-
-.category-title {
-  color: white;
-}
-
-/* hamburger menu in header  */
-/*.hamburger-container {
-  position: relative;
-  right: 8%;
-  top: 40%;
-  display: flex;
-  align-items: center;
-} 
-
-.hamburger-button {
-  background: darkgray;
-  border: solid 4px black;
-  padding: 0.4rem 0.6rem;
-  font-size: 2.6rem;
-  border-radius: 35px;
-  cursor: pointer;
-} 
-
-.hamburger-menu {
-  display: none;
-  position: absolute;
-  right: 0;
-  top: calc(100% + 8px);
-  background: black;
-  padding: 0.6rem;
-  border-radius: 6px;
-  box-shadow: 0 6px 18px gray;
-  z-index: 1000;
-  min-width: 160px;
-  text-align: left;
-} 
-
-.hamburger-menu.open {
-  display: block;
-} 
-
-.hamburger-menu button {
-  display: block;
+/* header below (can be changed later)  */
+.header-image {
   width: 100%;
-  text-align: left;
-  background: transparent;
-  color: white;
-  border: none;
-  padding: 0.4rem 0.6rem;
-  cursor: pointer;
-} 
+  max-width: 1200px;
+  height: auto;
+  margin: 0 auto 2rem auto;
+  display: block;
+  border-radius: 10px;
+}
 
-.hamburger-menu button.active {
-  background: transparent;
-  color: limegreen;
-  font-weight: 700;
-} */
+.header-container {
+  position: relative;
+  margin-bottom: 2rem;
+}
 
-.search-bar {
-  width: 70%;
-  padding: 12px 20px;
-  border: 4px solid black;
-  border-radius: 30px;
-  font-size: 1rem;
+.searchBar-container {
+  position: absolute;
+
+  top: 40%;
+  right: 14%;
 }
 
 /* responsive design for tablets or ipads  */
@@ -269,33 +173,7 @@ html,
     margin-bottom: 1rem;
   }
 
-  .search-bar {
-    padding: 12px 20px;
-    font-size: 0.7rem;
+  .root {
+    padding: 1rem;
   }
 }
-
-.root {
-  padding: 1rem;
-}
-.simple-header {
-  padding: 1rem;
-  flex-wrap: wrap;
-}
-
-.header-logo {
-  order: 0;
-  flex: 0 0 auto;
-}
-
-.header-title {
-  font-size: 1.5rem;
-  order: 1;
-  margin: 0;
-  flex: 0 0 auto;
-}
-
-/* .hamburger-container {
-  order: 3;
-  flex: 0 0 auto;
-} */
