@@ -204,9 +204,13 @@ export default function Recipe({ recipe }) {
             <ul style={{ listStyle: "none", padding: 0 }}>
               {comments.length === 0 && <li>Inga kommentarer än.</li>}
               {comments.map((c, i) => {
-                const iso =
+                // const iso =
+                //   c?.createdAt && !Number.isNaN(Date.parse(c.createdAt))
+                //     ? new Date(c.createdAt).toISOString()
+                //     : null;
+                const displayTime =
                   c?.createdAt && !Number.isNaN(Date.parse(c.createdAt))
-                    ? new Date(c.createdAt).toISOString()
+                    ? new Date(c.createdAt).toLocaleString()
                     : null;
                 return (
                   <li
@@ -225,9 +229,16 @@ export default function Recipe({ recipe }) {
                       }}
                     >
                       <strong>{c?.name ?? "Anonym"}</strong>
-                      {iso ? (
+                      {/* {iso ? (
                         <time dateTime={c.createdAt} style={{ color: "#666", fontSize: "0.85rem" }}>
                           {iso}
+                        </time>
+                      ) : (
+                        <span style={{ color: "#666", fontSize: "0.85rem" }}>Okänd tid</span>
+                      )} */}
+                      {displayTime ? (
+                        <time dateTime={c.createdAt} style={{ color: "#666", fontSize: "0.85rem" }}>
+                          {displayTime}
                         </time>
                       ) : (
                         <span style={{ color: "#666", fontSize: "0.85rem" }}>Okänd tid</span>
