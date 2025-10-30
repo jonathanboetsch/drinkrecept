@@ -154,7 +154,7 @@ function App() {
   return (
     <div className="app-container">
       <header className="simple-header">
-        <img src="/Header4.png" className="header-logo" />
+        <img src="/Header4.png" className="header-logo" alt="Recipe app logo" />
         <h3 className="header-title"></h3>
         <div className="header-search">
           <SearchBar onUserType={filterSearch} />
