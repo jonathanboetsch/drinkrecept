@@ -212,6 +212,10 @@ export default function Recipe({ recipe }) {
                   c?.createdAt && !Number.isNaN(Date.parse(c.createdAt))
                     ? new Date(c.createdAt).toLocaleString()
                     : null;
+                const displayNameOfTheDay =
+                  c?.createdAt && !Number.isNaN(Date.parse(c.createdAt))
+                    ? new Date(c.createdAt).toLocaleDateString(undefined, { weekday: "long" })
+                    : null;
                 return (
                   <li
                     key={i}
@@ -242,6 +246,11 @@ export default function Recipe({ recipe }) {
                         </time>
                       ) : (
                         <span style={{ color: "#666", fontSize: "0.85rem" }}>Okänd tid</span>
+                      )}
+                      {displayNameOfTheDay ? (
+                        <span style={{ display: "block" }}>{displayNameOfTheDay}</span>
+                      ) : (
+                        <span style={{ display: "block" }}>Okänd dag</span>
                       )}
                     </div>
                     <div style={{ marginTop: "0.25rem" }}>{c?.comment}</div>
