@@ -51,11 +51,22 @@ jobs:
         uses: zaproxy/action-baseline@v0.15.0
         with:
           target: ${{ steps.netlify.outputs.deploy-url }}
+          cmd_options: '-r zap_report.html -w zap_warnings.txt -J zap.json'
+      - name: Save ZAP summary output
+        id: zap_summary
+        run: |
+          echo "ZAP_SUMMARY<<EOF" >> $GITHUB_ENV
+          cat zap_warnings.txt >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
 
       - name: Add PR comment with preview + scan
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: deploy-preview
           message: |
-            🚀 Netlify Preview: ${{ steps.netlify.outputs.deploy-url }}
-            🧠 ZAP scan completed.
+            🚀 **Netlify Preview:** [Preview Link](${{ steps.netlify.outputs.deploy-url }})
+            🧠 **ZAP Scan Summary:**
+            ```
+            ${{ env.ZAP_SUMMARY }}
+            ```
