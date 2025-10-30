@@ -55,9 +55,9 @@ jobs:
       - name: Save ZAP summary output
         id: zap_summary
         run: |
-          echo "ZAP_SUMMARY<<EOF" >> $GITHUB_ENV
-          cat zap_warnings.txt >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          echo ZAP_SUMMARY<<EOF
+          cat zap_warnings.txt
+          EOF >> "$GITHUB_ENV"
 
 
       - name: Add PR comment with preview + scan
