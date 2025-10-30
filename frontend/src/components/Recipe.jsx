@@ -8,7 +8,7 @@ function calculateDifficulty(timeInMins) {
   if (
     timeInMins === null ||
     timeInMins === undefined ||
-    isNaN(Number(timeInMins)) ||
+    Number.isNaN(Number(timeInMins)) ||
     Number(timeInMins) <= 0
   )
     return "Okänd";
