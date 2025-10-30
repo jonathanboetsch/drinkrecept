@@ -35,17 +35,27 @@ jobs:
       - name: Build the app
         run: npm run build
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Deploy to Netlify
+        id: netlify
+        uses: nwtgck/actions-netlify@v2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist   # or ./dist depending on your bundler
-          destination_dir: pr-${{ github.event.number }}
+          publish-dir: ./frontend/dist
+          production-deploy: false
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          alias: pr-${{ github.event.number }}
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
 
-      - name: Add PR comment
+      - name: ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.15.0
+        with:
+          target: ${{ steps.netlify.outputs.deploy-url }}
+
+      - name: Add PR comment with preview + scan
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: deploy-preview
           message: |
-            🚀 Preview available at:
-            https://jonathanboetsch.github.io/drinkrecept/pr-${{ github.event.number }}/
+            🚀 Netlify Preview: ${{ steps.netlify.outputs.deploy-url }}
+            🧠 ZAP scan completed.
