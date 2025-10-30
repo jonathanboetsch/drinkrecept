@@ -203,18 +203,40 @@ export default function Recipe({ recipe }) {
             <h3>Kommentarer</h3>
             <ul style={{ listStyle: "none", padding: 0 }}>
               {comments.length === 0 && <li>Inga kommentarer än.</li>}
-              {comments.map((c, i) => (
-                <li
-                  key={i}
-                  style={{
-                    borderBottom: "1px solid #eee",
-                    marginBottom: "0.5rem",
-                    paddingBottom: "0.5rem",
-                  }}
-                >
-                  <strong>{c.name}</strong>: {c.comment}
-                </li>
-              ))}
+              {comments.map((c, i) => {
+                const iso =
+                  c?.createdAt && !Number.isNaN(Date.parse(c.createdAt))
+                    ? new Date(c.createdAt).toISOString()
+                    : null;
+                return (
+                  <li
+                    key={i}
+                    style={{
+                      borderBottom: "1px solid #eee",
+                      marginBottom: "0.5rem",
+                      paddingBottom: "0.5rem",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "baseline",
+                      }}
+                    >
+                      <strong>{c?.name ?? "Anonym"}</strong>
+                      {iso ? (
+                        <time dateTime={c.createdAt} style={{ color: "#666", fontSize: "0.85rem" }}>
+                          {iso}
+                        </time>
+                      ) : (
+                        <span style={{ color: "#666", fontSize: "0.85rem" }}>Okänd tid</span>
+                      )}
+                    </div>
+                    <div style={{ marginTop: "0.25rem" }}>{c?.comment}</div>
+                  </li>
+                );
+              })}
             </ul>
           </section>
         </div>
