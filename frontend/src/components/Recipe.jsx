@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import "./App.css";
+import RatingForm from "./RatingForm";
 import { useState, useEffect } from "react";
 
 function calculateDifficulty(timeInMins) {
@@ -144,9 +145,10 @@ export default function Recipe({ recipe }) {
           )}
 
           <p className="recipe-rating">
-            <strong>Genomsnittligt betyg:</strong>{" "}
-            {recipe.avgRating ? recipe.avgRating : "Ingen än"}
+            <strong>Rating:</strong>{" "}
+            {recipe.avgRating ? Number(recipe.avgRating).toFixed(1) : "Ingen än"}
           </p>
+          {location.pathname.startsWith("/recipe/") && <RatingForm recipe={recipe} />}
         </div>
       )}
       {location.pathname.startsWith("/recipe/") && (
