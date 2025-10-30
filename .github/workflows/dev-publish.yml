@@ -2,7 +2,7 @@ name: Deploy Preview
 
 on:
   pull_request:
-    branches: [dev]
+    branches: [ dev ]
 
 jobs:
   build-and-deploy:
@@ -10,6 +10,7 @@ jobs:
     defaults:
       run:
         working-directory: frontend
+
 
     steps:
       - uses: actions/checkout@v3
@@ -50,7 +51,7 @@ jobs:
         uses: zaproxy/action-baseline@v0.15.0
         with:
           target: ${{ steps.netlify.outputs.deploy-url }}
-          cmd_options: "-r zap_report.html -w zap_warnings.txt -J zap.json"
+          cmd_options: '-r zap_report.html -w zap_warnings.txt -J zap.json'
       - name: Save ZAP summary output
         id: zap_summary
         run: |
@@ -58,10 +59,6 @@ jobs:
           cat zap_warnings.txt
           EOF >> "$GITHUB_ENV"
 
-      - name: Using the ZAP summary output
-        run: |
-          echo "ZAP Summary:"
-          echo "${{ env.ZAP_SUMMARY }}"
 
       - name: Add PR comment with preview + scan
         uses: marocchino/sticky-pull-request-comment@v2
