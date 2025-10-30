@@ -1,24 +1,21 @@
 import react from "@vitejs/plugin-react";
-import { defineConfig, loadEnv } from "vite";
-import process from "process";
+import { defineConfig } from "vite";
 
 // Add this import:
 // import { configDefaults } from "vitest/config";
 
-export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), "");
-  const prNumber = env.VITE_PR_NUMBER; // defined by GitHub Actions
-  const ghPagesFlag = env.VITE_GH_PAGES;
-
+export default defineConfig(() => {
   return {
     plugins: [react()],
-    base: ghPagesFlag ? `/drinkrecept/pr-${prNumber}/` : "/",
     // Add this vitest config:
     test: {
       environment: "jsdom",
       globals: true,
       setupFiles: ["src/tests/setup.js"],
       exclude: ["tests", "node_modules", "dist"], // Ignore top-level tests folder
+    },
+    build: {
+      outDir: "dist",
     },
   };
 });
