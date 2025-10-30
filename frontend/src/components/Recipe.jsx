@@ -200,22 +200,28 @@ export default function Recipe({ recipe }) {
               marginRight: "auto",
             }}
           >
-            <h3>Kommentarer</h3>
+            <h3 style={{ border: "dotted 2px yellow" }}>Kommentarer</h3>
             <ul style={{ listStyle: "none", padding: 0 }}>
               {comments.length === 0 && <li>Inga kommentarer än.</li>}
               {comments.map((c, i) => {
-                // const iso =
-                //   c?.createdAt && !Number.isNaN(Date.parse(c.createdAt))
-                //     ? new Date(c.createdAt).toISOString()
-                //     : null;
-                const displayTime =
-                  c?.createdAt && !Number.isNaN(Date.parse(c.createdAt))
-                    ? new Date(c.createdAt).toLocaleString()
-                    : null;
-                const displayNameOfTheDay =
-                  c?.createdAt && !Number.isNaN(Date.parse(c.createdAt))
-                    ? new Date(c.createdAt).toLocaleDateString(undefined, { weekday: "long" })
-                    : null;
+                const hasValidDate = c?.createdAt && !Number.isNaN(Date.parse(c.createdAt));
+                let displayTime = null;
+                let displayNameOfTheDay = null;
+                if (hasValidDate) {
+                  const d = new Date(c.createdAt);
+                  const yyyy = d.getFullYear();
+                  const mm = String(d.getMonth() + 1).padStart(2, "0");
+                  const dd = String(d.getDate()).padStart(2, "0");
+                  const timeStr = d.toLocaleTimeString(undefined, {
+                    hour: "numeric",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    hour12: true,
+                  });
+                  displayTime = `${yyyy}-${mm}-${dd}, ${timeStr}`;
+                  displayNameOfTheDay = d.toLocaleDateString(undefined, { weekday: "long" });
+                }
+
                 return (
                   <li
                     key={i}
@@ -232,28 +238,29 @@ export default function Recipe({ recipe }) {
                         alignItems: "baseline",
                       }}
                     >
-                      <strong>{c?.name ?? "Anonym"}</strong>
-                      {/* {iso ? (
-                        <time dateTime={c.createdAt} style={{ color: "#666", fontSize: "0.85rem" }}>
-                          {iso}
-                        </time>
-                      ) : (
-                        <span style={{ color: "#666", fontSize: "0.85rem" }}>Okänd tid</span>
-                      )} */}
+                      <strong style={{ border: "dotted 2px white" }}>{c?.name ?? "Anonym"}</strong>
+
                       {displayTime ? (
-                        <time dateTime={c.createdAt} style={{ color: "#666", fontSize: "0.85rem" }}>
+                        <time
+                          dateTime={c.createdAt}
+                          style={{ color: "#666", fontSize: "0.85rem", border: "dotted 2px white" }}
+                        >
                           {displayTime}
                         </time>
                       ) : (
                         <span style={{ color: "#666", fontSize: "0.85rem" }}>Okänd tid</span>
                       )}
                       {displayNameOfTheDay ? (
-                        <span style={{ display: "block" }}>{displayNameOfTheDay}</span>
+                        <span style={{ display: "block", border: "dotted 2px white" }}>
+                          {displayNameOfTheDay}
+                        </span>
                       ) : (
                         <span style={{ display: "block" }}>Okänd dag</span>
                       )}
                     </div>
-                    <div style={{ marginTop: "0.25rem" }}>{c?.comment}</div>
+                    <div style={{ marginTop: "0.25rem", border: "dotted 2px white" }}>
+                      {c?.comment}
+                    </div>
                   </li>
                 );
               })}
