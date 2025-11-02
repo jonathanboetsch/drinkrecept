@@ -35,6 +35,20 @@ jobs:
       - name: Build the app
         run: npm run build
 
+      - name: Install Playwright Browsers
+        run: npx playwright install chromium --with-deps
+
+      - name: Run E2E tests
+        run: npm run test:e2e
+
+      - name: Upload Playwright Report
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-report
+          path: frontend/playwright-report/
+          retention-days: 7
+
       - name: Deploy to Netlify
         id: netlify
         uses: nwtgck/actions-netlify@v2
