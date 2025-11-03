@@ -69,6 +69,8 @@ function App() {
     }
   };
 
+  const initializeRatings = (data) => data.map((r) => ({ recipeId: r._id, rating: null }));
+
   useEffect(() => {
     fetch(API_URL)
       .then((response) => {
@@ -80,8 +82,7 @@ function App() {
         setSearchResult(data);
         setUserRatings((prev) => {
           if (prev && prev.length > 0) return prev; // keep array if already populated
-          const initializedUserRatings = data.map((r) => ({ recipeId: r._id, rating: null }));
-          return initializedUserRatings; // initialize null values otherwise
+          return initializeRatings(); // initialize null values otherwise
         });
       })
       .catch((err) => setError(err.message))
@@ -94,6 +95,12 @@ function App() {
   useEffect(() => {
     setSearchResult(recipes);
   }, [recipes]);
+
+  // const categories = useMemo(() => {
+  //   const set = new Set();
+  //   (searchResult || []).forEach((r) => (r.categories || []).forEach((c) => set.add(c)));
+  //   return ["Alla", ...Array.from(set).sort()];
+  // }, [searchResult]);
 
   // allCategories recalculates only when there is an update of recipes (f.ex. recipes re-fetched)
   const allCategories = useMemo(() => {
@@ -138,9 +145,11 @@ function App() {
   );
 
   if (loading) {
+    // return <p>Laddar recept...</p>;
     return <p className="loading-message">Laddar recept...</p>;
   }
   if (error) {
+    // return <p>Fel är: {error}</p>;
     return <p className="error-message">Fel är: {error}</p>;
   }
 
