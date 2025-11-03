@@ -1,63 +1,91 @@
-.category-filter {
+.hamburger-container {
+  left: 2%;
+  right: 8%;
+  top: 40%;
+  position: relative;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex: 0 0 auto;
   align-items: center;
-  gap: 0.6rem;
-  margin: 1.5rem auto;
-  max-width: 900px;
-  text-align: center;
+  order: 3;
+  overflow: visible;
+  z-index: 10;
 }
 
-/* Category "bubbles" */
-.category-filter__button {
-  all: unset;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 9999px;
-  padding: 0.4rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 15px;
-  color: darkgray;
-  background-color: #f8f8f8;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  white-space: nowrap;
-  border: 1px solid #444;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+/* Wrapper for each button + its invisible link */
+.category-button-and-link {
+  position: relative;
+  display: block;
 }
 
-/* Hover effect */
-.category-filter__button:hover {
-  background-color: #3d3d3d;
-  border-color: #646cff;
-  color: #ffe680;
-  transform: scale(1.05);
-}
-
-/* Active category */
-.category-filter__button--active {
-  background-color: #646cff;
+/* The visible button */
+.hamburger-menu button {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
   color: white;
-  font-weight: bold;
-  border-color: #646cff;
-  box-shadow: 0 0 10px rgba(100, 108, 255, 0.6);
+  border: none;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
 }
 
-/* Prevent shrinking on small screens */
-.category-filter {
-  flex-shrink: 0;
+.hamburger-menu button.active {
+  color: limegreen;
+  font-weight: 1000 !important;
 }
 
-/* Responsive adjustments */
-@media (max-width: 600px) {
-  .category-filter {
-    gap: 0.4rem;
+/* Invisible overlay link */
+.invisible-hitbox {
+  position: absolute;
+  inset: 0; /* covers entire parent div */
+  z-index: 2;
+  opacity: 0;
+  pointer-events: auto;
+  text-decoration: none;
+  color: transparent;
+}
+
+/* Menu container */
+.hamburger-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  background: black;
+  padding: 0.6rem;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px gray;
+  z-index: 1000;
+  min-width: 160px;
+  text-align: left;
+}
+
+.hamburger-menu.open {
+  display: block;
+}
+
+.hamburger-button {
+  background: darkgray;
+  border: solid 4px black;
+  padding: 0.4rem 0.6rem;
+  font-size: 2.5rem;
+  border-radius: 26px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .simple-header {
+    position: relative;
   }
-
-  .category-filter__button {
-    font-size: 0.85rem;
-    padding: 0.3rem 0.8rem;
+  .hamburger-container {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 0;
+    left: auto;
+    z-index: 1000;
   }
 }
