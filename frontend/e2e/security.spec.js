@@ -90,6 +90,6 @@ test.describe("Receptsajten - XSS Security Tests", () => {
 
     // Verifiera att sidan inte har kraschad
     const recipeCards = page.locator('[data-testid="recipe-card"]');
-    await expect(recipeCards).toHaveCount(0, { timeout: 2000 });
+    await expect(recipeCards).toHaveCount(0, { timemout: 2000 }); // since it should return no recipe
   });
 });
