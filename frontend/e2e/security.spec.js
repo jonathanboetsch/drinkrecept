@@ -18,7 +18,7 @@ test.describe("Receptsajten - XSS Security Tests", () => {
     });
 
     // Mocka API med XSS-payloads i receptdata
-    await page.route("**/api/recipes", (route) => {
+    await page.route("**/recipes", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
