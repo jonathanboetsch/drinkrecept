@@ -7,6 +7,7 @@ import SearchBar from "./SearchBar";
 import Recipe from "./Recipe";
 import { RecipesContext, useRecipesContext } from "./RecipesContext";
 import CategoryFilter from "./CategoryFilter";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
 function CategoryPage() {
   const { searchResult } = useRecipesContext();
@@ -37,6 +38,8 @@ function RecipePage() {
 }
 
 function App() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -57,8 +60,21 @@ function App() {
       .map((v) => (v && typeof v === "object" ? flattenValues(v) : String(v)))
       .join(" ");
 
+  // Sync search bar with URL query param
+  useEffect(() => {
+    const q = searchParams.get("q") || "";
+    filterSearch(q);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, recipes]);
+
   const filterSearch = (input = "") => {
     const text = input.trim().toLowerCase();
+    // Update URL query param
+    if (text) {
+      setSearchParams({ q: text });
+    } else {
+      setSearchParams({});
+    }
     if (text) {
       const result = recipes.filter((r) => flattenValues(r).toLowerCase().includes(text));
       setSearchResult(result.length > 0 ? result : []);
@@ -139,7 +155,11 @@ function App() {
     <div className="app-container">
       <header className="header-container">
         <img src={Header} alt="Header" className="header-image" />
-        <SearchBar className="search-bar" onUserType={filterSearch} />
+        <SearchBar
+          className="search-bar"
+          onUserType={filterSearch}
+          value={searchParams.get("q") || ""}
+        />
         <CategoryFilter
           categories={allCategories}
           activeCategory={activeCategory}
