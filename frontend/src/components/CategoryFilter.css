@@ -33,7 +33,7 @@
 
 .hamburger-menu button.active {
   color: limegreen;
-  font-weight: 700;
+  font-weight: 1000 !important;
 }
 
 /* Invisible overlay link */

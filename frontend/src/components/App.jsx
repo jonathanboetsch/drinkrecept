@@ -23,7 +23,6 @@ function RecipePage() {
   const { searchResult } = useRecipesContext();
   const { id } = useParams();
   const recipe = searchResult.find((r) => String(r._id) === String(id));
-  // return recipe ? <Recipe recipe={recipe} /> : <p>Receptet hittades inte</p>;
   return (
     <div className="recipe-page">
       {recipe ? (
@@ -147,7 +146,6 @@ function App() {
     // return <p>Laddar recept...</p>;
     return <p className="loading-message">Laddar recept...</p>;
   }
-
   if (error) {
     // return <p>Fel är: {error}</p>;
     return <p className="error-message">Fel är: {error}</p>;
@@ -156,8 +154,7 @@ function App() {
   return (
     <div className="app-container">
       <header className="simple-header">
-        <img src="/Header4.png" className="header-logo" />
-        <h3 className="header-title"></h3>
+        <img src="/Header4.png" className="header-logo" alt="Recipe app logo" />
         <div className="header-search">
           <SearchBar onUserType={filterSearch} />
         </div>

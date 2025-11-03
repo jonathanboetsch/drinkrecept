@@ -73,7 +73,7 @@ export default function RatingForm({ ratingLevels = [1, 2, 3, 4, 5], confirmatio
           />
         ))}
       </div>
-      <div className="feddback-message">{feedbackMessageOn && <p>Tack för din röst !!! </p>}</div>
+      <div className="feedback-message">{feedbackMessageOn && <p>Tack för din röst !!! </p>}</div>
     </div>
   );
 }
