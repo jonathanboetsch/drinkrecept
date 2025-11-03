@@ -24,8 +24,8 @@ test.describe("Receptsajten - XSS Security Tests", () => {
         contentType: "application/json",
         body: JSON.stringify([
           {
-            id: 1,
-            name: '<script>alert("XSS")</script>Pasta Carbonara',
+            _id: 1,
+            title: '<script>alert("Hej Hej Hej")</script>Pasta Carbonara',
             description: "<img src=x onerror=alert(1)>",
             image: "https://example.com/pasta.jpg",
             rating: 5,
@@ -33,8 +33,8 @@ test.describe("Receptsajten - XSS Security Tests", () => {
             ingredients: ["pasta", "bacon"],
           },
           {
-            id: 2,
-            name: '<svg/onload=alert("XSS2")>',
+            _id: 2,
+            title: '<svg/onload=alert("XSS2")>',
             description: "Normal description",
             image: "javascript:alert(1)",
             rating: 4,
@@ -45,6 +45,7 @@ test.describe("Receptsajten - XSS Security Tests", () => {
       });
     });
 
+    page.on("request", (req) => console.log("➡️ Request:", req.url()));
     await page.goto("/");
 
     // Vänta på att receptkort renderas
@@ -55,13 +56,13 @@ test.describe("Receptsajten - XSS Security Tests", () => {
 
     // Verifiera att receptkort visas (trots XSS-försök)
     const recipeCards = page.locator('[data-testid="recipe-card"]');
-    await expect(page.locator('[data-testid="recipe-card"]')).toHaveCount(10, { timeout: 10000 });
+    await expect(page.locator('[data-testid="recipe-card"]')).toHaveCount(2, { timeout: 10000 });
 
     // Verifiera att script-taggar renderas som text
     const firstCard = recipeCards.first();
     const cardText = await firstCard.textContent();
-    expect(cardText).toContain("irländsk whiskey");
-    expect(cardText).toContain("Irish CoffeeBeskrivning");
+    expect(cardText).toContain("<img src=x onerror=alert(1)>");
+    expect(cardText).toContain('<script>alert("Hej Hej Hej")</script>Pasta Carbonara');
   });
 
   test("URL-parametern ?q=<script>alert(1)</script> sanitiseras och orsakar inte scriptkörning", async ({
@@ -89,6 +90,6 @@ test.describe("Receptsajten - XSS Security Tests", () => {
 
     // Verifiera att sidan inte har kraschad
     const recipeCards = page.locator('[data-testid="recipe-card"]');
-    await expect(recipeCards.first()).toBeVisible({ timeout: 5000 });
+    await expect(recipeCards).toHaveCount(0, { timemout: 2000 }); // since it should return no recipe
   });
 });
