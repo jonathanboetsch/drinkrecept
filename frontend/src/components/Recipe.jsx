@@ -82,7 +82,7 @@ export default function Recipe({ recipe }) {
     <div className="recipe-container">
       {recipe.message && <p className="recipe-message">{recipe.message}</p>}
       {!recipe.message && (
-        <div className="recipe-card">
+        <div className="recipe-card" data-testid="recipe-card">
           <Link
             to={recipe._id && `/recipe/${recipe._id}`}
             className="recipe-link"
