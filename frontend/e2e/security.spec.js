@@ -33,6 +33,8 @@ test.describe("Receptsajten - XSS Security Tests", () => {
             ingredients: ["pasta", "bacon"],
           },
           {
+            id: 2,
+            title: '<svg/onload=alert("XSS2")>',
             _id: 2,
             title: '<svg/onload=alert("XSS2")>',
             description: "Normal description",
