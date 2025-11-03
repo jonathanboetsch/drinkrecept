@@ -35,7 +35,7 @@ test.describe("Receptsajten - Error Handling", () => {
 
   test("Tom-/fel-state: inga recept visar rätt meddelande", async ({ page }) => {
     // Intercepta API och returnera tom array
-    await page.route("**/api/recipes", (route) => {
+    await page.route("**/recipes", (route) => {
       route.fulfill({
         status: 200,
         contentType: "application/json",
