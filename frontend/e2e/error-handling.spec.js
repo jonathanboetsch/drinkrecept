@@ -3,7 +3,6 @@ import { test, expect } from "@playwright/test";
 test.describe("Receptsajten - Error Handling", () => {
   test('API-fel: användaren ser felmeddelande och "Försök igen"-knapp fungerar', async ({
     page,
-    context,
   }) => {
     // Intercepta API-anrop och returnera fel
     await page.route("**/recipes", (route) => {
