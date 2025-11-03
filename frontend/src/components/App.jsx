@@ -6,7 +6,7 @@ import SearchBar from "./SearchBar";
 import Recipe from "./Recipe";
 import { RecipesContext, useRecipesContext } from "./RecipesContext";
 import CategoryFilter from "./CategoryFilter";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 function CategoryPage() {
   const { searchResult } = useRecipesContext();
@@ -37,7 +37,6 @@ function RecipePage() {
 
 function App() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -180,6 +179,7 @@ function App() {
   return (
     <div className="app-container">
       <header className="header-container">
+        // eslint-disable-next-line no-undef
         <img src={Header} alt="Header" className="header-image" />
         <SearchBar
           className="search-bar"
