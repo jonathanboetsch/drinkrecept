@@ -45,6 +45,7 @@ test.describe("Receptsajten - XSS Security Tests", () => {
       });
     });
 
+    page.on("request", (req) => console.log("➡️ Request:", req.url()));
     await page.goto("/");
 
     // Vänta på att receptkort renderas
