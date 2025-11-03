@@ -1,5 +1,7 @@
 /*
   # Content Security Policy - Allow self and inline styles/scripts needed by React/Vite
+  # Note: 'unsafe-inline' is required for Vite's HMR and React's inline styles
+  # For production, consider using nonces or moving to external files
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://grupp3-jynxa.reky.se; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
   
   # Anti-clickjacking protection
@@ -17,4 +19,3 @@
   
   # Additional security headers
   Referrer-Policy: strict-origin-when-cross-origin
-  X-XSS-Protection: 1; mode=block
