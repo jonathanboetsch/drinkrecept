@@ -105,6 +105,13 @@ body::before {
   background-color: grey;
 }
 
+.recipe-page .recipe-card:hover {
+  border-color: white; /* restore original */
+  background-color: black; /* restore original */
+  cursor: default;
+  transition: none;
+}
+
 .recipe-card h1 {
   font-size: 1.2em;
   margin-bottom: 10px;
