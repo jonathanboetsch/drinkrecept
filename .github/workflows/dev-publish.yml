@@ -2,7 +2,7 @@ name: Deploy Preview
 
 on:
   pull_request:
-    branches: [ dev ]
+    branches: [dev]
 
 jobs:
   build-and-deploy:
@@ -10,7 +10,6 @@ jobs:
     defaults:
       run:
         working-directory: frontend
-
 
     steps:
       - uses: actions/checkout@v3
@@ -43,7 +42,7 @@ jobs:
 
       - name: Upload Playwright Report
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: playwright-report
           path: frontend/playwright-report/
@@ -65,14 +64,13 @@ jobs:
         uses: zaproxy/action-baseline@v0.15.0
         with:
           target: ${{ steps.netlify.outputs.deploy-url }}
-          cmd_options: '-r zap_report.html -w zap_warnings.txt -J zap.json'
+          cmd_options: "-r zap_report.html -w zap_warnings.txt -J zap.json"
       - name: Save ZAP summary output
         id: zap_summary
         run: |
           echo ZAP_SUMMARY<<EOF
           cat zap_warnings.txt
           EOF >> "$GITHUB_ENV"
-
 
       - name: Add PR comment with preview + scan
         uses: marocchino/sticky-pull-request-comment@v2
