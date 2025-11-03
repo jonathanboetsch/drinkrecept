@@ -147,8 +147,18 @@ function App() {
   }
 
   if (error) {
-    // return <p>Fel är: {error}</p>;
-    return <p className="error-message">Fel är: {error}</p>;
+    return (
+      <div data-testid="error-message" className="error-message">
+        Fel är: {error}
+        <button
+          data-testid="retry-button"
+          onClick={() => window.location.reload()}
+          style={{ marginLeft: 12 }}
+        >
+          Försök igen
+        </button>
+      </div>
+    );
   }
 
   return (
