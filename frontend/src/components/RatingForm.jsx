@@ -5,7 +5,7 @@ import { useRecipesContext } from "./RecipesContext.jsx";
 
 export default function RatingForm({ ratingLevels = [1, 2, 3, 4, 5], confirmationAction, recipe }) {
   const [userRating, setUserRating] = useState(null);
-  const [isRatingDisabled, disableRating] = useState(false);
+  const [ratingDisabled, setRatingDisabled] = useState(false);
   const [feedbackMessageOn, setFeedbackMessageOn] = useState(false);
 
   const { updateAvgRating, updateUserRatings, userRatings } = useRecipesContext();
@@ -14,13 +14,13 @@ export default function RatingForm({ ratingLevels = [1, 2, 3, 4, 5], confirmatio
     if (!userRatings?.length) return;
     const found = userRatings?.find((r) => r.recipeId === recipe._id)?.rating ?? null;
     setUserRating(found);
-    disableRating(found !== null);
+    setRatingDisabled(found !== null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userRatings]);
 
   const handleRatingClick = (rating) => {
-    if (isRatingDisabled) return; // guard against double-clicks
-    disableRating(true); // instant disable
+    if (ratingDisabled) return; // guard against double-clicks
+    setRatingDisabled(true); // instant disable
     setUserRating(rating); // optional optimistic UI update
     setFeedbackMessageOn(true);
     setTimeout(() => setFeedbackMessageOn(false), 2000);
@@ -64,7 +64,7 @@ export default function RatingForm({ ratingLevels = [1, 2, 3, 4, 5], confirmatio
             confAction={confirmationAction} // thought to popup a "thank for your contribution"
             onRating={handleRatingClick} // user click on Star => set its rating value in the RatingForm
             recipe={recipe} // optional, put here for logging in the console when user clicks
-            isHidden={isRatingDisabled} // Star can this way update its css property dynamically
+            isHidden={ratingDisabled} // Star can this way update its css property dynamically
             imageUrl={
               userRating === null || val <= userRating
                 ? "https://upload.wikimedia.org/wikipedia/commons/6/6e/Super_Mario_Bros._%E2%80%93_Overworld_Star.png"
