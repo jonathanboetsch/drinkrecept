@@ -16,7 +16,7 @@ test.describe("Receptsajten - Homepage", () => {
 
     // Verifiera att kategorilista visas
     const categories = page.locator('[data-testid="category-list"]');
-    await expect(categories).toBeVisible();
+    await expect(categories.first()).toBeVisible();
   });
 
   test("Sökflöde: sökning minskar lista, rensa visar alla igen, query i URL funkar på reload", async ({

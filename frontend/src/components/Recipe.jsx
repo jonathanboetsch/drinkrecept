@@ -106,7 +106,7 @@ export default function Recipe({ recipe }) {
           {!location.pathname.startsWith("/recipe/") && (
             <section>
               <h3>Kategorier</h3>
-              <ul>
+              <ul data-testid="category-list">
                 {recipe.categories && recipe.categories.length > 0 ? (
                   recipe.categories.map((cat, i) => <li key={i}>{cat}</li>)
                 ) : (
