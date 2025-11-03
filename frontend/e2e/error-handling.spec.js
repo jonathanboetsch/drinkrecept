@@ -1,45 +1,50 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test.describe('Receptsajten - Error Handling', () => {
-  test('API-fel: användaren ser felmeddelande och "Försök igen"-knapp fungerar', async ({ page, context }) => {
+test.describe("Receptsajten - Error Handling", () => {
+  test('API-fel: användaren ser felmeddelande och "Försök igen"-knapp fungerar', async ({
+    page,
+    context,
+  }) => {
     // Intercepta API-anrop och returnera fel
-    await page.route('**/api/recipes', route => {
-      route.abort('failed');
+    await page.route("**/recipes", (route) => {
+      route.abort("failed");
     });
-    
-    await page.goto('/');
-    
+
+    await page.goto("/");
+
     // Verifiera att felmeddelande visas
     const errorMessage = page.locator('[data-testid="error-message"]');
     await expect(errorMessage).toBeVisible({ timeout: 5000 });
     await expect(errorMessage).toContainText(/fel|error|kunde inte|failed/i);
-    
+
     // Verifiera att "Försök igen"-knapp finns
     const retryButton = page.locator('[data-testid="retry-button"]');
     await expect(retryButton).toBeVisible();
-    
+
     // Ta bort route-block för att låta retry lyckas
-    await page.unroute('**/api/recipes');
-    
+    await page.unroute("**/recipes");
+
     // Klicka på "Försök igen"
     await retryButton.click();
-    
+
     // Verifiera att recept laddas efter retry
-    await expect(page.locator('[data-testid="recipe-card"]').first()).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('[data-testid="recipe-card"]').first()).toBeVisible({
+      timeout: 10000,
+    });
   });
 
-  test('Tom-/fel-state: inga recept visar rätt meddelande', async ({ page }) => {
+  test("Tom-/fel-state: inga recept visar rätt meddelande", async ({ page }) => {
     // Intercepta API och returnera tom array
-    await page.route('**/api/recipes', route => {
+    await page.route("**/api/recipes", (route) => {
       route.fulfill({
         status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify([])
+        contentType: "application/json",
+        body: JSON.stringify([]),
       });
     });
-    
-    await page.goto('/');
-    
+
+    await page.goto("/");
+
     // Verifiera att "inga recept"-meddelande visas
     const emptyMessage = page.locator('[data-testid="empty-state"]');
     await expect(emptyMessage).toBeVisible({ timeout: 5000 });
