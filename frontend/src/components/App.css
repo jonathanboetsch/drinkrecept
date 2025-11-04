@@ -281,6 +281,56 @@ body::before {
   }
 }
 
+@media (max-width: 480px) {
+  /* Stack header items vertically so header-image is top,
+     then hamburger-button and search-bar appear below it. */
+  .header-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .header-image {
+    order: 0;
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  /* Place hamburger just below image */
+  .hamburger-container {
+    order: 1;
+    position: static; /* avoid absolute positioning that might overlap */
+    margin-top: 0.25rem;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .hamburger-button {
+    font-size: 1.6rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 20px;
+  }
+
+  /* Search bar below hamburger, full width but constrained */
+  .search-bar {
+    order: 2;
+    width: calc(100% - 2rem);
+    max-width: 360px;
+    margin: 0.25rem 0 0.5rem 0;
+    box-sizing: border-box;
+  }
+
+  /* Ensure category menu doesn't overlap */
+  .hamburger-menu {
+    right: 50%;
+    transform: translateX(50%);
+  }
+}
+
 .comments-section {
   margin-top: 2rem;
   width: 100%;
