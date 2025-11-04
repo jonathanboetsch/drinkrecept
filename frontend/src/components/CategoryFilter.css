@@ -88,6 +88,6 @@
     transform: translateY(-50%);
     margin-left: 0;
     left: auto;
-    z-index: 1000;
+    z-index: 200; /* lower if needed to not hide search input */
   }
 }
