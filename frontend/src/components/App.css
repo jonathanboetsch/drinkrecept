@@ -32,12 +32,12 @@
     animation: logo-spin infinite 20s linear;
   }
 }
-.card {
+/* .card {
   padding: 2em;
-}
-.read-the-docs {
+} */
+/* .read-the-docs {
   color: #888;
-}
+} */
 
 body,
 html,
@@ -106,9 +106,9 @@ body::before {
 }
 
 .recipe-card h1 {
-  font-size: 1.2em;
-  margin-bottom: 10px;
-  text-align: center;
+  /* font-size: 1.2em; */
+  /* margin-bottom: 10px; */
+  /* text-align: center; */
   font-size: 1.2em;
   margin-bottom: 10px;
   text-align: center;
