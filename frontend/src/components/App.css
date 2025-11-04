@@ -370,4 +370,6 @@ body::before {
   box-sizing: border-box;
   /* optional: keep header content from wrapping on wider screens */
   flex-wrap: nowrap;
+
+  position: relative; /* <--- ADDED: make .hamburger-container absolute coords relative to header */
 }
