@@ -111,12 +111,6 @@ function App() {
     setSearchResult(recipes);
   }, [recipes]);
 
-  // const categories = useMemo(() => {
-  //   const set = new Set();
-  //   (searchResult || []).forEach((r) => (r.categories || []).forEach((c) => set.add(c)));
-  //   return ["Alla", ...Array.from(set).sort()];
-  // }, [searchResult]);
-
   // allCategories recalculates only when there is an update of recipes (f.ex. recipes re-fetched)
   const allCategories = useMemo(() => {
     return ["Alla", ...new Set(recipes.flatMap((r) => r.categories || []))].sort();
@@ -160,7 +154,6 @@ function App() {
   );
 
   if (loading) {
-    // return <p>Laddar recept...</p>;
     return <p className="loading-message">Laddar recept...</p>;
   }
   if (error) {
