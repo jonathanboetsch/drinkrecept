@@ -20,5 +20,11 @@ export default defineConfig(({ mode }) => {
       setupFiles: ["src/tests/setup.js"],
       exclude: ["tests", "node_modules", "dist"], // Ignore top-level tests folder
     },
+    server: {
+      headers: {
+        "X-Frame-Options": "DENY",
+        "X-Content-Type-Options": "nosniff",
+      },
+    },
   };
 });
