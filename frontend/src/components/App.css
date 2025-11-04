@@ -360,3 +360,14 @@ body::before {
   order: 3;
   flex: 0 0 auto;
 } */
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  /* optional: keep header content from wrapping on wider screens */
+  flex-wrap: nowrap;
+}
