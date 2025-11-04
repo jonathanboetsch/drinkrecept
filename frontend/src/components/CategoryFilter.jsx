@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./CategoryFilter.css";
+import PropTypes from "prop-types";
 
 export default function CategoryFilter({
   categories,
@@ -44,3 +45,10 @@ export default function CategoryFilter({
     </div>
   );
 }
+
+CategoryFilter.propTypes = {
+  categories: PropTypes.arrayOf(PropTypes.String).isRequired,
+  activeCategory: PropTypes.string.isRequired,
+  changeActiveCategory: PropTypes.func.isRequired,
+  linkToRoute: PropTypes.string,
+};
