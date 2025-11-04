@@ -154,10 +154,14 @@ body::before {
 }
 
 .header-title {
-  margin: 0;
-  font-size: 2rem;
+  /* margin: 0; */
+  /* font-size: 2rem; */
   color: white;
   font-weight: bold;
+  font-size: 1.5rem;
+  order: 1;
+  margin: 0;
+  flex: 0 0 auto;
 }
 
 .header-search {
@@ -168,6 +172,8 @@ body::before {
 .header-logo {
   height: 50px;
   width: auto;
+  order: 0;
+  flex: 0 0 auto;
 }
 
 .category-title {
@@ -338,17 +344,17 @@ body::before {
   flex-wrap: wrap;
 }
 
-.header-logo {
+/* .header-logo {
   order: 0;
   flex: 0 0 auto;
-}
+} */
 
-.header-title {
+/* .header-title {
   font-size: 1.5rem;
   order: 1;
   margin: 0;
   flex: 0 0 auto;
-}
+} */
 
 /* .hamburger-container {
   order: 3;
