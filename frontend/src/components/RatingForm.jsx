@@ -2,6 +2,8 @@ import Star from "./Star.jsx";
 import "./Rating.css";
 import { useEffect, useState } from "react";
 import { useRecipesContext } from "./RecipesContext.jsx";
+import Recipe from "./Recipe.jsx";
+import PropTypes from "prop-types";
 
 export default function RatingForm({ ratingLevels = [1, 2, 3, 4, 5], confirmationAction, recipe }) {
   const [userRating, setUserRating] = useState(null);
@@ -71,3 +73,9 @@ export default function RatingForm({ ratingLevels = [1, 2, 3, 4, 5], confirmatio
     </div>
   );
 }
+
+RatingForm.propTypes = {
+  ratingLevels: PropTypes.arrayOf(Number),
+  confirmationAction: PropTypes.func.isRequired,
+  recipe: PropTypes.shape(Recipe.propTypes),
+};

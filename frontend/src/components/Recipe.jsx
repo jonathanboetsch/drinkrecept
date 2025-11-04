@@ -224,34 +224,34 @@ export default function Recipe({ recipe }) {
   );
 }
 
-Recipe.PropTypes = {
-  _id: PropTypes.string,
+Recipe.propTypes = {
+  _id: PropTypes.string.isRequired,
 
-  title: PropTypes.string,
+  title: PropTypes.string.isRequired,
 
-  description: PropTypes.string,
+  description: PropTypes.string.isRequired,
 
-  imageUrl: PropTypes.string,
+  imageUrl: PropTypes.string, // not required since there is a fallback image
 
-  timeInMins: PropTypes.number,
+  timeInMins: PropTypes.number.isRequired,
 
-  price: PropTypes.number,
+  price: PropTypes.number.isRequired,
 
-  categories: PropTypes.arrayOf(PropTypes.string),
+  categories: PropTypes.arrayOf(PropTypes.string).isRequired,
 
-  instructions: PropTypes.arrayOf(PropTypes.string),
+  instructions: PropTypes.arrayOf(PropTypes.string).isRequired,
 
   ingredients: PropTypes.arrayOf(
     PropTypes.shape({
-      name: PropTypes.string,
+      name: PropTypes.string.isRequired,
 
-      amount: PropTypes.number,
+      amount: PropTypes.number.isRequired,
 
-      unit: PropTypes.string,
+      unit: PropTypes.string.isRequired,
 
-      _id: PropTypes.string,
-    })
+      _id: PropTypes.string.isRequired,
+    }).isRequired
   ),
 
-  avgRating: PropTypes.number,
+  avgRating: PropTypes.number, // not available if no user rated it yet
 };
