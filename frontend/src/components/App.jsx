@@ -69,6 +69,8 @@ function App() {
     }
   };
 
+  const initializeRatings = (data) => data.map((r) => ({ recipeId: r._id, rating: null }));
+
   useEffect(() => {
     fetch(API_URL)
       .then((response) => {
@@ -80,7 +82,7 @@ function App() {
         setSearchResult(data);
         setUserRatings((prev) => {
           if (prev && prev.length > 0) return prev; // keep array if already populated
-          return data.map((r) => ({ recipeId: r._id, rating: null })); // initialize null values otherwise
+          return initializeRatings(data); // initialize null values otherwise
         });
       })
       .catch((err) => setError(err.message))
