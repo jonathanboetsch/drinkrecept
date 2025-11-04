@@ -1,8 +1,8 @@
 import React from "react";
 
-export default function SearchBar({ onUserType, value }) {
+export default function SearchBar({ onUserType, value, className = "" }) {
   return (
-    <div style={{ position: "relative", display: "inline-block" }}>
+    <div className={className} style={{ position: "relative", display: "inline-block" }}>
       <input
         type="search"
         className="search-bar"
