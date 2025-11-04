@@ -196,8 +196,10 @@ export default function Recipe({ recipe }) {
             <ul className="comments-list">
               {comments.length === 0 && <li className="comment-empty">Inga kommentarer än.</li>}
               {comments.map((c, i) => {
+                // console.info(" i = ", i);
                 const hasValidDate = c?.createdAt && !Number.isNaN(Date.parse(c.createdAt));
-                let displayTime = null;
+                let displayTime = i;
+                displayTime = null;
                 let displayNameOfTheDay = null;
                 if (hasValidDate) {
                   const d = new Date(c.createdAt);
