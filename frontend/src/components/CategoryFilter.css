@@ -1,18 +1,91 @@
-.category-filter {
-  margin-bottom: 1rem;
+.hamburger-container {
+  left: 2%;
+  right: 8%;
+  top: 40%;
+  position: relative;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  order: 3;
+  overflow: visible;
+  z-index: 10;
 }
 
-.category-filter button {
-  margin: 0.3rem;
-  padding: 0.4rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 15px;
-  background-color: #f8f8f8;
+/* Wrapper for each button + its invisible link */
+.category-button-and-link {
+  position: relative;
+  display: block;
+}
+
+/* The visible button */
+.hamburger-menu button {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.6rem;
   cursor: pointer;
 }
 
-.category-filter button.active {
-  background-color: #0077ff;
-  color: white;
-  font-weight: bold;
+.hamburger-menu button.active {
+  color: limegreen;
+  font-weight: 1000 !important;
+}
+
+/* Invisible overlay link */
+.invisible-hitbox {
+  position: absolute;
+  inset: 0; /* covers entire parent div */
+  z-index: 2;
+  opacity: 0;
+  pointer-events: auto;
+  text-decoration: none;
+  color: transparent;
+}
+
+/* Menu container */
+.hamburger-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  background: black;
+  padding: 0.6rem;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px gray;
+  z-index: 1000;
+  min-width: 160px;
+  text-align: left;
+}
+
+.hamburger-menu.open {
+  display: block;
+}
+
+.hamburger-button {
+  background: darkgray;
+  border: solid 4px black;
+  padding: 0.4rem 0.6rem;
+  font-size: 2.5rem;
+  border-radius: 26px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .simple-header {
+    position: relative;
+  }
+  .hamburger-container {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 0;
+    left: auto;
+    z-index: 1000;
+  }
 }

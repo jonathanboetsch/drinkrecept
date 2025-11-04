@@ -1,45 +1,25 @@
-import React, { useEffect, useMemo, useState } from "react";
-import Recipe from "./Recipe.jsx";
-import CategoryFilter from "./CategoryFilter.jsx";
+import { useMemo } from "react";
+import Recipe from "./Recipe";
+import { useRecipesContext } from "./RecipesContext";
 
-export default function RecipeList({ recipes = [] }) {
-  
-  const [activeCategory, setActiveCategory] = useState("Alla");
+export default function RecipeList({ recipes: propRecipes, activeCategory = "Alla" }) {
+  // prefer explicitly passed recipes (e.g. CategoryPage passes a pre-filtered list),
+  // otherwise fall back to the searchResult provided via RecipesContext
+  const { searchResult: contextRecipes = [] } = useRecipesContext() || {};
 
-  // Skapa kategorilistan från de recept som kommer in via props
-  const categories = useMemo(() => {
-    const set = new Set();
-    recipes.forEach((r) => (r.categories || []).forEach((c) => set.add(c)));
-    return ["Alla", ...Array.from(set).sort()];
-  }, [recipes]);
-
-  // Om aktiv kategori inte längre finns (t.ex. efter sökning) -> backa till "Alla"
-  useEffect(() => {
-    if (!categories.includes(activeCategory)) {
-      setActiveCategory("Alla");
-    }
-  }, [categories, activeCategory]);
-
-  // Filtrera på vald kategori ovanpå de (redan sök-filtrerade) recipes
   const filteredRecipes = useMemo(() => {
+    const recipes = propRecipes ?? contextRecipes ?? [];
+    if (!recipes) return [];
     return activeCategory === "Alla"
       ? recipes
       : recipes.filter((r) => (r.categories || []).includes(activeCategory));
-  }, [recipes, activeCategory]);
-
+  }, [propRecipes, contextRecipes, activeCategory]);
 
   return (
     <div className="recipes-container">
-      <CategoryFilter
-        categories={categories}
-        activeCategory={activeCategory}
-        onSelectCategory={setActiveCategory}
-      />
-      <div>
-        {filteredRecipes.map((r, i) => (
-          <Recipe key={r._id ?? i} recipe={r} />
-        ))}
-      </div>
+      {filteredRecipes?.map((r, i) => (
+        <Recipe key={r._id ?? i} recipe={r} />
+      ))}
     </div>
   );
 }
