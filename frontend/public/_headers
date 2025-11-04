@@ -1,0 +1,9 @@
+/*
+  Content-Security-Policy: default-src 'self';
+    img-src 'self' data: https:;
+    script-src 'self';
+    style-src 'self' 'unsafe-inline';
+    connect-src 'self' https://your-api.example.com;
+    frame-ancestors 'none';
+    base-uri 'self';
+    object-src 'none';
