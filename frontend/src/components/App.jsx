@@ -104,7 +104,9 @@ function App() {
 
   // allCategories recalculates only when there is an update of recipes (f.ex. recipes re-fetched)
   const allCategories = useMemo(() => {
-    return ["Alla", ...new Set(recipes.flatMap((r) => r.categories || []))].sort();
+    return ["Alla", ...new Set(recipes.flatMap((r) => r.categories || []))].sort((r1, r2) =>
+      r1.toLowerCase().localeCompare(r2.toLowerCase())
+    );
   }, [recipes]);
 
   const changeActiveCategory = (category) => {
