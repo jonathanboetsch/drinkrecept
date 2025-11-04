@@ -213,7 +213,7 @@ export default function Recipe({ recipe }) {
                 }
 
                 return (
-                  <li key={i} className="comment-item">
+                  <li key={c.createdAt} className="comment-item">
                     <div className="comment-text">{c?.comment}</div>
                     <div className="comment-meta">
                       <strong className="comment-author">{c?.name ?? "Anonym"}</strong>
