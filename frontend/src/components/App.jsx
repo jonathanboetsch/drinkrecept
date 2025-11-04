@@ -82,7 +82,7 @@ function App() {
         setSearchResult(data);
         setUserRatings((prev) => {
           if (prev && prev.length > 0) return prev; // keep array if already populated
-          return initializeRatings(); // initialize null values otherwise
+          return initializeRatings(data); // initialize null values otherwise
         });
       })
       .catch((err) => setError(err.message))
