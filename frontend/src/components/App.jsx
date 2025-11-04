@@ -174,7 +174,6 @@ function App() {
   return (
     <div className="app-container">
       <header className="header-container">
-        // eslint-disable-next-line no-undef
         <img src={Header} alt="Header" className="header-image" />
         <SearchBar
           className="search-bar"
