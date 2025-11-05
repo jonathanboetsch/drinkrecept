@@ -15,7 +15,7 @@ function CategoryPage() {
     <div className="category-page">
       <h2 className="category-title">
         {" "}
-        {id} <span className="recipe-counter"> ({filtered.length}) </span>
+        {id} <span className="recipe-counter"> ({filtered.length}) </span> {"st"}
       </h2>
       <RecipeList recipes={filtered} />
     </div>
