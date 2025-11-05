@@ -3,10 +3,8 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: no-referrer
 
-  /*
-    NOTE: The Content-Security-Policy (CSP) in production is stricter than in development.
-    - 'unsafe-inline' is NOT included in 'script-src' for security reasons.
-    - 'connect-src' only allows https://grupp3-jynxa.reky.se.
-    If you see differences in behavior, this is expected.
-  */
+  # NOTE: The Content-Security-Policy (CSP) in production is stricter than in development.
+  # - 'unsafe-inline' is NOT included in 'script-src' for security reasons.
+  # - 'connect-src' only allows https://grupp3-jynxa.reky.se.
+  # If you see differences in behavior, this is expected.
   Content-Security-Policy: default-src 'self'; img-src 'self' data: https:; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://grupp3-jynxa.reky.se; frame-ancestors 'none'; base-uri 'self'; object-src 'none';

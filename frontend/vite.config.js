@@ -9,7 +9,6 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   const prNumber = env.VITE_PR_NUMBER; // defined by GitHub Actions
   const ghPagesFlag = env.VITE_GH_PAGES;
-  const isDev = mode === "development";
 
   return {
     plugins: [react()],
