@@ -2,13 +2,14 @@ import { Link, useLocation } from "react-router-dom";
 import "./App.css";
 import RatingForm from "./RatingForm";
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
 function calculateDifficulty(timeInMins) {
   // Enkel logik för att bestämma svårighetsgrad baserat på tid
   if (
     timeInMins === null ||
     timeInMins === undefined ||
-    isNaN(Number(timeInMins)) ||
+    Number.isNaN(Number(timeInMins)) ||
     Number(timeInMins) <= 0
   )
     return "Okänd";
@@ -83,11 +84,13 @@ export default function Recipe({ recipe }) {
       {recipe.message && <p className="recipe-message">{recipe.message}</p>}
       {!recipe.message && (
         <div className="recipe-card">
-          <Link
-            to={recipe._id && `/recipe/${recipe._id}`}
-            className="recipe-link"
-            aria-label={`Öppna recept: ${recipe.title}`}
-          />
+          {!location.pathname.startsWith("/recipe/") && (
+            <Link
+              to={recipe._id && `/recipe/${recipe._id}`}
+              className="recipe-link"
+              aria-label={`Öppna recept: ${recipe.title}`}
+            />
+          )}
           <h1>{recipe.title}</h1>
           <p>
             <strong>Beskrivning:</strong> {recipe.description || "Ingen beskrivning"}
@@ -106,7 +109,7 @@ export default function Recipe({ recipe }) {
           {!location.pathname.startsWith("/recipe/") && (
             <section>
               <h3>Kategorier</h3>
-              <ul>
+              <ul data-testid="category-list">
                 {recipe.categories && recipe.categories.length > 0 ? (
                   recipe.categories.map((cat, i) => <li key={i}>{cat}</li>)
                 ) : (
@@ -191,30 +194,46 @@ export default function Recipe({ recipe }) {
               <p style={{ color: "green", marginTop: "0.5rem" }}>Tack för din kommentar!</p>
             )}
           </section>
-          <section
-            style={{
-              marginTop: "2rem",
-              width: "100%",
-              maxWidth: 400,
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-          >
-            <h3>Kommentarer</h3>
-            <ul style={{ listStyle: "none", padding: 0 }}>
-              {comments.length === 0 && <li>Inga kommentarer än.</li>}
-              {comments.map((c, i) => (
-                <li
-                  key={i}
-                  style={{
-                    borderBottom: "1px solid #eee",
-                    marginBottom: "0.5rem",
-                    paddingBottom: "0.5rem",
-                  }}
-                >
-                  <strong>{c.name}</strong>: {c.comment}
-                </li>
-              ))}
+          <section className="comments-section">
+            <h3 className="comments-title">Kommentarer</h3>
+            <ul className="comments-list">
+              {comments.length === 0 && <li className="comment-empty">Inga kommentarer än.</li>}
+              {comments.map((c, i) => {
+                // console.info(" i = ", i);
+                const hasValidDate = c?.createdAt && !Number.isNaN(Date.parse(c.createdAt));
+                let displayTime = i;
+                displayTime = null;
+                let displayNameOfTheDay = null;
+                if (hasValidDate) {
+                  const d = new Date(c.createdAt);
+                  const yyyy = d.getFullYear();
+                  const mm = String(d.getMonth() + 1).padStart(2, "0");
+                  const dd = String(d.getDate()).padStart(2, "0");
+                  const timeStr = d.toLocaleTimeString(undefined, {
+                    hour: "numeric",
+                    minute: "2-digit",
+                  });
+                  displayTime = `${yyyy}-${mm}-${dd}, ${timeStr}`;
+                  displayNameOfTheDay = d.toLocaleDateString(undefined, { weekday: "long" });
+                }
+
+                return (
+                  <li key={c.createdAt} className="comment-item">
+                    <div className="comment-text">{c?.comment}</div>
+                    <div className="comment-meta">
+                      <strong className="comment-author">{c?.name ?? "Anonym"}</strong>
+                      {displayTime ? (
+                        <time dateTime={c.createdAt} className="comment-time">
+                          {displayTime}
+                        </time>
+                      ) : (
+                        <span className="comment-time">Okänd tid</span>
+                      )}
+                      <span className="comment-day">{displayNameOfTheDay ?? "Okänd dag"}</span>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           </section>
         </div>
@@ -222,3 +241,35 @@ export default function Recipe({ recipe }) {
     </div>
   );
 }
+
+Recipe.propTypes = {
+  _id: PropTypes.string.isRequired,
+
+  title: PropTypes.string.isRequired,
+
+  description: PropTypes.string.isRequired,
+
+  imageUrl: PropTypes.string, // not required since there is a fallback image
+
+  timeInMins: PropTypes.number.isRequired,
+
+  price: PropTypes.number.isRequired,
+
+  categories: PropTypes.arrayOf(PropTypes.string).isRequired,
+
+  instructions: PropTypes.arrayOf(PropTypes.string).isRequired,
+
+  ingredients: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+
+      amount: PropTypes.number.isRequired,
+
+      unit: PropTypes.string.isRequired,
+
+      _id: PropTypes.string.isRequired,
+    }).isRequired
+  ),
+
+  avgRating: PropTypes.number, // not available if no user rated it yet
+};

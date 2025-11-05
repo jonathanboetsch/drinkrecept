@@ -1,8 +1,8 @@
 /* ==== Baslayout för appen ==== */
 #root {
-  max-width: 1280px;
+  max-width: 1200px; /* lite tajtare än 1280 för bättre laptop-fit */
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem; /* var 2rem – gav lätt scroll på mobil */
   text-align: center;
 }
 
@@ -32,12 +32,12 @@
     animation: logo-spin infinite 20s linear;
   }
 }
-.card {
+/* .card {
   padding: 2em;
-}
-.read-the-docs {
+} */
+/* .read-the-docs {
   color: #888;
-}
+} */
 
 body,
 html,
@@ -105,6 +105,13 @@ body::before {
   background-color: grey;
 }
 
+.recipe-page .recipe-card:hover {
+  border-color: white; /* restore original */
+  background-color: black; /* restore original */
+  cursor: default;
+  transition: none;
+}
+
 .recipe-card h1 {
   font-size: 1.2em;
   margin-bottom: 10px;
@@ -151,10 +158,14 @@ body::before {
 }
 
 .header-title {
-  margin: 0;
-  font-size: 2rem;
+  /* margin: 0; */
+  /* font-size: 2rem; */
   color: white;
   font-weight: bold;
+  font-size: 1.5rem;
+  order: 1;
+  margin: 0;
+  flex: 0 0 auto;
 }
 
 .header-search {
@@ -165,6 +176,8 @@ body::before {
 .header-logo {
   height: 50px;
   width: auto;
+  order: 0;
+  flex: 0 0 auto;
 }
 
 .category-title {
@@ -224,6 +237,111 @@ body::before {
   }
 }
 
+@media (max-width: 480px) {
+  /* Stack header items vertically so header-image is top,
+     then hamburger-button and search-bar appear below it. */
+  .header-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .header-image {
+    order: 0;
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  /* Place hamburger just below image */
+  .hamburger-container {
+    order: 1;
+    position: static; /* avoid absolute positioning that might overlap */
+    margin-top: 0.25rem;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .hamburger-button {
+    font-size: 1.6rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 20px;
+  }
+
+  /* Search bar below hamburger, full width but constrained */
+  .search-bar {
+    order: 2;
+    width: calc(100% - 2rem);
+    max-width: 360px;
+    margin: 0.25rem 0 0.5rem 0;
+    box-sizing: border-box;
+  }
+
+  /* Ensure category menu doesn't overlap */
+  .hamburger-menu {
+    right: 50%;
+    transform: translateX(50%);
+  }
+}
+
+.comments-section {
+  margin-top: 2rem;
+  width: 100%;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.comments-title {
+  background: #000;
+  color: #fff;
+  padding: 0.5rem 0.75rem;
+  margin: 0 0 0.75rem;
+  border-radius: 4px;
+  font-size: 1.1rem;
+}
+
+.comments-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.comment-item {
+  background: #fff;
+  color: #000;
+  border: 1px solid #eee;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.comment-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.comment-author {
+  font-weight: 600;
+  color: #111;
+}
+.comment-time,
+.comment-day {
+  color: #666;
+  font-size: 0.85rem;
+}
+.comment-text {
+  margin-top: 0.5rem;
+  color: #111;
+}
 .root {
   padding: 1rem;
 }
@@ -232,12 +350,12 @@ body::before {
   flex-wrap: wrap;
 }
 
-.header-logo {
+/* .header-logo {
   order: 0;
   flex: 0 0 auto;
-}
+} */
 
-.header-title {
+/* .header-title {
   font-size: 1.5rem;
   order: 1;
   margin: 0;

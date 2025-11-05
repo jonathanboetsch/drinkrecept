@@ -18,7 +18,17 @@ export default defineConfig(({ mode }) => {
       environment: "jsdom",
       globals: true,
       setupFiles: ["src/tests/setup.js"],
-      exclude: ["tests", "node_modules", "dist"], // Ignore top-level tests folder
+      exclude: ["tests", "node_modules", "dist", "e2e"], // Ignore top-level tests folder
+    },
+    server: {
+      headers: {
+        "X-Frame-Options": "DENY",
+        "X-Content-Type-Options": "nosniff",
+        // allows only external image sources
+        "Content-Security-Policy":
+          "default-src 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://grupp3-jynxa.reky.se; frame-ancestors 'none'; base-uri 'self'; object-src 'none';",
+        "Referrer-Policy": "no-referrer", // prevents leaking of where the user came from
+      },
     },
   };
 });

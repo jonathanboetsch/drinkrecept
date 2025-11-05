@@ -6,6 +6,9 @@ import SearchBar from "./SearchBar";
 import Recipe from "./Recipe";
 import { RecipesContext, useRecipesContext } from "./RecipesContext";
 import CategoryFilter from "./CategoryFilter";
+import { useSearchParams } from "react-router-dom";
+
+const Header = "/Header4.png";
 
 function CategoryPage() {
   const { searchResult } = useRecipesContext();
@@ -38,6 +41,7 @@ function RecipePage() {
 }
 
 function App() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -62,8 +66,21 @@ function App() {
       .map((v) => (v && typeof v === "object" ? flattenValues(v) : String(v)))
       .join(" ");
 
+  // Sync search bar with URL query param
+  useEffect(() => {
+    const q = searchParams.get("q") || "";
+    filterSearch(q);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, recipes]);
+
   const filterSearch = (input = "") => {
     const text = input.trim().toLowerCase();
+    // Update URL query param
+    if (text) {
+      setSearchParams({ q: text });
+    } else {
+      setSearchParams({});
+    }
     if (text) {
       const result = recipes.filter((r) => flattenValues(r).toLowerCase().includes(text));
       setSearchResult(result.length > 0 ? result : []);
@@ -71,6 +88,8 @@ function App() {
       setSearchResult(recipes);
     }
   };
+
+  const initializeRatings = (data) => data.map((r) => ({ recipeId: r._id, rating: null }));
 
   useEffect(() => {
     fetch(API_URL)
@@ -83,7 +102,7 @@ function App() {
         setSearchResult(data);
         setUserRatings((prev) => {
           if (prev && prev.length > 0) return prev; // keep array if already populated
-          return data.map((r) => ({ recipeId: r._id, rating: null })); // initialize null values otherwise
+          return initializeRatings(data); // initialize null values otherwise
         });
       })
       .catch((err) => setError(err.message))
@@ -96,12 +115,6 @@ function App() {
   useEffect(() => {
     setSearchResult(recipes);
   }, [recipes]);
-
-  // const categories = useMemo(() => {
-  //   const set = new Set();
-  //   (searchResult || []).forEach((r) => (r.categories || []).forEach((c) => set.add(c)));
-  //   return ["Alla", ...Array.from(set).sort()];
-  // }, [searchResult]);
 
   // allCategories recalculates only when there is an update of recipes (f.ex. recipes re-fetched)
   const allCategories = useMemo(() => {
@@ -146,22 +159,32 @@ function App() {
   );
 
   if (loading) {
-    // return <p>Laddar recept...</p>;
     return <p className="loading-message">Laddar recept...</p>;
   }
   if (error) {
-    // return <p>Fel är: {error}</p>;
-    return <p className="error-message">Fel är: {error}</p>;
+    return (
+      <div data-testid="error-message" className="error-message">
+        Fel är: {error}
+        <button
+          data-testid="retry-button"
+          onClick={() => window.location.reload()}
+          style={{ marginLeft: 12 }}
+        >
+          Försök igen
+        </button>
+      </div>
+    );
   }
 
   return (
     <div className="app-container">
       <header className="simple-header">
-        <img src="/Header4.png" className="header-logo" alt="Recipe app logo" />
-        <div className="header-search">
-          <SearchBar onUserType={filterSearch} />
-        </div>
-
+        <img src={Header} alt="Header" className="header-image" />
+        <SearchBar
+          className="search-bar"
+          onUserType={filterSearch}
+          value={searchParams.get("q") || ""}
+        />
         <CategoryFilter
           categories={allCategories}
           activeCategory={activeCategory}
