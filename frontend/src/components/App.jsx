@@ -173,7 +173,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <header className="header-container">
+      <header className="simple-header">
         <img src={Header} alt="Header" className="header-image" />
         <SearchBar
           className="search-bar"
