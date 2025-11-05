@@ -18,9 +18,13 @@ export default function RecipeList({ recipes: propRecipes, activeCategory = "All
 
   return (
     <div className="recipes-container">
-      {filteredRecipes?.map((r, i) => (
-        <Recipe key={r._id ?? i} recipe={r} />
-      ))}
+      {filteredRecipes?.length === 0 ? (
+        <div data-testid="empty-state" className="empty-state-message">
+          Inga recept hittades.
+        </div>
+      ) : (
+        filteredRecipes.map((r, i) => <Recipe key={r._id ?? i} recipe={r} />)
+      )}
     </div>
   );
 }

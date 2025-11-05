@@ -9,7 +9,7 @@ function calculateDifficulty(timeInMins) {
   if (
     timeInMins === null ||
     timeInMins === undefined ||
-    isNaN(Number(timeInMins)) ||
+    Number.isNaN(Number(timeInMins)) ||
     Number(timeInMins) <= 0
   )
     return "Okänd";
@@ -109,7 +109,7 @@ export default function Recipe({ recipe }) {
           {!location.pathname.startsWith("/recipe/") && (
             <section>
               <h3>Kategorier</h3>
-              <ul>
+              <ul data-testid="category-list">
                 {recipe.categories && recipe.categories.length > 0 ? (
                   recipe.categories.map((cat, i) => <li key={i}>{cat}</li>)
                 ) : (
@@ -194,30 +194,46 @@ export default function Recipe({ recipe }) {
               <p style={{ color: "green", marginTop: "0.5rem" }}>Tack för din kommentar!</p>
             )}
           </section>
-          <section
-            style={{
-              marginTop: "2rem",
-              width: "100%",
-              maxWidth: 400,
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-          >
-            <h3>Kommentarer</h3>
-            <ul style={{ listStyle: "none", padding: 0 }}>
-              {comments.length === 0 && <li>Inga kommentarer än.</li>}
-              {comments.map((c, i) => (
-                <li
-                  key={i}
-                  style={{
-                    borderBottom: "1px solid #eee",
-                    marginBottom: "0.5rem",
-                    paddingBottom: "0.5rem",
-                  }}
-                >
-                  <strong>{c.name}</strong>: {c.comment}
-                </li>
-              ))}
+          <section className="comments-section">
+            <h3 className="comments-title">Kommentarer</h3>
+            <ul className="comments-list">
+              {comments.length === 0 && <li className="comment-empty">Inga kommentarer än.</li>}
+              {comments.map((c, i) => {
+                // console.info(" i = ", i);
+                const hasValidDate = c?.createdAt && !Number.isNaN(Date.parse(c.createdAt));
+                let displayTime = i;
+                displayTime = null;
+                let displayNameOfTheDay = null;
+                if (hasValidDate) {
+                  const d = new Date(c.createdAt);
+                  const yyyy = d.getFullYear();
+                  const mm = String(d.getMonth() + 1).padStart(2, "0");
+                  const dd = String(d.getDate()).padStart(2, "0");
+                  const timeStr = d.toLocaleTimeString(undefined, {
+                    hour: "numeric",
+                    minute: "2-digit",
+                  });
+                  displayTime = `${yyyy}-${mm}-${dd}, ${timeStr}`;
+                  displayNameOfTheDay = d.toLocaleDateString(undefined, { weekday: "long" });
+                }
+
+                return (
+                  <li key={c.createdAt} className="comment-item">
+                    <div className="comment-text">{c?.comment}</div>
+                    <div className="comment-meta">
+                      <strong className="comment-author">{c?.name ?? "Anonym"}</strong>
+                      {displayTime ? (
+                        <time dateTime={c.createdAt} className="comment-time">
+                          {displayTime}
+                        </time>
+                      ) : (
+                        <span className="comment-time">Okänd tid</span>
+                      )}
+                      <span className="comment-day">{displayNameOfTheDay ?? "Okänd dag"}</span>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           </section>
         </div>
