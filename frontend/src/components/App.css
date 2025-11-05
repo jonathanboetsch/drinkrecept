@@ -144,7 +144,7 @@ body::before {
   align-items: center;
   justify-content: space-between;
   background: darkgray;
-  color: white;
+  color: black;
   margin-bottom: 2rem;
   border-radius: 55px;
   padding: 1rem 2rem;
