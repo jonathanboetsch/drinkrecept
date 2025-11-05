@@ -123,8 +123,8 @@ export default function Recipe({ recipe }) {
             <h3>Ingredienser</h3>
             <ul>
               {recipe.ingredients && recipe.ingredients.length > 0 ? (
-                recipe.ingredients.map((ing, i) => (
-                  <li key={i}>
+                recipe.ingredients.map((ing) => (
+                  <li key={ing._id}>
                     {ing.amount} {ing.unit} {ing.name}
                   </li>
                 ))
@@ -165,7 +165,7 @@ export default function Recipe({ recipe }) {
               marginRight: "auto",
             }}
           >
-            <h3>Lämna en kommentar</h3>
+            <h3 className="comments-title">Lämna en kommentar</h3>
             <form
               onSubmit={handleSubmit}
               style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
@@ -198,11 +198,9 @@ export default function Recipe({ recipe }) {
             <h3 className="comments-title">Kommentarer</h3>
             <ul className="comments-list">
               {comments.length === 0 && <li className="comment-empty">Inga kommentarer än.</li>}
-              {comments.map((c, i) => {
-                // console.info(" i = ", i);
+              {comments.map((c) => {
                 const hasValidDate = c?.createdAt && !Number.isNaN(Date.parse(c.createdAt));
-                let displayTime = i;
-                displayTime = null;
+                let displayTime = null;
                 let displayNameOfTheDay = null;
                 if (hasValidDate) {
                   const d = new Date(c.createdAt);
