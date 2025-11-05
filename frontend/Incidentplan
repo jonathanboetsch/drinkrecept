@@ -1,0 +1,44 @@
+# IncidentPlan – Drinkreceptsajten
+
+## Syfte
+Att säkerställa att teamet snabbt kan reagera på säkerhetsincidenter eller driftstörningar som påverkar användare, data eller tjänstens integritet.
+
+## Incidentdefinition
+En incident är varje händelse som:
+- leder till oönskad exponering av data,
+- påverkar systemets tillgänglighet, eller
+- indikerar intrång, felaktig åtkomst eller skadlig kod.
+
+## Roller och ansvar
+| Roll | Namn | Ansvar |
+|------|------|---------|
+| Incident Manager | **Khatchick Shahinyan** | Tar emot rapporter, bedömer allvarlighetsgrad |
+| Teknisk ledning | **Jonathan Boetsch** | Stoppar pågående drift, analyserar loggar |
+| Frontendansvarig | **Albin Markström** | Validerar att frontend-ändringar inte påverkat säkerhet |
+| Projektchef | **Claes Nordling** | Kommunikationsansvarig mot intressenter |
+| Projektledning | **Johana Branting** | Kommunikationsansvarig mot intressenter |
+| Produktägare | **Sandra Macdisi** | Kommunikationsansvarig mot intressenter |
+
+
+## Kontaktvägar
+- **Primär kanal:** Teams-kanal `#incident-alert`  
+- **Fallback:** Mejl med Ämne: “[INCIDENT ALERT] - Drinktreceptsajt”  
+- **Testping:** Genomförd `2025-11-05 kl. 22:15`  
+  → ✅ Kvittens mottagen av Albin och Jonathan.
+
+## Steg-för-steg vid incident
+1. **Identifiera** – vem som helst i teamet rapporterar via Teams-kanalen.
+2. **Isolera** – stäng av tjänsten.
+3. **Bedöm** – Incident Manager klassificerar (Low / Medium / High).
+4. **Återställ** – ansvariga åtgärdar problemet.
+5. **Dokumentera** – skriv post-mortem i denna fil.
+6. **Kommunicera** – meddela projektledning och projektägare.
+
+## Test av kontaktväg
+| Datum | Utförare | Resultat | Kommentar |
+|--------|-----------|-----------|------------|
+| 2025-11-05 | Jonathan B | ✅ OK | Teams-ping besvarad inom 1 minut |
+| 2025-11-05 | Jonathan B | ✅ OK | SMS-fallback fungerade |
+
+## Revision
+Incidentplanen ska testas inför varje releasekandidat (RC).
