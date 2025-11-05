@@ -67,6 +67,7 @@
 }
 
 .hamburger-button {
+  display: flex;
   background: darkgray;
   border: solid 4px black;
   padding: 0.4rem 0.6rem;
