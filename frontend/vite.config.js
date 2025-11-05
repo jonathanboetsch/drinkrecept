@@ -24,6 +24,10 @@ export default defineConfig(({ mode }) => {
       headers: {
         "X-Frame-Options": "DENY",
         "X-Content-Type-Options": "nosniff",
+        // allows only external image sources
+        "Content-Security-Policy":
+          "default-src 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:3000 ws: https:; frame-ancestors 'none'; base-uri 'self'; object-src 'none';",
+        "Referrer-Policy": "no-referrer", // prevents leaking of where the user came from
       },
     },
   };

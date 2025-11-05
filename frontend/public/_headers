@@ -3,7 +3,7 @@
     img-src 'self' data: https:;
     script-src 'self';
     style-src 'self' 'unsafe-inline';
-    connect-src 'self' https://your-api.example.com;
+    connect-src 'self' https://grupp3-jynxa.reky.se;
     frame-ancestors 'none';
     base-uri 'self';
     object-src 'none';
