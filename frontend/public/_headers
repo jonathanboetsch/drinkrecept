@@ -1,9 +1,5 @@
 /*
-  Content-Security-Policy: default-src 'self';
-    img-src 'self' data: https:;
-    script-src 'self';
-    style-src 'self' 'unsafe-inline';
-    connect-src 'self' https://grupp3-jynxa.reky.se;
-    frame-ancestors 'none';
-    base-uri 'self';
-    object-src 'none';
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  Content-Security-Policy: default-src 'self'; img-src 'self' data: https:; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://grupp3-jynxa.reky.se; frame-ancestors 'none'; base-uri 'self'; object-src 'none';
