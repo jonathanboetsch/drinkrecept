@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function SearchBar({ onUserType, value, className = "" }) {
   return (
     <div className={className} style={{ position: "relative", display: "inline-block" }}>
