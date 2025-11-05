@@ -61,7 +61,7 @@ body::before {
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  opacity: 0.4; /* Only the image has reduced opacity */
+  opacity: 0.4;
   z-index: -1;
 }
 

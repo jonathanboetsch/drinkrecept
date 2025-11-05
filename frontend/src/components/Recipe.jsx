@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import "./App.css";
 import RatingForm from "./RatingForm";
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
 function calculateDifficulty(timeInMins) {
   // Enkel logik för att bestämma svårighetsgrad baserat på tid
@@ -238,3 +239,35 @@ export default function Recipe({ recipe }) {
     </div>
   );
 }
+
+Recipe.propTypes = {
+  _id: PropTypes.string.isRequired,
+
+  title: PropTypes.string.isRequired,
+
+  description: PropTypes.string.isRequired,
+
+  imageUrl: PropTypes.string, // not required since there is a fallback image
+
+  timeInMins: PropTypes.number.isRequired,
+
+  price: PropTypes.number.isRequired,
+
+  categories: PropTypes.arrayOf(PropTypes.string).isRequired,
+
+  instructions: PropTypes.arrayOf(PropTypes.string).isRequired,
+
+  ingredients: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+
+      amount: PropTypes.number.isRequired,
+
+      unit: PropTypes.string.isRequired,
+
+      _id: PropTypes.string.isRequired,
+    }).isRequired
+  ),
+
+  avgRating: PropTypes.number, // not available if no user rated it yet
+};
