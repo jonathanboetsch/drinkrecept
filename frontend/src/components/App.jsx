@@ -1,12 +1,11 @@
 import { useEffect, useState, useMemo } from "react";
-import { Route, Routes, useParams, useMatch } from "react-router-dom";
+import { Route, Routes, useParams, useMatch, useSearchParams } from "react-router-dom";
 import RecipeList from "./RecipeList";
 import "./App.css";
 import SearchBar from "./SearchBar";
 import Recipe from "./Recipe";
 import { RecipesContext, useRecipesContext } from "./RecipesContext";
 import CategoryFilter from "./CategoryFilter";
-import { useSearchParams } from "react-router-dom";
 
 const Header = "/Header4.png";
 

@@ -1,8 +1,8 @@
-/* ==== Baslayout för appen ==== */
+/* ==== Base layout for the app ==== */
 #root {
-  max-width: 1200px; /* lite tajtare än 1280 för bättre laptop-fit */
+  max-width: 1200px; /* a little bit tighter than 1280px for a better laptop-fit */
   margin: 0 auto;
-  padding: 1rem; /* var 2rem – gav lätt scroll på mobil */
+  padding: 1rem; /* gives easy scroll on mobile */
   text-align: center;
 }
 
@@ -32,12 +32,6 @@
     animation: logo-spin infinite 20s linear;
   }
 }
-/* .card {
-  padding: 2em;
-} */
-/* .read-the-docs {
-  color: #888;
-} */
 
 body,
 html,
@@ -106,16 +100,13 @@ body::before {
 }
 
 .recipe-page .recipe-card:hover {
-  border-color: white; /* restore original */
-  background-color: black; /* restore original */
+  border-color: white;
+  background-color: black;
   cursor: default;
   transition: none;
 }
 
 .recipe-card h1 {
-  /* font-size: 1.2em; */
-  /* margin-bottom: 10px; */
-  /* text-align: center; */
   font-size: 1.2em;
   margin-bottom: 10px;
   text-align: center;
@@ -130,7 +121,7 @@ body::before {
   border: 2px solid white;
 }
 
-/* Text och listor */
+/* Text and lists */
 .recipe-card p {
   margin: 5px;
   font-size: 0.9rem;
@@ -162,8 +153,6 @@ body::before {
 }
 
 .header-title {
-  /* margin: 0; */
-  /* font-size: 2rem; */
   color: white;
   font-weight: bold;
   font-size: 1.5rem;
@@ -187,59 +176,6 @@ body::before {
 .category-title {
   color: white;
 }
-
-/* hamburger menu in header  */
-/*.hamburger-container {
-  position: relative;
-  right: 8%;
-  top: 40%;
-  display: flex;
-  align-items: center;
-} 
-
-.hamburger-button {
-  background: darkgray;
-  border: solid 4px black;
-  padding: 0.4rem 0.6rem;
-  font-size: 2.6rem;
-  border-radius: 35px;
-  cursor: pointer;
-} 
-
-.hamburger-menu {
-  display: none;
-  position: absolute;
-  right: 0;
-  top: calc(100% + 8px);
-  background: black;
-  padding: 0.6rem;
-  border-radius: 6px;
-  box-shadow: 0 6px 18px gray;
-  z-index: 1000;
-  min-width: 160px;
-  text-align: left;
-} 
-
-.hamburger-menu.open {
-  display: block;
-} 
-
-.hamburger-menu button {
-  display: block;
-  width: 100%;
-  text-align: left;
-  background: transparent;
-  color: white;
-  border: none;
-  padding: 0.4rem 0.6rem;
-  cursor: pointer;
-} 
-
-.hamburger-menu button.active {
-  background: transparent;
-  color: limegreen;
-  font-weight: 700;
-} */
 
 .search-bar {
   width: 70%;
@@ -400,22 +336,6 @@ body::before {
 .root {
   padding: 1rem;
 }
-/* .header-logo {
-  order: 0;
-  flex: 0 0 auto;
-} */
-
-/* .header-title {
-  font-size: 1.5rem;
-  order: 1;
-  margin: 0;
-  flex: 0 0 auto;
-} */
-
-/* .hamburger-container {
-  order: 3;
-  flex: 0 0 auto;
-} */
 
 .header-container {
   display: flex;

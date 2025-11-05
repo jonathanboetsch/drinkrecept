@@ -1,9 +1,6 @@
 .hamburger-container {
   /* remove left/right/top offsets — they caused visual offset vs absolute child */
 
-  /* left: 2%; */
-  /* right: 8%; */
-  /* top: 40%; */
   position: relative;
   display: inline-flex; /* keep it inline so it sits next to other header items */
   flex: 0 0 auto;
