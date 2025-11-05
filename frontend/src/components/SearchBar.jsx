@@ -2,10 +2,10 @@ import React from "react";
 
 export default function SearchBar({ onUserType, value, className = "" }) {
   return (
-    <div className={className} style={{ position: "relative", display: "inline-block" }}>
+    <div className="header-search" style={{ position: "relative", display: "inline-block" }}>
       <input
         type="search"
-        className="search-bar"
+        className={className}
         data-testid="search-input"
         placeholder="type your search here"
         value={value}
