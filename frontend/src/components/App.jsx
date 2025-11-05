@@ -13,7 +13,10 @@ function CategoryPage() {
   const filtered = searchResult.filter((r) => (r.categories || []).includes(id));
   return (
     <div className="category-page">
-      <h2 className="category-title"> {id}</h2>
+      <h2 className="category-title">
+        {" "}
+        {id} <span className="recipe-counter"> ({filtered.length}) </span> {"st"}
+      </h2>
       <RecipeList recipes={filtered} />
     </div>
   );
