@@ -46,7 +46,7 @@ test.describe("Receptsajten - XSS Security Tests", () => {
     expect(dialogs).toHaveLength(0);
     // Ensure no console error referencing "xss" or "alert"
     expect(consoles.filter((c) => /alert|xss/i.test(c)).length).toBe(0);
-    console.log(dialogs);
+    console.log("  <dialogs>  ", dialogs);
   });
 
   test("URL-parametern ?q=<script>alert(1)</script> sanitiseras och orsakar inte scriptkörning", async ({
