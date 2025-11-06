@@ -12,19 +12,19 @@ En incident är varje händelse som:
 ## Roller och ansvar
 | Roll | Namn | Ansvar |
 |------|------|---------|
-| Incident Manager | **Khatchick Shahinyan** | Tar emot rapporter, bedömer allvarlighetsgrad |
-| Teknisk ledning | **Jonathan Boetsch** | Stoppar pågående drift, analyserar loggar |
-| Frontendansvarig | **Albin Markström** | Validerar att frontend-ändringar inte påverkat säkerhet |
-| Projektchef | **Claes Nordling** | Kommunikationsansvarig mot intressenter |
-| Projektledning | **Johana Branting** | Kommunikationsansvarig mot intressenter |
-| Produktägare | **Sandra Macdisi** | Kommunikationsansvarig mot intressenter |
+| Incident Manager | **Khatchick** | Tar emot rapporter, bedömer allvarlighetsgrad |
+| Teknisk ledning | **Jonathan** | Stoppar pågående drift, analyserar loggar |
+| Frontendansvarig | **Albin** | Validerar att frontend-ändringar inte påverkat säkerhet |
+| Projektchef | **Claes** | Kommunikationsansvarig mot intressenter |
+| Projektledning | **Johana** | Kommunikationsansvarig mot intressenter |
+| Produktägare | **Sandra** | Kommunikationsansvarig mot intressenter |
 
 
 ## Kontaktvägar
-- **Primär kanal:** Teams-kanal `#incident-alert`  
-- **Fallback:** Mejl med Ämne: “[INCIDENT ALERT] - Drinktreceptsajt”  
-- **Testping:** Genomförd `2025-11-05 kl. 22:15`  
-  → ✅ Kvittens mottagen av Albin och Jonathan.
+- **Primär kanal:** Teams-kanal `Incidenter`  
+- **Fallback:** Mejl med Ämne: “[INCIDENT] - Drinktreceptsajt”  
+- **Testping:** Genomförd `2025-11-06 kl. 16:37`  
+  → ✅ Kvittens mottagen av Albin, Khatchick och Johanna.
 
 ## Steg-för-steg vid incident
 1. **Identifiera** – vem som helst i teamet rapporterar via Teams-kanalen.
@@ -38,7 +38,7 @@ En incident är varje händelse som:
 | Datum | Utförare | Resultat | Kommentar |
 |--------|-----------|-----------|------------|
 | 2025-11-05 | Jonathan B | ✅ OK | Teams-ping besvarad inom 1 minut |
-| 2025-11-05 | Jonathan B | ✅ OK | SMS-fallback fungerade |
+| 2025-11-05 | Jonathan B | ✅ OK | Mejl-fallback fungerade |
 
 ## Revision
 Incidentplanen ska testas inför varje releasekandidat (RC).
