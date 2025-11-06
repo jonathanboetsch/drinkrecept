@@ -47,6 +47,18 @@ test.describe("Receptsajten - XSS Security Tests", () => {
     // Ensure no console error referencing "xss" or "alert"
     expect(consoles.filter((c) => /alert|xss/i.test(c)).length).toBe(0);
     console.log("  <dialogs>  ", dialogs);
+    console.log("  <consoles>  ", consoles);
+    // Ensure the title is rendered as text (the payload should be visible as text, not executed)
+    const titleText = await title.textContent();
+    expect(titleText).toContain('<script>alert("xss")</script>');
+
+    // // Check that the DOM did not create a script element from the payload inside the first recipe node
+    // const scriptInjected = await title.evaluate((node) => {
+    //   // look for child script elements under the recipe root
+    //   const root = node.closest(".recipe-card") || node.parentElement;
+    //   return !!root.querySelector("script");
+    // });
+    // expect(scriptInjected).toBe(false);
   });
 
   test("URL-parametern ?q=<script>alert(1)</script> sanitiseras och orsakar inte scriptkörning", async ({
