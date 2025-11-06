@@ -9,7 +9,6 @@ test.describe("Receptsajten - XSS Security Tests", () => {
       dialogs.push(d.message());
       d.dismiss();
     });
-    // console.log(dialogs);
     page.on("console", (msg) => {
       consoles.push(msg.text());
     });
@@ -36,6 +35,18 @@ test.describe("Receptsajten - XSS Security Tests", () => {
         body: JSON.stringify([maliciousRecipe]),
       })
     );
+    // Go to the app
+    await page.goto("/");
+
+    await page.waitForLoadState("networkidle");
+    // Wait for the rendered title (Recipe renders <h1>{recipe.title}</h1>)
+    const title = page.locator("h1").first();
+    await expect(title).toBeVisible();
+    // Ensure no alert/dialog was shown
+    expect(dialogs).toHaveLength(0);
+    // Ensure no console error referencing "xss" or "alert"
+    expect(consoles.filter((c) => /alert|xss/i.test(c)).length).toBe(0);
+    console.log(dialogs);
   });
 
   test("URL-parametern ?q=<script>alert(1)</script> sanitiseras och orsakar inte scriptkörning", async ({
