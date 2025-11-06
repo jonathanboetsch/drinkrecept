@@ -198,7 +198,7 @@ export default function Recipe({ recipe }) {
             <h3 className="comments-title">Kommentarer</h3>
             <ul className="comments-list">
               {comments.length === 0 && <li className="comment-empty">Inga kommentarer än.</li>}
-              {comments.map((c, i) => {
+              {comments.map((c) => {
                 // console.info(" i = ", i);
                 const hasValidDate = c?.createdAt && !Number.isNaN(Date.parse(c.createdAt));
                 let displayTime = null;
@@ -242,33 +242,35 @@ export default function Recipe({ recipe }) {
 }
 
 Recipe.propTypes = {
-  _id: PropTypes.string.isRequired,
+  recipe: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
 
-  title: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
 
-  description: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
 
-  imageUrl: PropTypes.string, // not required since there is a fallback image
+    imageUrl: PropTypes.string, // not required since there is a fallback image
 
-  timeInMins: PropTypes.number.isRequired,
+    timeInMins: PropTypes.number.isRequired,
 
-  price: PropTypes.number.isRequired,
+    price: PropTypes.number.isRequired,
 
-  categories: PropTypes.arrayOf(PropTypes.string).isRequired,
+    categories: PropTypes.arrayOf(PropTypes.string).isRequired,
 
-  instructions: PropTypes.arrayOf(PropTypes.string).isRequired,
+    instructions: PropTypes.arrayOf(PropTypes.string).isRequired,
 
-  ingredients: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
+    ingredients: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string.isRequired,
 
-      amount: PropTypes.number.isRequired,
+        amount: PropTypes.number.isRequired,
 
-      unit: PropTypes.string.isRequired,
+        unit: PropTypes.string.isRequired,
 
-      _id: PropTypes.string.isRequired,
-    }).isRequired
-  ),
+        _id: PropTypes.string.isRequired,
+      }).isRequired
+    ),
 
-  avgRating: PropTypes.number, // not available if no user rated it yet
+    avgRating: PropTypes.number, // not available if no user rated it yet
+  }),
 };
