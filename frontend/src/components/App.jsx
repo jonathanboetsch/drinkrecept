@@ -181,7 +181,7 @@ function App() {
       <header className="simple-header">
         <img src="Header4.png" className="header-logo" alt="Header" />
         <SearchBar
-          className="header-search"
+          className="search-bar"
           onUserType={filterSearch}
           value={searchParams.get("q") || ""}
         />
