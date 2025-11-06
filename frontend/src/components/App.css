@@ -32,12 +32,6 @@
     animation: logo-spin infinite 20s linear;
   }
 }
-/* .card {
-  padding: 2em;
-} */
-/* .read-the-docs {
-  color: #888;
-} */
 
 body,
 html {
@@ -160,8 +154,6 @@ body::before {
 }
 
 .header-title {
-  /* margin: 0; */
-  /* font-size: 2rem; */
   color: white;
   font-weight: bold;
   font-size: 1.5rem;
@@ -351,15 +343,3 @@ body::before {
 .root {
   padding: 1rem;
 }
-
-/* .header-logo {
-  order: 0;
-  flex: 0 0 auto;
-} */
-
-/* .header-title {
-  font-size: 1.5rem;
-  order: 1;
-  margin: 0;
-  flex: 0 0 auto;
-} */
