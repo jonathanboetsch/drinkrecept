@@ -201,8 +201,7 @@ export default function Recipe({ recipe }) {
               {comments.map((c, i) => {
                 // console.info(" i = ", i);
                 const hasValidDate = c?.createdAt && !Number.isNaN(Date.parse(c.createdAt));
-                let displayTime = i;
-                displayTime = null;
+                let displayTime = null;
                 let displayNameOfTheDay = null;
                 if (hasValidDate) {
                   const d = new Date(c.createdAt);
