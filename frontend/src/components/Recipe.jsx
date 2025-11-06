@@ -123,8 +123,8 @@ export default function Recipe({ recipe }) {
             <h3>Ingredienser</h3>
             <ul>
               {recipe.ingredients && recipe.ingredients.length > 0 ? (
-                recipe.ingredients.map((ing) => (
-                  <li key={ing._id}>
+                recipe.ingredients.map((ing, i) => (
+                  <li key={i}>
                     {ing.amount} {ing.unit} {ing.name}
                   </li>
                 ))
@@ -198,9 +198,11 @@ export default function Recipe({ recipe }) {
             <h3 className="comments-title">Kommentarer</h3>
             <ul className="comments-list">
               {comments.length === 0 && <li className="comment-empty">Inga kommentarer än.</li>}
-              {comments.map((c) => {
+              {comments.map((c, i) => {
+                // console.info(" i = ", i);
                 const hasValidDate = c?.createdAt && !Number.isNaN(Date.parse(c.createdAt));
-                let displayTime = null;
+                let displayTime = i;
+                displayTime = null;
                 let displayNameOfTheDay = null;
                 if (hasValidDate) {
                   const d = new Date(c.createdAt);

@@ -1,11 +1,12 @@
 import { useEffect, useState, useMemo } from "react";
-import { Route, Routes, useParams, useMatch, useSearchParams } from "react-router-dom";
+import { Route, Routes, useParams, useMatch } from "react-router-dom";
 import RecipeList from "./RecipeList";
 import "./App.css";
 import SearchBar from "./SearchBar";
 import Recipe from "./Recipe";
 import { RecipesContext, useRecipesContext } from "./RecipesContext";
 import CategoryFilter from "./CategoryFilter";
+import { useSearchParams } from "react-router-dom";
 
 const Header = "/Header4.png";
 
@@ -15,7 +16,10 @@ function CategoryPage() {
   const filtered = searchResult.filter((r) => (r.categories || []).includes(id));
   return (
     <div className="category-page">
-      <h2 className="category-title"> {id}</h2>
+      <h2 className="category-title">
+        {" "}
+        {id} <span className="recipe-counter"> ({filtered.length}) </span> {"st"}
+      </h2>
       <RecipeList recipes={filtered} />
     </div>
   );
@@ -175,9 +179,9 @@ function App() {
   return (
     <div className="app-container">
       <header className="simple-header">
-        <img src={Header} alt="Header" className="header-image" />
+        <img src="Header4.png" className="header-logo" alt="Header" />
         <SearchBar
-          className="search-bar"
+          className="header-search"
           onUserType={filterSearch}
           value={searchParams.get("q") || ""}
         />

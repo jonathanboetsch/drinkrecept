@@ -1,4 +1,4 @@
-/* Container for the whole webpage */
+/* Yttercontainer för hela sidan */
 .recipes-page {
   display: flex;
   flex-direction: column;
@@ -10,7 +10,7 @@
   box-sizing: border-box;
 }
 
-/* 🟢 Section for categories – always on top */
+/* 🟢 Sektionen för kategorier – alltid högst upp */
 .categories-section {
   width: 100%;
   display: flex;
@@ -20,7 +20,7 @@
   z-index: 10;
 }
 
-/* Category lines */
+/* Själva kategoriraden */
 .category-filter {
   display: flex;
   flex-wrap: wrap;
@@ -30,6 +30,7 @@
   padding: 0.5rem 1rem;
 }
 
+/* Bubblorna */
 .category-filter button {
   all: unset;
   cursor: pointer;
@@ -52,6 +53,7 @@
   border-color: #005fcc;
 }
 
+/* 🔹 Sektionen med recepten under */
 .recipes-section {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
