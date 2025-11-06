@@ -2,7 +2,6 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Receptsajten - XSS Security Tests", () => {
   test("Testdata med potentiell XSS i receptnamn renderas utan scriptkörning", async ({ page }) => {
-    // console.log(page);
     const dialogs = [];
     const consoles = [];
     page.on("dialog", (d) => {
