@@ -4,23 +4,31 @@ Detta dokument beskriver hur vi säkerställer kvalitet och säkerhet i frontend
 
 ## Definition of Done (SSDLC-minimum)
 
+# Hotanalys
+
 - [ ] Enkel Hot-analys + tillitgränser dokumenterade (OWASP TOP TEN & STRIDE framework)
-- [ ] Pull request blockerad tills:
-  - [ ] Code review av en annan utvecklare för att säkerställa kod och säkerhetsstandard följs
-  - [ ] Manuell testning av Projektledare för att säkerställa feature och webb app fungerar som väntat
-  - [ ] Tester för kodsäkerhet har körts
-- [ ] CI kör:
-  - [ ] lint
-  - [ ] `npm audit` (inga high/critical blocker)
-  - [ ] sonarcube kopplat till repo för kod och säkerhets analys av utvecklingsteam och testare
-  - [ ] Tester enligt krav
+- [ ] Incidentplan finns och kontaktväg testad
+- [ ] sonarcube kopplat till repo för kod och säkerhets analys av utvecklingsteam och testare
+  - [ ] Åtgärda high varningar
+  - [ ] Åtgärda eller förstå medium & low varningar
+
+# Pull request blockerad tills:
+
+- [ ] Code review av en annan utvecklare för att säkerställa kod och säkerhetsstandard följs
+- [ ] Manuell testning av Projektledare för att säkerställa feature och webb app fungerar som väntat
+- [ ] Tester för kodsäkerhet har körts
+
+# Continuous Integration (CI) kör:
+
+- [ ] lint
+- [ ] `npm audit` (inga high/critical blocker)
+- [ ] Tester enligt krav
 - [ ] Localhost skannad med ZAP baseline (inga high)
 - [ ] Åtgärda eller förstå medium & low varningar
-- [ ] Incidentplan finns och kontaktväg testad
 
 ### Hotbildsanalys (80/20-variant)
 
-#### Exempel: 
+#### Exempel:
 
 1. **OWASP Top 10 – filtrera fram 2–3 mest relevanta risker för frontend:**
 
@@ -48,7 +56,7 @@ Detta dokument beskriver hur vi säkerställer kvalitet och säkerhet i frontend
 ### Unit tests (ViTest)
 
 - [ ] `formatTime(minutes)` formatterar korrekt
-- [ ] `getIngredientCount(recipe)` räknar ingredienser
+- [ ] `getIngredientCount(recipe)` räknar ingredienser // har ni 5 test recept, ska 5 returneras
 - [ ] `filterRecipes(recipes, query)` filtrerar case-insensitive
 - [ ] `countByCategory(recipes)` returnerar korrekt `{kategori: antal}`
 - [ ] `<RecipeCard />` renderar namn, bild (alt), rating, ingrediensantal, tid

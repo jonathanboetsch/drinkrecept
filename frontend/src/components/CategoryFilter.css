@@ -1,9 +1,11 @@
 .hamburger-container {
-  left: 2%;
-  right: 8%;
-  top: 40%;
+  /* remove left/right/top offsets — they caused visual offset vs absolute child */
+
+  /* left: 2%; */
+  /* right: 8%; */
+  /* top: 40%; */
   position: relative;
-  display: flex;
+  display: flex; /* keep it inline so it sits next to other header items */
   flex: 0 0 auto;
   align-items: center;
   order: 3;
@@ -51,7 +53,7 @@
 .hamburger-menu {
   display: none;
   position: absolute;
-  right: 0;
+  right: 0; /* keep the menu aligned to the container's right edge */
   top: calc(100% + 8px);
   background: black;
   padding: 0.6rem;
@@ -67,6 +69,7 @@
 }
 
 .hamburger-button {
+  display: flex;
   background: darkgray;
   border: solid 4px black;
   padding: 0.4rem 0.6rem;
@@ -86,6 +89,6 @@
     transform: translateY(-50%);
     margin-left: 0;
     left: auto;
-    z-index: 1000;
+    z-index: 200; /* lower if needed to not hide search input */
   }
 }

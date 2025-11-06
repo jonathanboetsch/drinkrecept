@@ -6,6 +6,7 @@ import SearchBar from "./SearchBar";
 import Recipe from "./Recipe";
 import { RecipesContext, useRecipesContext } from "./RecipesContext";
 import CategoryFilter from "./CategoryFilter";
+import { useSearchParams } from "react-router-dom";
 
 function CategoryPage() {
   const { searchResult } = useRecipesContext();
@@ -13,7 +14,10 @@ function CategoryPage() {
   const filtered = searchResult.filter((r) => (r.categories || []).includes(id));
   return (
     <div className="category-page">
-      <h2 className="category-title"> {id}</h2>
+      <h2 className="category-title">
+        {" "}
+        {id} <span className="recipe-counter"> ({filtered.length}) </span> {"st"}
+      </h2>
       <RecipeList recipes={filtered} />
     </div>
   );
@@ -35,6 +39,7 @@ function RecipePage() {
 }
 
 function App() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -59,8 +64,21 @@ function App() {
       .map((v) => (v && typeof v === "object" ? flattenValues(v) : String(v)))
       .join(" ");
 
+  // Sync search bar with URL query param
+  useEffect(() => {
+    const q = searchParams.get("q") || "";
+    filterSearch(q);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, recipes]);
+
   const filterSearch = (input = "") => {
     const text = input.trim().toLowerCase();
+    // Update URL query param
+    if (text) {
+      setSearchParams({ q: text });
+    } else {
+      setSearchParams({});
+    }
     if (text) {
       const result = recipes.filter((r) => flattenValues(r).toLowerCase().includes(text));
       setSearchResult(result.length > 0 ? result : []);
@@ -144,17 +162,29 @@ function App() {
     return <p className="loading-message">Laddar recept...</p>;
   }
   if (error) {
-    return <p className="error-message">Fel är: {error}</p>;
+    return (
+      <div data-testid="error-message" className="error-message">
+        Fel är: {error}
+        <button
+          data-testid="retry-button"
+          onClick={() => window.location.reload()}
+          style={{ marginLeft: 12 }}
+        >
+          Försök igen
+        </button>
+      </div>
+    );
   }
 
   return (
     <div className="app-container">
       <header className="simple-header">
-        <img src="/Header4.png" className="header-logo" alt="Recipe app logo" />
-        <div className="header-search">
-          <SearchBar onUserType={filterSearch} />
-        </div>
-
+        <img src="Header4.png" className="header-logo" alt="Header" />
+        <SearchBar
+          className="search-bar"
+          onUserType={filterSearch}
+          value={searchParams.get("q") || ""}
+        />
         <CategoryFilter
           categories={allCategories}
           activeCategory={activeCategory}

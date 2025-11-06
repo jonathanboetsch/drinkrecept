@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import Recipe from "./Recipe";
 import { useRecipesContext } from "./RecipesContext";
+import PropTypes from "prop-types";
 
 export default function RecipeList({ recipes: propRecipes, activeCategory = "Alla" }) {
   // prefer explicitly passed recipes (e.g. CategoryPage passes a pre-filtered list),
@@ -17,9 +18,18 @@ export default function RecipeList({ recipes: propRecipes, activeCategory = "All
 
   return (
     <div className="recipes-container">
-      {filteredRecipes?.map((r, i) => (
-        <Recipe key={r._id ?? i} recipe={r} />
-      ))}
+      {filteredRecipes?.length === 0 ? (
+        <div data-testid="empty-state" className="empty-state-message">
+          Inga recept hittades.
+        </div>
+      ) : (
+        filteredRecipes.map((r, i) => <Recipe key={r._id ?? i} recipe={r} />)
+      )}
     </div>
   );
 }
+
+RecipeList.propTypes = {
+  recipes: PropTypes.arrayOf(PropTypes.shape(Recipe.propTypes)), // can be empty (see fallback above)
+  activeCategory: PropTypes.string.isRequired,
+};

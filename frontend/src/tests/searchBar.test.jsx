@@ -6,7 +6,7 @@ import "@testing-library/jest-dom";
 
 function setup() {
   const mockOnUserType = vi.fn();
-  render(<SearchBar onUserType={mockOnUserType} />);
+  render(<SearchBar onUserType={mockOnUserType} className="header-search" />);
   const input = screen.getByPlaceholderText("type your search here");
   return { mockOnUserType, input };
 }
@@ -32,11 +32,11 @@ test("Component calls onUserType on every keystroke", async () => {
 
 // Ensures the UI isn’t accidentally changed by refactors or CSS tweaks
 test("renders with correct placeholder and type", () => {
-  const { _, input } = setup();
+  const { input } = setup();
 
   expect(input).toBeInTheDocument();
   expect(input).toHaveAttribute("type", "search");
-  expect(input).toHaveClass("search-bar");
+  expect(input).toHaveClass("header-search");
 });
 
 // Verifies consistent behavior when user deletes their search
