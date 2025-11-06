@@ -45,8 +45,8 @@ test.describe("Receptsajten - XSS Security Tests", () => {
     expect(dialogs).toHaveLength(0);
     // Ensure no console error referencing "xss" or "alert"
     expect(consoles.filter((c) => /alert|xss/i.test(c)).length).toBe(0);
-    console.log("  <dialogs>  ", dialogs);
-    console.log("  <consoles>  ", consoles);
+    // console.log("  <dialogs>  ", dialogs);
+    // console.log("  <consoles>  ", consoles);
     // Ensure the title is rendered as text (the payload should be visible as text, not executed)
     const titleText = await title.textContent();
     expect(titleText).toContain('<script>alert("xss")</script>');
