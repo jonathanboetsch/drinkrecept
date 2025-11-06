@@ -1,4 +1,4 @@
-/* ==== Baslayout för appen ==== */
+/* ==== Base layout for the app ==== */
 #root {
   max-width: 1200px;
   margin: 0 auto;
@@ -32,12 +32,6 @@
     animation: logo-spin infinite 20s linear;
   }
 }
-/* .card {
-  padding: 2em;
-} */
-/* .read-the-docs {
-  color: #888;
-} */
 
 body,
 html {
@@ -105,8 +99,8 @@ body::before {
 }
 
 .recipe-page .recipe-card:hover {
-  border-color: white; /* restore original */
-  background-color: black; /* restore original */
+  border-color: white;
+  background-color: black;
   cursor: default;
   transition: none;
 }
@@ -126,7 +120,7 @@ body::before {
   border: 2px solid white;
 }
 
-/* Text och listor */
+/* Text and lists */
 .recipe-card p {
   margin: 5px;
   font-size: 0.9rem;
@@ -159,8 +153,6 @@ body::before {
 }
 
 .header-title {
-  /* margin: 0; */
-  /* font-size: 2rem; */
   color: white;
   font-weight: bold;
   font-size: 1.5rem;
