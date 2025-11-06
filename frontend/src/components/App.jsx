@@ -8,8 +8,6 @@ import { RecipesContext, useRecipesContext } from "./RecipesContext";
 import CategoryFilter from "./CategoryFilter";
 import { useSearchParams } from "react-router-dom";
 
-const Header = "/Header4.png";
-
 function CategoryPage() {
   const { searchResult } = useRecipesContext();
   const { id } = useParams();
