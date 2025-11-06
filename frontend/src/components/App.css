@@ -1,8 +1,8 @@
 /* ==== Baslayout för appen ==== */
 #root {
-  max-width: 1200px; /* lite tajtare än 1280 för bättre laptop-fit */
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 1rem; /* var 2rem – gav lätt scroll på mobil */
+  padding: 1rem;
   text-align: center;
 }
 
@@ -40,8 +40,7 @@
 } */
 
 body,
-html,
-#root {
+html {
   min-height: 100%;
   height: 100%;
   margin: 0;
@@ -150,6 +149,8 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
+  position: relative;
   background: darkgray;
   color: black;
   margin-bottom: 2rem;
@@ -237,32 +238,33 @@ body::before {
   }
 }
 
-@media (max-width: 480px) {
-  /* Stack header items vertically so header-image is top,
-     then hamburger-button and search-bar appear below it. */
-  .header-container {
-    flex-direction: column;
-    align-items: center;
+@media (max-width: 768px) {
+  .simple-header {
+    position: relative;
+    flex-direction: row;
+    flex-wrap: nowrap;
     gap: 0.5rem;
     padding: 0.5rem;
   }
 
   .header-image {
     order: 0;
-    width: 100%;
-    max-width: 360px;
+    width: auto;
+    max-width: 120px;
     height: auto;
     object-fit: contain;
   }
 
-  /* Place hamburger just below image */
   .hamburger-container {
     order: 1;
-    position: static; /* avoid absolute positioning that might overlap */
-    margin-top: 0.25rem;
-    display: flex;
-    justify-content: center;
-    width: 100%;
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-top: 0;
+    display: inline-flex;
+    justify-content: flex-end;
+    width: auto;
   }
 
   .hamburger-button {
@@ -280,10 +282,10 @@ body::before {
     box-sizing: border-box;
   }
 
-  /* Ensure category menu doesn't overlap */
   .hamburger-menu {
-    right: 50%;
-    transform: translateX(50%);
+    right: 0;
+    left: auto;
+    transform: none;
   }
 }
 

@@ -179,9 +179,9 @@ function App() {
   return (
     <div className="app-container">
       <header className="simple-header">
-        <img src={Header} alt="Header" className="header-image" />
+        <img src="Header4.png" className="header-logo" alt="Header" />
         <SearchBar
-          className="search-bar"
+          className="header-search"
           onUserType={filterSearch}
           value={searchParams.get("q") || ""}
         />
