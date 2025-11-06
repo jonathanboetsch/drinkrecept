@@ -47,7 +47,7 @@ export default function CategoryFilter({
 }
 
 CategoryFilter.propTypes = {
-  categories: PropTypes.arrayOf(PropTypes.String).isRequired,
+  categories: PropTypes.arrayOf(PropTypes.string).isRequired,
   activeCategory: PropTypes.string.isRequired,
   changeActiveCategory: PropTypes.func.isRequired,
   linkToRoute: PropTypes.string,
