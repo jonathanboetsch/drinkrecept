@@ -12,8 +12,8 @@ test.describe("Receptsajten - Homepage", () => {
         .waitFor({ state: "visible", timeout: 5000 });
     } catch (e) {
       // fallback: många sidor renderar recepttitlar som huvudrubriker inom main
-      await page.locator("main h1").first().waitFor({ state: "visible", timeout: 5000 });
       console.error(e);
+      await page.locator("main h1").first().waitFor({ state: "visible", timeout: 5000 });
     }
 
     // Verifiera att minst ett receptkort visas (fallback till main h1 om data-testid saknas)
