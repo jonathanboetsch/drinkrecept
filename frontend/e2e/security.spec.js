@@ -9,14 +9,6 @@ test.describe("Receptsajten - XSS Security Tests", () => {
       dialog.dismiss();
     });
 
-    /* // Lyssna på console errors
-    const consoleErrors = [];
-    page.on("console", (msg) => {
-      if (msg.type() === "error") {
-        consoleErrors.push(msg.text());
-      }
-    });  */
-
     // Mocka API med XSS-payloads i receptdata
     await page.route("**/recipes", (route) => {
       route.fulfill({
