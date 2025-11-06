@@ -26,10 +26,15 @@ test.describe("Receptsajten - Error Handling", () => {
     // Klicka på "Försök igen"
     await retryButton.click();
 
-    // Verifiera att recept laddas efter retry
-    await expect(page.locator('[data-testid="recipe-card"]').first()).toBeVisible({
-      timeout: 10000,
-    });
+    // Vänta på att API:et för recipes returnerar framgång innan vi kollar UI:t
+    await page.waitForResponse(
+      (response) => response.url().includes("/recipes") && response.status() === 200,
+      { timeout: 10000 }
+    );
+
+    // Verifiera att recept laddas efter retry (välj första receptlänk istället för data-testid)
+    const firstRecipeLink = page.locator('a[href^="/recipe/"]').first();
+    await expect(firstRecipeLink).toBeVisible({ timeout: 10000 });
   });
 
   test("Tom-/fel-state: inga recept visar rätt meddelande", async ({ page }) => {
