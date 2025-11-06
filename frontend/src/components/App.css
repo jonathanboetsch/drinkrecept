@@ -142,6 +142,7 @@ body::before {
 
 .simple-header {
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   background: darkgray;
@@ -235,6 +236,7 @@ body::before {
   }
 
   .header-image {
+    display: flex;
     order: 0;
     width: 100%;
     max-width: 360px;
@@ -253,6 +255,7 @@ body::before {
   }
 
   .hamburger-button {
+    display: flex;
     font-size: 1.6rem;
     padding: 0.4rem 0.6rem;
     border-radius: 20px;
@@ -260,6 +263,7 @@ body::before {
 
   /* Search bar below hamburger, full width but constrained */
   .search-bar {
+    display: flex;
     order: 2;
     width: calc(100% - 2rem);
     max-width: 360px;
@@ -331,10 +335,6 @@ body::before {
 }
 .root {
   padding: 1rem;
-}
-.simple-header {
-  padding: 1rem;
-  flex-wrap: wrap;
 }
 
 .header-container {
