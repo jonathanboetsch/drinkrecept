@@ -2,7 +2,40 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Receptsajten - XSS Security Tests", () => {
   test("Testdata med potentiell XSS i receptnamn renderas utan scriptkörning", async ({ page }) => {
-    console.log(page);
+    // console.log(page);
+    const dialogs = [];
+    const consoles = [];
+    page.on("dialog", (d) => {
+      dialogs.push(d.message());
+      d.dismiss();
+    });
+    // console.log(dialogs);
+    page.on("console", (msg) => {
+      consoles.push(msg.text());
+    });
+    // console.log(consoles);
+    // Provide a malicious recipe payload (React should escape this and not execute it)
+    const maliciousRecipe = {
+      _id: "xss-1",
+      title: '<script>alert("xss")</script>',
+      description: "Malicious title test",
+      imageUrl: null,
+      timeInMins: 1,
+      price: 0,
+      categories: ["Test"],
+      instructions: [],
+      ingredients: [],
+      avgRating: null,
+    };
+    // console.log("Malicious Recipe:  ", maliciousRecipe);
+    // Intercept the API and return the malicious payload
+    await page.route("**/recipes", (route) =>
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify([maliciousRecipe]),
+      })
+    );
   });
 
   test("URL-parametern ?q=<script>alert(1)</script> sanitiseras och orsakar inte scriptkörning", async ({
