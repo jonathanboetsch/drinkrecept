@@ -36,9 +36,9 @@ This analysis identifies **main security threats**, their **likelihood and impac
 | 1 | **Stored XSS**                       | Attacker submits `<script>` in recipe title or comment | High       | High   | Sanitize user input on server; React auto-escapes by default; add CSP |
 | 2 | **Reflected / DOM XSS**              | Search term inserted directly into DOM                 | Medium     | High   | Avoid `dangerouslySetInnerHTML`; encode output                        |
 | 3 | **External image abuse**             | Image URL points to malicious content                  | Medium     | Medium | Validate URLs (https only); restrict `img-src` in CSP                 |
-| 5 | **Secrets or tokens leakage**        | API keys in frontend or repo                           | Medium     | High   | Store secrets in environment variables; never commit them             |
-| 6 | **Dependency compromise**            | Outdated or unpinned npm packages                      | Medium     | Medium | Run `npm audit`; pin GitHub Actions by commit hash                    |
-| 8 | **Error information disclosure**     | Stack traces shown to users                            | High       | Low    | Show generic error messages; log details server-side                  |
+| 4 | **Secrets or tokens leakage**        | API keys in frontend or repo                           | Medium     | High   | Store secrets in environment variables; never commit them             |
+| 5 | **Dependency compromise**            | Outdated or unpinned npm packages                      | Medium     | Medium | Run `npm audit`; pin GitHub Actions by commit hash                    |
+| 6 | **Error information disclosure**     | Stack traces shown to users                            | High       | Low    | Show generic error messages; log details server-side                  |
 
 ---
 
