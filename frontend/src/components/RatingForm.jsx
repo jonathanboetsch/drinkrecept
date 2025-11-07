@@ -17,8 +17,7 @@ export default function RatingForm({ ratingLevels = [1, 2, 3, 4, 5], confirmatio
     const found = userRatings?.find((r) => r.recipeId === recipe._id)?.rating ?? null;
     setUserRating(found);
     setRatingDisabled(found !== null);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userRatings]);
+  }, [userRatings, recipe]);
 
   const handleRatingClick = (rating) => {
     if (ratingDisabled) return; // guard against double-clicks
@@ -40,11 +39,11 @@ export default function RatingForm({ ratingLevels = [1, 2, 3, 4, 5], confirmatio
         body: JSON.stringify({ rating }),
       })
         .then((res) => {
-          if (!res.ok) throw new Error("Failed to submit rating");
+          if (!res.ok) console.error("Failed to submit rating");
           return fetch(`${API_URL}${GET_URI}`);
         })
         .then((res2) => {
-          if (!res2.ok) throw new Error("Failed to fetch the recipe for avgRating update");
+          if (!res2.ok) console.error("Failed to fetch the recipe for avgRating update");
           return res2.json();
         })
         .then((updatedRecipe) => {
@@ -52,7 +51,6 @@ export default function RatingForm({ ratingLevels = [1, 2, 3, 4, 5], confirmatio
           updateAvgRating(recipe._id, newAvgRating);
           updateUserRatings(recipe._id, rating);
         })
-        .catch((error) => console.error(error));
     }
   };
 
