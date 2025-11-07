@@ -48,7 +48,7 @@ This analysis identifies **main security threats**, their **likelihood and impac
 
 All user input (titles, comments, descriptions) must be treated as untrusted:
 
-* Escape or sanitize HTML before saving or rendering. Esaped by default by the framework  (React).
+* Escape or sanitize HTML before saving or rendering. Escaped by default by the framework  (React).
 * Prefer plain text rendering in React.
 * If rich text is needed, use a safe sanitizer.
 
