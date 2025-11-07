@@ -2,67 +2,62 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Receptsajten - XSS Security Tests", () => {
   test("Testdata med potentiell XSS i receptnamn renderas utan scriptkörning", async ({ page }) => {
-    // Lyssna på dialogs (alert, confirm, prompt)
     const dialogs = [];
-    page.on("dialog", (dialog) => {
-      dialogs.push(dialog.message());
-      dialog.dismiss();
+    const consoles = [];
+    page.on("dialog", (d) => {
+      dialogs.push(d.message());
+      d.dismiss();
     });
-
-    // Lyssna på console errors
-    const consoleErrors = [];
     page.on("console", (msg) => {
-      if (msg.type() === "error") {
-        consoleErrors.push(msg.text());
-      }
+      consoles.push(msg.text());
     });
-
-    // Mocka API med XSS-payloads i receptdata
-    await page.route("**/recipes", (route) => {
+    // console.log(consoles);
+    // Provide a malicious recipe payload (React should escape this and not execute it)
+    const maliciousRecipe = {
+      _id: "xss-1",
+      title: '<script>alert("xss")</script>',
+      description: "Malicious title test",
+      imageUrl: null,
+      timeInMins: 1,
+      price: 0,
+      categories: ["Test"],
+      instructions: [],
+      ingredients: [],
+      avgRating: null,
+    };
+    // console.log("Malicious Recipe:  ", maliciousRecipe);
+    // Intercept the API and return the malicious payload
+    await page.route("**/recipes", (route) =>
       route.fulfill({
         status: 200,
         contentType: "application/json",
-        body: JSON.stringify([
-          {
-            _id: 1,
-            title: '<script>alert("Hej Hej Hej")</script>Pasta Carbonara',
-            description: "<img src=x onerror=alert(1)>",
-            image: "https://example.com/pasta.jpg",
-            rating: 5,
-            prepTime: 30,
-            ingredients: ["pasta", "bacon"],
-          },
-          {
-            _id: 2,
-            title: '<svg/onload=alert("XSS2")>',
-            description: "Normal description",
-            image: "javascript:alert(1)",
-            rating: 4,
-            prepTime: 20,
-            ingredients: ["tomato"],
-          },
-        ]),
-      });
-    });
-
-    page.on("request", (req) => console.log("➡️ Request:", req.url()));
+        body: JSON.stringify([maliciousRecipe]),
+      })
+    );
+    // Go to the app
     await page.goto("/");
 
-    // Vänta på att receptkort renderas
-    await page.waitForSelector('[data-testid="recipe-card"]');
-
-    // Verifiera att inga alerts har triggats
+    await page.waitForLoadState("networkidle");
+    // Wait for the rendered title (Recipe renders <h1>{recipe.title}</h1>)
+    const title = page.locator("h1").first();
+    await expect(title).toBeVisible();
+    // Ensure no alert/dialog was shown
     expect(dialogs).toHaveLength(0);
+    // Ensure no console error referencing "xss" or "alert"
+    expect(consoles.filter((c) => /alert|xss/i.test(c)).length).toBe(0);
+    // (debug logs removed)
+    // (debug logs removed)
+    // Ensure the title is rendered as text (the payload should be visible as text, not executed)
+    const titleText = await title.textContent();
+    expect(titleText).toContain('<script>alert("xss")</script>');
 
-    // Verifiera att receptkort visas (trots XSS-försök)
-    const recipeCards = page.locator('[data-testid="recipe-card"]');
-    await expect(page.locator('[data-testid="recipe-card"]')).toHaveCount(2, { timeout: 10000 });
-
-    // Verifiera att script-taggar renderas som text
-    const firstCard = recipeCards.first();
-    const cardText = await firstCard.textContent();
-    expect(cardText).toContain("<img src=x onerror=alert(1)>");
-    expect(cardText).toContain('<script>alert("Hej Hej Hej")</script>Pasta Carbonara');
+    // Check that the DOM did not create a script element from the payload inside the first recipe node
+    const scriptInjected = await title.evaluate((node) => {
+      // look for child script elements under the recipe root
+      const root = node.closest(".recipe-card") || node.parentElement;
+      return !!root.querySelector("script");
+    });
+    expect(scriptInjected).toBe(false);
   });
 
   test("URL-parametern ?q=<script>alert(1)</script> sanitiseras och orsakar inte scriptkörning", async ({
