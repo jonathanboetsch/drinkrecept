@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Recipe.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Recipe.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { Link, useLocation } from "react-router-dom";
+import "./App.css";
+import RatingForm from "./RatingForm";
+import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+
+function calculateDifficulty(timeInMins) {
+  // Enkel logik för att bestämma svårighetsgrad baserat på tid
+  if (
+    timeInMins === null ||
+    timeInMins === undefined ||
+    Number.isNaN(Number(timeInMins)) ||
+    Number(timeInMins) &lt;= 0
+  )
+    return "Okänd";
+  if (timeInMins &lt; 10) return "Lätt";
+  if (timeInMins &lt;= 30) return "Medel";
+  return "Svår";
+}
+
+/**
+ * Recipe component displays detailed information about a recipe, including its
+ * title, description, image, ingredients, instructions, and comments. It also
+ * allows users to leave comments and view existing comments.
+ *
+ * @component
+ * @param {Object} props - The props object.
+ * @param {Object} props.recipe - The recipe object containing details about the recipe.
+ * @param {string} props.recipe._id - The unique identifier for the recipe.
+ * @param {string} props.recipe.title - The title of the recipe.
+ * @param {string} [props.recipe.description] - A brief description of the recipe.
+ * @param {string} [props.recipe.imageUrl] - The URL of the recipe's image.
+ * @param {number} [props.recipe.timeInMins] - The preparation time in minutes.
+ * @param {number} [props.recipe.price] - The price associated with the recipe.
+ * @param {Array&lt;string>} [props.recipe.categories] - The categories the recipe belongs to.
+ * @param {Array&lt;Object>} [props.recipe.ingredients] - The list of ingredients for the recipe.
+ * @param {string} props.recipe.ingredients[].name - The name of the ingredient.
+ * @param {string} props.recipe.ingredients[].unit - The unit of measurement for the ingredient.
+ * @param {number} props.recipe.ingredients[].amount - The amount of the ingredient.
+ * @param {Array&lt;string>} [props.recipe.instructions] - The step-by-step instructions for the recipe.
+ * @param {number} [props.recipe.avgRating] - The average rating of the recipe.
+ * @param {Array&lt;Object>} [props.recipe.comments] - The list of comments for the recipe.
+ * @param {string} props.recipe.comments[].name - The name of the commenter.
+ * @param {string} props.recipe.comments[].comment - The comment text.
+ * @param {string} props.recipe.comments[].createdAt - The timestamp when the comment was created.
+ *
+ * @returns {JSX.Element} The rendered Recipe component.
+ */
+export default function Recipe({ recipe }) {
+  const location = useLocation(); // information about the URL path, notably `pathname`
+
+  // Hooks must be called unconditionally — move them before any early return.
+  const [comments, setComments] = useState(recipe?.comments || []);
+  const [name, setName] = useState("");
+  const [comment, setComment] = useState("");
+  const [thankYou, setThankYou] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+  // Fetch comments from backend when component mounts or recipe._id changes
+  useEffect(() => {
+    async function getComments() {
+      if (!recipe?._id) return;
+      try {
+        const res = await fetch(`https://grupp3-jynxa.reky.se/recipes/${recipe._id}/comments`);
+        if (!res.ok) throw new Error("Kunde inte hämta kommentarer");
+        const data = await res.json();
+        setComments(data);
+      } catch (err) {
+        // Optionally handle error
+        console.error("Något gick fel vid hämtning av kommentarer: ", err);
+      }
+    }
+    getComments();
+  }, [recipe?._id]);
+
+  if (!recipe) {
+    return &lt;div className="recipe-not-found">Receptet hittades inte.&lt;/div>;
+  }
+  const fallbackImage = "/backupImage.png";
+
+  const handleImageError = (e) => {
+    e.target.src = fallbackImage;
+  };
+  // Beräkna svårighetsgrad för det enskilda receptet
+  const difficulty = calculateDifficulty(recipe.timeInMins);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setThankYou(false);
+    try {
+      const res = await fetch(`https://grupp3-jynxa.reky.se/recipes/${recipe._id}/comments`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, comment }),
+      });
+      if (!res.ok) throw new Error("Kunde inte skicka kommentar");
+      const newComment = await res.json();
+      setComments((prev) => [...prev, newComment]);
+      setName("");
+      setComment("");
+      setThankYou(true);
+    } catch (err) {
+      alert("Något gick fel: " + err.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    &lt;div>
+      {recipe.message &amp;&amp; &lt;p className="recipe-message">{recipe.message}&lt;/p>}
+      {!recipe.message &amp;&amp; (
+        &lt;div className="recipe-card">
+          {!location.pathname.startsWith("/recipe/") &amp;&amp; (
+            &lt;Link
+              to={recipe._id &amp;&amp; `/recipe/${recipe._id}`}
+              className="recipe-link"
+              aria-label={`Öppna recept: ${recipe.title}`}
+            />
+          )}
+          &lt;h1>{recipe.title}&lt;/h1>
+          &lt;p>
+            &lt;strong>Beskrivning:&lt;/strong> {recipe.description || "Ingen beskrivning"}
+          &lt;/p>
+          &lt;img src={recipe.imageUrl} alt={recipe.title} width="300" onError={handleImageError} />
+          &lt;p className="recipe-time">
+            &lt;strong>Tillagningstid:&lt;/strong> {recipe.timeInMins || "Okänt tillagningstid "} minuter
+          &lt;/p>
+          &lt;p className="recipe-difficulty">
+            &lt;strong>Svårighetsgrad:&lt;/strong> {difficulty}
+          &lt;/p>
+          &lt;p className="recipe-price">
+            &lt;strong>Pris:&lt;/strong> {recipe.price || "Hittade ingen prisinformation "} kr
+          &lt;/p>
+
+          {!location.pathname.startsWith("/recipe/") &amp;&amp; (
+            &lt;section>
+              &lt;h3>Kategorier&lt;/h3>
+              &lt;ul data-testid="category-list">
+                {recipe.categories &amp;&amp; recipe.categories.length > 0 ? (
+                  recipe.categories.map((cat, i) => &lt;li key={i}>{cat}&lt;/li>)
+                ) : (
+                  &lt;li>Inga kategorier tillgängliga &lt;/li>
+                )}
+              &lt;/ul>
+            &lt;/section>
+          )}
+
+          &lt;section>
+            &lt;h3>Ingredienser&lt;/h3>
+            &lt;ul>
+              {recipe.ingredients &amp;&amp; recipe.ingredients.length > 0 ? (
+                recipe.ingredients.map((ing, i) => (
+                  &lt;li key={i}>
+                    {ing.amount} {ing.unit} {ing.name}
+                  &lt;/li>
+                ))
+              ) : (
+                &lt;p> Inga ingredienser tillgängliga &lt;/p>
+              )}
+            &lt;/ul>
+          &lt;/section>
+
+          {location.pathname.startsWith("/recipe/") &amp;&amp; (
+            &lt;section>
+              &lt;h3>Instruktioner&lt;/h3>
+              &lt;ol>
+                {recipe.instructions &amp;&amp; recipe.instructions.length > 0 ? (
+                  recipe.instructions.map((instr, i) => &lt;li key={i}>{instr}&lt;/li>) // elements ordered inside the original array
+                ) : (
+                  &lt;li>Inga instruktioner tillgängliga&lt;/li>
+                )}
+              &lt;/ol>
+            &lt;/section>
+          )}
+
+          &lt;p className="recipe-rating">
+            &lt;strong>Rating:&lt;/strong>{" "}
+            {recipe.avgRating ? Number(recipe.avgRating).toFixed(1) : "Ingen än"}
+          &lt;/p>
+          {location.pathname.startsWith("/recipe/") &amp;&amp; &lt;RatingForm recipe={recipe} />}
+        &lt;/div>
+      )}
+      {location.pathname.startsWith("/recipe/") &amp;&amp; (
+        &lt;div>
+          &lt;section
+            style={{
+              marginTop: "2rem",
+              width: "100%",
+              maxWidth: 400,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            &lt;h3>Lämna en kommentar&lt;/h3>
+            &lt;form
+              onSubmit={handleSubmit}
+              style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
+            >
+              &lt;input
+                type="text"
+                placeholder="Ditt namn"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                style={{ padding: "0.5rem", borderRadius: 4, border: "1px solid #ccc" }}
+              />
+              &lt;textarea
+                placeholder="Din kommentar"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                required
+                rows={3}
+                style={{ padding: "0.5rem", borderRadius: 4, border: "1px solid #ccc" }}
+              />
+              &lt;button type="submit" disabled={submitting}>
+                {submitting ? "Skickar..." : "Skicka kommentar"}
+              &lt;/button>
+            &lt;/form>
+            {thankYou &amp;&amp; (
+              &lt;p style={{ color: "green", marginTop: "0.5rem" }}>Tack för din kommentar!&lt;/p>
+            )}
+          &lt;/section>
+          &lt;section className="comments-section">
+            &lt;h3 className="comments-title">Kommentarer&lt;/h3>
+            &lt;ul className="comments-list">
+              {comments.length === 0 &amp;&amp; &lt;li className="comment-empty">Inga kommentarer än.&lt;/li>}
+              {comments.map((c) => {
+                const hasValidDate = c?.createdAt &amp;&amp; !Number.isNaN(Date.parse(c.createdAt));
+                let displayTime = null;
+                let displayNameOfTheDay = null;
+                if (hasValidDate) {
+                  const d = new Date(c.createdAt);
+                  const yyyy = d.getFullYear();
+                  const mm = String(d.getMonth() + 1).padStart(2, "0");
+                  const dd = String(d.getDate()).padStart(2, "0");
+                  const timeStr = d.toLocaleTimeString(undefined, {
+                    hour: "numeric",
+                    minute: "2-digit",
+                  });
+                  displayTime = `${yyyy}-${mm}-${dd}, ${timeStr}`;
+                  displayNameOfTheDay = d.toLocaleDateString(undefined, { weekday: "long" });
+                }
+
+                return (
+                  &lt;li key={c.createdAt} className="comment-item">
+                    &lt;div className="comment-text">{c?.comment}&lt;/div>
+                    &lt;div className="comment-meta">
+                      &lt;strong className="comment-author">{c?.name ?? "Anonym"}&lt;/strong>
+                      {displayTime ? (
+                        &lt;time dateTime={c.createdAt} className="comment-time">
+                          {displayTime}
+                        &lt;/time>
+                      ) : (
+                        &lt;span className="comment-time">Okänd tid&lt;/span>
+                      )}
+                      &lt;span className="comment-day">{displayNameOfTheDay ?? "Okänd dag"}&lt;/span>
+                    &lt;/div>
+                  &lt;/li>
+                );
+              })}
+            &lt;/ul>
+          &lt;/section>
+        &lt;/div>
+      )}
+    &lt;/div>
+  );
+}
+
+Recipe.propTypes = {
+  _id: PropTypes.string.isRequired,
+
+  title: PropTypes.string.isRequired,
+
+  description: PropTypes.string.isRequired,
+
+  imageUrl: PropTypes.string, // not required since there is a fallback image
+
+  timeInMins: PropTypes.number.isRequired,
+
+  price: PropTypes.number.isRequired,
+
+  categories: PropTypes.arrayOf(PropTypes.string).isRequired,
+
+  instructions: PropTypes.arrayOf(PropTypes.string).isRequired,
+
+  ingredients: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+
+      amount: PropTypes.number.isRequired,
+
+      unit: PropTypes.string.isRequired,
+
+      _id: PropTypes.string.isRequired,
+    }).isRequired
+  ),
+
+  avgRating: PropTypes.number, // not available if no user rated it yet
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#useRecipesContext">useRecipesContext</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Sun Nov 09 2025 15:35:42 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

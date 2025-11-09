@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: App.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: App.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { useEffect, useState, useMemo } from "react";
+import { Route, Routes, useParams, useMatch } from "react-router-dom";
+import RecipeList from "./RecipeList";
+import "./App.css";
+import SearchBar from "./SearchBar";
+import Recipe from "./Recipe";
+import { RecipesContext, useRecipesContext } from "./RecipesContext";
+import CategoryFilter from "./CategoryFilter";
+import { useSearchParams } from "react-router-dom";
+
+function CategoryPage() {
+  const { searchResult } = useRecipesContext();
+  const { id } = useParams();
+  const filtered = searchResult.filter((r) => (r.categories || []).includes(id));
+  return (
+    &lt;div className="category-page">
+      &lt;h2 className="category-title">
+        {" "}
+        {id} &lt;span className="recipe-counter"> ({filtered.length}) &lt;/span> {"st"}
+      &lt;/h2>
+      &lt;RecipeList recipes={filtered} />
+    &lt;/div>
+  );
+}
+
+function RecipePage() {
+  const { searchResult } = useRecipesContext();
+  const { id } = useParams();
+  const recipe = searchResult.find((r) => String(r._id) === String(id));
+  return (
+    &lt;div className="recipe-page">
+      {recipe ? (
+        &lt;Recipe recipe={recipe} />
+      ) : (
+        &lt;p className="not-found-message">Receptet hittades inte&lt;/p>
+      )}
+    &lt;/div>
+  );
+}
+
+/**
+ * The main application component that manages the state and context for the recipe application.
+ * It handles fetching recipes, managing user ratings, filtering recipes by search and category,
+ * and routing between different pages of the application.
+ *
+ * @component
+ *
+ * @returns {JSX.Element} The rendered App component.
+ *
+ * @example
+ * &lt;App />
+ *
+ * @state {Array} recipes - The list of recipes fetched from the API.
+ * @state {Array} searchResult - The filtered list of recipes based on the search query.
+ * @state {boolean} loading - Indicates whether the recipes are being loaded.
+ * @state {string|null} error - Stores any error message encountered during data fetching.
+ * @state {string} activeCategory - The currently selected category for filtering recipes.
+ * @state {Array} userRatings - The list of user ratings for recipes, persisted in localStorage.
+ *
+ * @context {Object} RecipesContext - Provides `searchResult`, `updateAvgRating`, `userRatings`,
+ * and `updateUserRatings` to child components.
+ *
+ * @dependencies
+ * - `useSearchParams` - For managing the search query in the URL.
+ * - `useMatch` - For extracting the category ID from the URL path.
+ * - `useState`, `useEffect`, `useMemo` - React hooks for managing state and side effects.
+ * - `fetch` - For fetching recipes from the API.
+ * - `localStorage` - For persisting user ratings.
+ *
+ * @routes
+ * - `/` - Displays the RecipeList component.
+ * - `/category/:id` - Displays the CategoryPage component for a specific category.
+ * - `/recipe/:id` - Displays the RecipePage component for a specific recipe.
+ */
+function App() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [recipes, setRecipes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  // searchResult needed to implement search bar functionality
+  // this becomes the element passed to the RecipeList instead of sending directly "recipes" array
+  const [searchResult, setSearchResult] = useState([]);
+  const [activeCategory, setActiveCategory] = useState("Alla");
+  const [userRatings, setUserRatings] = useState(() => {
+    const storedRatings = localStorage.getItem("userRatings");
+    return storedRatings ? JSON.parse(storedRatings) : [];
+  });
+  const API_URL = "https://grupp3-jynxa.reky.se/recipes";
+
+  const match = useMatch("/category/:id"); // 🔹 gets the id of the category from the URL path
+
+  useEffect(() => {
+    setActiveCategory(match?.params?.id || "Alla"); // 🔹 set active category based on the URI
+  }, [match]);
+
+  const flattenValues = (obj) =>
+    Object.values(obj)
+      .map((v) => (v &amp;&amp; typeof v === "object" ? flattenValues(v) : String(v)))
+      .join(" ");
+
+  // Sync search bar with URL query param
+  useEffect(() => {
+    const q = searchParams.get("q") || "";
+    filterSearch(q);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, recipes]);
+
+  const filterSearch = (input = "") => {
+    const text = input.trim().toLowerCase();
+    // Update URL query param
+    if (text) {
+      setSearchParams({ q: text });
+    } else {
+      setSearchParams({});
+    }
+    if (text) {
+      const result = recipes.filter((r) => flattenValues(r).toLowerCase().includes(text));
+      setSearchResult(result.length > 0 ? result : []);
+    } else {
+      setSearchResult(recipes);
+    }
+  };
+
+  const initializeRatings = (data) => data.map((r) => ({ recipeId: r._id, rating: null }));
+
+  useEffect(() => {
+    fetch(API_URL)
+      .then((response) => {
+        if (!response.ok) throw new Error("Något gick fel vid hämtning av recept");
+        return response.json();
+      })
+      .then((data) => {
+        setRecipes(data);
+        setSearchResult(data);
+        setUserRatings((prev) => {
+          if (prev &amp;&amp; prev.length > 0) return prev; // keep array if already populated
+          return initializeRatings(data); // initialize null values otherwise
+        });
+      })
+      .catch((err) => setError(err.message))
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  // needed to load recipes onto searchResult as soon as they are fetched
+  useEffect(() => {
+    setSearchResult(recipes);
+  }, [recipes]);
+
+  // allCategories recalculates only when there is an update of recipes (f.ex. recipes re-fetched)
+  const allCategories = useMemo(() => {
+    return ["Alla", ...new Set(recipes.flatMap((r) => r.categories || []))].sort((r1, r2) =>
+      r1.toLowerCase().localeCompare(r2.toLowerCase())
+    );
+  }, [recipes]);
+
+  const changeActiveCategory = (category) => {
+    setActiveCategory(category);
+  };
+
+  const updateAvgRating = (recipeId, newAvgRating) => {
+    setRecipes((prev) =>
+      prev.map((r) => (String(r._id) === String(recipeId) ? { ...r, avgRating: newAvgRating } : r))
+    );
+    setSearchResult((prev) =>
+      prev.map((r) => (String(r._id) === String(recipeId) ? { ...r, avgRating: newAvgRating } : r))
+    );
+  };
+
+  /* --- USER RATING INTEGRATION --- */
+
+  // persist on disk whenever userRatings changes
+  useEffect(() => {
+    localStorage.setItem("userRatings", JSON.stringify(userRatings));
+  }, [userRatings]);
+
+  // update userRatings state var when user rates a recipe
+  const updateUserRatings = (recipeId, rating) =>
+    setUserRatings((prev) => {
+      const found = prev.find((r) => String(r.recipeId) === String(recipeId));
+      if (found) {
+        return prev.map((r) => (String(r.recipeId) === String(recipeId) ? { ...r, rating } : r));
+      } else {
+        return [...prev, { recipeId, rating }];
+      }
+    });
+
+  /* update values put in RecipesContext when recipes changes */
+  const contextItems = useMemo(
+    () => ({ searchResult, updateAvgRating, userRatings, updateUserRatings }),
+    [userRatings, searchResult]
+  );
+
+  if (loading) {
+    return &lt;p className="loading-message">Laddar recept...&lt;/p>;
+  }
+  if (error) {
+    return (
+      &lt;div data-testid="error-message" className="error-message">
+        Fel är: {error}
+        &lt;button
+          data-testid="retry-button"
+          onClick={() => window.location.reload()}
+          style={{ marginLeft: 12 }}
+        >
+          Försök igen
+        &lt;/button>
+      &lt;/div>
+    );
+  }
+
+  return (
+    &lt;div className="app-container">
+      &lt;header className="simple-header">
+        &lt;img src="Header4.png" className="header-logo" alt="Header" />
+        &lt;SearchBar
+          className="search-bar"
+          onUserType={filterSearch}
+          value={searchParams.get("q") || ""}
+        />
+        &lt;CategoryFilter
+          categories={allCategories}
+          activeCategory={activeCategory}
+          linkToRoute={true}
+          changeActiveCategory={changeActiveCategory}
+        />
+      &lt;/header>
+
+      &lt;main className="main-content">
+        &lt;div className="routes-container">
+          &lt;RecipesContext.Provider value={contextItems}>
+            &lt;Routes>
+              &lt;Route path="/" element={&lt;RecipeList />} />
+              &lt;Route path="/category/:id" element={&lt;CategoryPage />} />
+              &lt;Route path="/recipe/:id" element={&lt;RecipePage />} />
+            &lt;/Routes>
+          &lt;/RecipesContext.Provider>
+        &lt;/div>
+      &lt;/main>
+    &lt;/div>
+  );
+}
+
+export default App;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#useRecipesContext">useRecipesContext</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Sun Nov 09 2025 15:35:42 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
